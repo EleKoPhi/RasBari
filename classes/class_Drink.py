@@ -1,9 +1,15 @@
 from TxTMethoden import *
+from time import *
+
+
 
 
 class Drink(object):
+
+    dots = [".", "..", "...", "....", "....."]
     Ingredients = []
     alive = False
+    amountLongDrink = 330
 
     def __init__(self, NumberOfDrink):
 
@@ -32,17 +38,25 @@ class Drink(object):
         else:
             print('Drink unknown - cant show whats in')
 
-    def makeIt(self, menge):
+
+    def makeIt(self):
 
         if self.alive == True:
-            menge = str(menge)
-            print('Mische ' + menge + 'ml ' + self.Ingredients[0][1])
+            print('Mische ' + str(self.amountLongDrink) + 'ml ' + self.Ingredients[0][1])
+            for a in range (5):
+                for i in range(0,5):
+                    print(self.dots[i])
+                    sleep(0.5)
+
         else:
             print('Drink unknown - Mischen nicht moeglich')
 
-    @property
     def getName(self):
         return self.Ingredients[0][1]
+
+    def getStat(self):
+        return self.alive
+
 
 
 

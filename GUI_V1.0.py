@@ -10,11 +10,12 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from classes.class_Bar import *
+from classes.class_myThread import *
+import time
+
 
 
 class Ui_GUI(object):
-
-    amountLongDrink = 330
 
     def setupUi(self, GUI):
 
@@ -29,6 +30,8 @@ class Ui_GUI(object):
         GUI.setMaximumSize(QtCore.QSize(600, 480))
         GUI.setAnimated(True)
 
+        self.threadpool = QThreadPool()
+        print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
         self.centralwidget = QtWidgets.QWidget(GUI)
         self.centralwidget.setObjectName("centralwidget")
@@ -44,14 +47,6 @@ class Ui_GUI(object):
         font = QtGui.QFont()
         font.setPointSize(24)
         font.setItalic(True)
-
-        self.spinBox = QtWidgets.QSpinBox(self.centralwidget)
-        self.spinBox.setGeometry(QtCore.QRect(80, 400, 130, 45))
-        self.spinBox.setFont(font)
-        self.spinBox.setMaximum(500)
-        self.spinBox.setSingleStep(50)
-        self.spinBox.setProperty("value", 300)
-        self.spinBox.setObjectName("spinBox")
 
         self.Drink1_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
@@ -155,7 +150,7 @@ class Ui_GUI(object):
         self.retranslateUi(GUI)
         QtCore.QMetaObject.connectSlotsByName(GUI)
 
-        self.Drink1_0.clicked.connect(lambda: self.Button_Handler(0))
+        self.Drink1_0.clicked.connect(self.threadRunFunction)
         self.Drink2_0.clicked.connect(lambda: self.Button_Handler(1))
         self.Drink3_0.clicked.connect(lambda: self.Button_Handler(2))
         self.Drink4_0.clicked.connect(lambda: self.Button_Handler(3))
@@ -201,10 +196,18 @@ class Ui_GUI(object):
         self.Abbruch.setText(_translate("GUI", "NOTAUS"))
         self.Abbruch.setStyleSheet("background-color: red")
 
-    def Button_Handler(self, Auswahl):
+    def Button_Handler(self,Auswahl):
         if RasBari.DrinkList[Auswahl] != False:
-            RasBari.DrinkList[Auswahl].makeIt(self.amountLongDrink)
+            RasBari.DrinkList[Auswahl].makeIt()
         else: print("Taste unbenutzt")
+
+
+    def threadRunFunction(self):
+        Thread=myThread(self.TestFunktion)
+        self.threadpool.start(Thread)
+
+    def TestFunktion(self):
+        RasBari.DrinkList[0].makeIt()
 
 
 if __name__ == "__main__":

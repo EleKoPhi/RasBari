@@ -11,13 +11,3 @@ Zitronensaft = 0
 Genadinesirup = 0
 Zuckersirup = 0
 
-
-[Drink2]
-Name=MaiThai
-Gin = 30
-Wodka = 20
-Saft = 50
-
-[Drink5]
-Name=Apfelschorle
-Wasser = 100

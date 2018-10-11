@@ -1,10 +1,12 @@
 from classes.class_Drink import *
 from classes.class_Bottle import *
 
+
 class Bar(object):
 
     Bottles = []
     DrinkList = []
+    Threads = []
 
     def __init__(self):
         for i in range(1, self.checkNumberOfBottles()):
@@ -21,12 +23,12 @@ class Bar(object):
                 self.DrinkList[i] = Drink(ChoosenDrink)
 
         print("Bar has been initialized")
-        print("\nBottles included:")
 
+        print("\nBottles included:")
         for i in range(0,len(self.Bottles)):
             print(self.Bottles[i].getname())
-        print("\nDrinks inncluded:")
 
+        print("\nDrinks inncluded:")
         for i in range(0,len(self.DrinkList)):
             if self.DrinkList[i] != False:
                 print(self.DrinkList[i].getName)
