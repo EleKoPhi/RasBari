@@ -1,0 +1,53 @@
+[Fluessigkeit1]
+Name = Gin
+Menge = 700
+Position = 0
+
+[Fluessigkeit2]
+Name = Whiski
+Menge = 700
+Position = 10
+
+[Fluessigkeit3]
+Name = Rum
+Menge = 700
+Position = 20
+
+[Fluessigkeit4]
+Name = Wodka
+Menge = 700
+Position = 30
+
+[Fluessigkeit5]
+Name = Cointreau
+Menge = 700
+Position = 40
+
+[Fluessigkeit6]
+Name = Tonic
+Menge = 1000
+Position = 50
+
+[Fluessigkeit7]
+Name = Cola
+Menge = 1000
+Position = 60
+
+[Fluessigkeit8]
+Name = Zitronensaft
+Menge = 20
+Position = 70
+
+[Fluessigkeit9]
+Name = Grenadine
+Menge = 500
+Position = 80
+
+[Fluessigkeit10]
+Name = Zuckersirup
+Menge = 500
+Position = 90
+
+[Linearführung]
+Gesamtlänge = 1000
+
