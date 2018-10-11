@@ -219,3 +219,6 @@ if __name__ == "__main__":
     GUI.show()
     sys.exit(app.exec_())
 
+
+    print("test")
+
