@@ -1,18 +1,15 @@
 [Drink1]
 Name=Gintonik
-Gin = 30
-Whisky = 0 
-Rum = 0
-Wodka = 0
-Cointreau = 0
-Tonikwater = 70
-Cola = 0
-Zitronensaft = 0
-Genadinesirup = 0
-Zuckersirup = 0
+Gin=30
+Whisky=0
+Rum=0
+Wodka=0
+Cointreau=0
+Tonikwater=70
+Cola=0
+Zitronensaft=0
+Genadinesirup=0
+Zuckersirup=0
 
 
-[Drink2]
-Name = Timo
-Gin = 100
 

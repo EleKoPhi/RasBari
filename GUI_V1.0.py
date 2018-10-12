@@ -43,10 +43,6 @@ class Ui_GUI(object):
         self.AuswahlGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.AuswahlGrid.setObjectName("AuswahlGrid")
 
-        font = QtGui.QFont()
-        font.setPointSize(24)
-        font.setItalic(True)
-
         self.Drink1_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -70,7 +66,6 @@ class Ui_GUI(object):
         self.Drink1_2.setMaximumSize(QtCore.QSize(130, 70))
         self.Drink1_2.setObjectName("Drink1_2")
         self.AuswahlGrid.addWidget(self.Drink1_2, 3, 0, 1, 1)
-
 
         self.Drink2_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.Drink2_0.setMinimumSize(QtCore.QSize(130, 70))
@@ -164,7 +159,9 @@ class Ui_GUI(object):
         self.Drink3_2.clicked.connect(lambda: self.Button_Thread_Handler(10))
         self.Drink4_2.clicked.connect(lambda: self.Button_Thread_Handler(11))
 
-        self.Abbruch.clicked.connect(self.Exit_Thread_Handler)
+        self.Abbruch.clicked.connect(lambda:RasBari.errorFunction())
+
+        self.Vortschritt.setValue(0)
         
 
     def retranslateUi(self, GUI):
@@ -204,11 +201,19 @@ class Ui_GUI(object):
 
     def Button_Thread_Handler(self,Auswahl):
 
+        RasBari.changeErrorFlag(False)
+
         if RasBari.getProductionFlag() == False:
 
             if RasBari.DrinkList[Auswahl] != False:
+
+
+
                 thread = myThread(lambda:RasBari.mixIt(Auswahl))
+                progressbar = myThread(self.upDateStatusBar)
+
                 self.threadpool.start(thread)
+                self.threadpool.start(progressbar)
 
             else:
                 print("Button unused")
@@ -220,6 +225,15 @@ class Ui_GUI(object):
     def Exit_Thread_Handler(self):
         exitThread = myThread(RasBari.errorFunction)
         self.threadpool.start(exitThread)
+
+    def upDateStatusBar(self):
+        while RasBari.getProgress()<100:
+
+            self.Vortschritt.setValue(RasBari.getProgress())
+            time.sleep(0.05)
+
+        self.Vortschritt.setValue(100)
+
 
 
 if __name__ == "__main__":

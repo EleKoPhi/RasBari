@@ -1,8 +1,4 @@
 from TxTMethoden import *
-from time import *
-
-
-
 
 
 class Drink(object):
@@ -40,29 +36,11 @@ class Drink(object):
             print('Drink unknown - cant show whats in')
 
 
-    def makeIt(self):
-
-
-        if self.alive == True:
-            print('Mische ' + str(self.amountLongDrink) + 'ml ' + self.Ingredients[0][1])
-            for a in range (5):
-                for i in range(0,5):
-                        print(self.dots[i])
-                        sleep(0.5)
-        else:
-            print('Drink unknown - Mischen nicht moeglich')
-
     def getName(self):
         return self.Ingredients[0][1]
 
     def getStat(self):
         return self.alive
-
-
-
-
-
-
 
 
 

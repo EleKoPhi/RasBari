@@ -13,6 +13,8 @@ class Bar(object):
 
     dots = [".", "..", "...", "....", "....."]
 
+    progress = 0
+
 
     def __init__(self):
         for i in range(1, self.checkNumberOfBottles()):
@@ -87,9 +89,10 @@ class Bar(object):
 
         if self.DrinkList[Auswahl].getStat() == True:
 
-            print("Start mixing of " + self.DrinkList[Auswahl].getName() + "plase wait")
+            print("Start mixing of " + self.DrinkList[Auswahl].getName() + " plase wait")
+            self.errorFlag=0
 
-            for a in range(5):
+            """for a in range(5):
 
                 for i in range(0, 5):
                     if self.errorFlag == False:
@@ -101,16 +104,34 @@ class Bar(object):
 
                 if self.errorFlag == True:
                     self.changeErrorFlag(False)
-                    return
+                    return"""
+
+            self.progress=0
+
+            for i in range(0,100):
+                if self.errorFlag == False:
+                    self.progress=self.progress+1
+                    time.sleep(0.05)
+                    if self.progress%10 == 0:
+                        print(self.progress)
+                else:
+                    print("Error flage alive")
+                    self.progress=0
+                    break
+
+            if self.errorFlag == True:
+                self.changeErrorFlag(False)
+                return
+
 
             print ("Job is done!")
+
 
             self.changeProductionFlag(False)
 
         else:
             print("Drink unknown - Cant mix it")
             self.changeProductionFlag(False)
-
 
 
     def test(self):
@@ -122,6 +143,9 @@ class Bar(object):
     def errorFunction(self):
         self.changeErrorFlag(1)
         self.changeProductionFlag(0)
+
+    def getProgress(self):
+        return self.progress
 
 
 
