@@ -17,6 +17,7 @@ import time
 
 class Ui_GUI(object):
 
+
     def setupUi(self, GUI):
 
         GUI.setObjectName("GUI")
@@ -31,7 +32,6 @@ class Ui_GUI(object):
         GUI.setAnimated(True)
 
         self.threadpool = QThreadPool()
-        print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
         self.centralwidget = QtWidgets.QWidget(GUI)
         self.centralwidget.setObjectName("centralwidget")
@@ -150,20 +150,20 @@ class Ui_GUI(object):
         self.retranslateUi(GUI)
         QtCore.QMetaObject.connectSlotsByName(GUI)
 
-        self.Drink1_0.clicked.connect(self.threadRunFunction)
-        self.Drink2_0.clicked.connect(lambda: self.Button_Handler(1))
-        self.Drink3_0.clicked.connect(lambda: self.Button_Handler(2))
-        self.Drink4_0.clicked.connect(lambda: self.Button_Handler(3))
+        self.Drink1_0.clicked.connect(lambda: self.Button_Thread_Handler(0))
+        self.Drink2_0.clicked.connect(lambda: self.Button_Thread_Handler(1))
+        self.Drink3_0.clicked.connect(lambda: self.Button_Thread_Handler(2))
+        self.Drink4_0.clicked.connect(lambda: self.Button_Thread_Handler(3))
 
-        self.Drink1_1.clicked.connect(lambda: self.Button_Handler(4))
-        self.Drink2_1.clicked.connect(lambda: self.Button_Handler(5))
-        self.Drink3_1.clicked.connect(lambda: self.Button_Handler(6))
-        self.Drink4_1.clicked.connect(lambda: self.Button_Handler(7))
+        self.Drink1_1.clicked.connect(lambda: self.Button_Thread_Handler(4))
+        self.Drink2_1.clicked.connect(lambda: self.Button_Thread_Handler(5))
+        self.Drink3_1.clicked.connect(lambda: self.Button_Thread_Handler(6))
+        self.Drink4_1.clicked.connect(lambda: self.Button_Thread_Handler(7))
 
-        self.Drink1_2.clicked.connect(lambda: self.Button_Handler(8))
-        self.Drink2_2.clicked.connect(lambda: self.Button_Handler(9))
-        self.Drink3_2.clicked.connect(lambda: self.Button_Handler(10))
-        self.Drink4_2.clicked.connect(lambda: self.Button_Handler(11))
+        self.Drink1_2.clicked.connect(lambda: self.Button_Thread_Handler(8))
+        self.Drink2_2.clicked.connect(lambda: self.Button_Thread_Handler(9))
+        self.Drink3_2.clicked.connect(lambda: self.Button_Thread_Handler(10))
+        self.Drink4_2.clicked.connect(lambda: self.Button_Thread_Handler(11))
         
 
     def retranslateUi(self, GUI):
@@ -199,15 +199,21 @@ class Ui_GUI(object):
     def Button_Handler(self,Auswahl):
         if RasBari.DrinkList[Auswahl] != False:
             RasBari.DrinkList[Auswahl].makeIt()
-        else: print("Taste unbenutzt")
+        else: print("Button unused")
+
+    def Button_Thread_Handler(self,Auswahl):
+        if RasBari.DrinkList[Auswahl] != False:
+
+            thread = myThread(RasBari.DrinkList[Auswahl].makeIt)
+            self.threadpool.start(thread)
+
+        else: print("Button unused")
 
 
-    def threadRunFunction(self):
-        Thread=myThread(self.TestFunktion)
-        self.threadpool.start(Thread)
-
-    def TestFunktion(self):
-        RasBari.DrinkList[0].makeIt()
+    def test(self):
+        print("starte Pause")
+        time.sleep(5)
+        print("ende Pause")
 
 
 if __name__ == "__main__":

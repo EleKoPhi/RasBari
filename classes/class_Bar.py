@@ -22,16 +22,17 @@ class Bar(object):
             if objectCanBeBuild(ChoosenDrink):
                 self.DrinkList[i] = Drink(ChoosenDrink)
 
-        print("Bar has been initialized")
+        print("\nBar has been initialized")
 
-        print("\nBottles included:")
+        print("\nBottles included:\n")
         for i in range(0,len(self.Bottles)):
             print(self.Bottles[i].getname())
 
-        print("\nDrinks inncluded:")
+        print("\nDrinks inncluded:\n")
         for i in range(0,len(self.DrinkList)):
+
             if self.DrinkList[i] != False:
-                print(self.DrinkList[i].getName)
+                print(self.DrinkList[i].getName())
                 print(self.DrinkList[i].WhatsIn())
 
     def moveSlider(self,direction,speed,position):
