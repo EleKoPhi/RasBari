@@ -83,6 +83,8 @@ class Bar(object):
 
     def mixIt(self,Auswahl):
 
+        self.changeProductionFlag(True)
+
         if self.DrinkList[Auswahl].getStat() == True:
 
             print("Start mixing of " + self.DrinkList[Auswahl].getName() + "plase wait")
@@ -103,12 +105,23 @@ class Bar(object):
 
             print ("Job is done!")
 
-        else: print("Drink unknown - Cant mix it")
+            self.changeProductionFlag(False)
+
+        else:
+            print("Drink unknown - Cant mix it")
+            self.changeProductionFlag(False)
+
+
 
     def test(self):
         print("Start")
         time.sleep(5)
         print("End")
+
+
+    def errorFunction(self):
+        self.changeErrorFlag(1)
+        self.changeProductionFlag(0)
 
 
 
