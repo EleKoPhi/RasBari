@@ -14,6 +14,7 @@ from classes.class_myThread import *
 import time
 
 
+Errorflag = 0
 
 class Ui_GUI(object):
 
@@ -164,6 +165,8 @@ class Ui_GUI(object):
         self.Drink2_2.clicked.connect(lambda: self.Button_Thread_Handler(9))
         self.Drink3_2.clicked.connect(lambda: self.Button_Thread_Handler(10))
         self.Drink4_2.clicked.connect(lambda: self.Button_Thread_Handler(11))
+
+        self.Abbruch.clicked.connect(lambda:RasBari.changeErrorFlag(1))
         
 
     def retranslateUi(self, GUI):
@@ -202,18 +205,14 @@ class Ui_GUI(object):
         else: print("Button unused")
 
     def Button_Thread_Handler(self,Auswahl):
-        if RasBari.DrinkList[Auswahl] != False:
 
-            thread = myThread(RasBari.DrinkList[Auswahl].makeIt)
+        if RasBari.DrinkList[Auswahl] != False:
+            thread = myThread(lambda:RasBari.mixIt(Auswahl))
             self.threadpool.start(thread)
 
         else: print("Button unused")
 
 
-    def test(self):
-        print("starte Pause")
-        time.sleep(5)
-        print("ende Pause")
 
 
 if __name__ == "__main__":

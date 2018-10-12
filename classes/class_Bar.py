@@ -1,12 +1,18 @@
 from classes.class_Drink import *
 from classes.class_Bottle import *
+import time
 
 
 class Bar(object):
 
     Bottles = []
     DrinkList = []
-    Threads = []
+
+    errorFlag=0
+    productionFlag=0
+
+    dots = [".", "..", "...", "....", "....."]
+
 
     def __init__(self):
         for i in range(1, self.checkNumberOfBottles()):
@@ -54,6 +60,64 @@ class Bar(object):
 
     def ReadBottleInit(self,BottleNum):
         return BarIni.items(BottleNum)
+
+
+
+    def changeErrorFlag(self,stat):
+        if stat == True:
+            self.errorFlag = True
+        else:
+            self.errorFlag = False
+
+    def changeProductionFlag(self,stat):
+        if stat == True:
+            self.productionFlag = True
+        else:
+            self.productionFlag = False
+
+    def getErrorFlag(self):
+        return self.errorFlag
+
+    def getProductionFlag(self):
+        return self.productionFlag
+
+    def mixIt(self,Auswahl):
+
+        if self.DrinkList[Auswahl].getStat() == True:
+
+            print("Start mixing of " + self.DrinkList[Auswahl].getName() + "plase wait")
+
+            for a in range(5):
+
+                for i in range(0, 5):
+                    if self.errorFlag == False:
+                        print(self.dots[i])
+                        sleep(0.5)
+                    else:
+                        print("Error flage alive")
+                        break
+
+                if self.errorFlag == True:
+                    self.changeErrorFlag(False)
+                    return
+
+            print ("Job is done!")
+
+        else: print("Drink unknown - Cant mix it")
+
+    def test(self):
+        print("Start")
+        time.sleep(5)
+        print("End")
+
+
+
+
+
+
+
+
+
 
 
 

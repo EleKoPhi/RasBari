@@ -4,6 +4,7 @@ from time import *
 
 
 
+
 class Drink(object):
 
     dots = [".", "..", "...", "....", "....."]
@@ -41,13 +42,13 @@ class Drink(object):
 
     def makeIt(self):
 
+
         if self.alive == True:
             print('Mische ' + str(self.amountLongDrink) + 'ml ' + self.Ingredients[0][1])
             for a in range (5):
                 for i in range(0,5):
-                    print(self.dots[i])
-                    sleep(0.5)
-
+                        print(self.dots[i])
+                        sleep(0.5)
         else:
             print('Drink unknown - Mischen nicht moeglich')
 
