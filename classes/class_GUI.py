@@ -1,13 +1,3 @@
-#
-#
-# GUI and logical software for the RasBari
-#
-# Name: Philipp Mochti
-#
-# V1.0
-#
-#
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from classes.class_Bar import *
 from classes.class_myThread import *
@@ -193,7 +183,7 @@ class Ui_GUI(object):
         self.Drink3_2.setText(_translate("GUI", getDrinkName("Drink11")))
         self.Drink4_2.setText(_translate("GUI", getDrinkName("Drink12")))
 
-        self.Abbruch.setText(_translate("GUI", "NOTAUS"))
+        self.Abbruch.setText(_translate("GUI", "ABBRUCH"))
         self.Abbruch.setStyleSheet("background-color: red")
 
     def Button_Handler(self,Auswahl):
@@ -228,19 +218,3 @@ class Ui_GUI(object):
 
     def upDateStatusBar(self):
             self.Vortschritt.setValue(self.RasBari.getProgress())
-
-
-
-
-
-if __name__ == "__main__":
-
-    import sys
-
-    app = QtWidgets.QApplication(sys.argv)
-    GUI = QtWidgets.QMainWindow()
-    ui = Ui_GUI()
-    ui.setupUi(GUI)
-    GUI.show()
-    sys.exit(app.exec_())
-

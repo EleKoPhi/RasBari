@@ -101,22 +101,8 @@ class Bar(QObject):
         if self.DrinkList[Auswahl].getStat() == True:
 
             print("Start mixing of " + self.DrinkList[Auswahl].getName() + " plase wait")
+
             self.errorFlag=0
-
-            """for a in range(5):
-
-                for i in range(0, 5):
-                    if self.errorFlag == False:
-                        print(self.dots[i])
-                        sleep(0.5)
-                    else:
-                        print("Error flage alive")
-                        break
-
-                if self.errorFlag == True:
-                    self.changeErrorFlag(False)
-                    return"""
-
             self.progress=0
 
             for i in range(0,100):
