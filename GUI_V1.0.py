@@ -16,6 +16,7 @@ import time
 
 class Ui_GUI(object):
 
+    RasBari = Bar()
 
     def setupUi(self, GUI):
 
@@ -157,12 +158,13 @@ class Ui_GUI(object):
         self.Drink1_2.clicked.connect(lambda: self.Button_Thread_Handler(8))
         self.Drink2_2.clicked.connect(lambda: self.Button_Thread_Handler(9))
         self.Drink3_2.clicked.connect(lambda: self.Button_Thread_Handler(10))
-        self.Drink4_2.clicked.connect(lambda: self.Button_Thread_Handler(11))
+        self.Drink4_2.clicked.connect(RasBari.sendSignal)
 
         self.Abbruch.clicked.connect(lambda:RasBari.errorFunction())
 
         self.Vortschritt.setValue(0)
-        
+
+        RasBari.changedValSig.connect(self.upDateStatusBar)
 
     def retranslateUi(self, GUI):
 
@@ -207,13 +209,12 @@ class Ui_GUI(object):
 
             if RasBari.DrinkList[Auswahl] != False:
 
-
-
                 thread = myThread(lambda:RasBari.mixIt(Auswahl))
                 progressbar = myThread(self.upDateStatusBar)
 
                 self.threadpool.start(thread)
                 self.threadpool.start(progressbar)
+
 
             else:
                 print("Button unused")
@@ -227,12 +228,9 @@ class Ui_GUI(object):
         self.threadpool.start(exitThread)
 
     def upDateStatusBar(self):
-        while RasBari.getProgress()<100:
-
             self.Vortschritt.setValue(RasBari.getProgress())
-            time.sleep(0.05)
 
-        self.Vortschritt.setValue(100)
+
 
 
 

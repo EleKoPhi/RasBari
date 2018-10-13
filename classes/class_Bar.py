@@ -2,8 +2,10 @@ from classes.class_Drink import *
 from classes.class_Bottle import *
 import time
 
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
-class Bar(object):
+
+class Bar(QObject):
 
     Bottles = []
     DrinkList = []
@@ -15,8 +17,13 @@ class Bar(object):
 
     progress = 0
 
+    changedValSig = pyqtSignal()
+
 
     def __init__(self):
+
+        QObject.__init__(self)
+
         for i in range(1, self.checkNumberOfBottles()):
             self.Bottles.extend([Bottle(i)])
 
@@ -83,6 +90,10 @@ class Bar(object):
     def getProductionFlag(self):
         return self.productionFlag
 
+    def sendSignal(self,choosen):
+
+        if choosen == "CVS":self.changedValSig.emit()
+
     def mixIt(self,Auswahl):
 
         self.changeProductionFlag(True)
@@ -111,6 +122,7 @@ class Bar(object):
             for i in range(0,100):
                 if self.errorFlag == False:
                     self.progress=self.progress+1
+                    self.sendSignal("CVS")
                     time.sleep(0.05)
                     if self.progress%10 == 0:
                         print(self.progress)
@@ -133,13 +145,6 @@ class Bar(object):
             print("Drink unknown - Cant mix it")
             self.changeProductionFlag(False)
 
-
-    def test(self):
-        print("Start")
-        time.sleep(5)
-        print("End")
-
-
     def errorFunction(self):
         self.changeErrorFlag(1)
         self.changeProductionFlag(0)
@@ -147,8 +152,10 @@ class Bar(object):
     def getProgress(self):
         return self.progress
 
-
-
+    def test(self):
+        print("Start")
+        time.sleep(5)
+        print("End")
 
 
 
