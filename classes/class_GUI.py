@@ -1,8 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from classes.class_Bar import *
 from classes.class_myThread import *
-import time
-
 
 class Ui_GUI(object):
 
@@ -26,10 +24,10 @@ class Ui_GUI(object):
         self.centralwidget = QtWidgets.QWidget(GUI)
         self.centralwidget.setObjectName("centralwidget")
         self.Titel = QtWidgets.QTextBrowser(self.centralwidget)
-        self.Titel.setGeometry(QtCore.QRect(0, 10, 600, 41))
+        self.Titel.setGeometry(QtCore.QRect(0, 15, 600, 40))
         self.Titel.setObjectName("Titel")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(9, 59, 581, 261))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 60, 600, 250))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.AuswahlGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.AuswahlGrid.setObjectName("AuswahlGrid")
@@ -112,17 +110,50 @@ class Ui_GUI(object):
         self.Drink4_2.setObjectName("Drink4_2")
         self.AuswahlGrid.addWidget(self.Drink4_2, 3, 3, 1, 1)
 
+        self.AddAmount = QtWidgets.QPushButton(self.centralwidget)
+        self.AddAmount.setGeometry(QtCore.QRect(230, 400, 130, 45))
+        self.AddAmount.setMinimumSize(QtCore.QSize(45, 45))
+        self.AddAmount.setMaximumSize(QtCore.QSize(45, 45))
+
+        self.SubtractAmount = QtWidgets.QPushButton(self.centralwidget)
+        self.SubtractAmount.setGeometry(QtCore.QRect(75, 400, 130, 45))
+        self.SubtractAmount.setMinimumSize(QtCore.QSize(45, 45))
+        self.SubtractAmount.setMaximumSize(QtCore.QSize(45, 45))
+
+        self.amount_LCD = QtWidgets.QLCDNumber(self.centralwidget)
+        self.amount_LCD.setGeometry(QtCore.QRect(125, 400, 100,45))
+        self.amount_LCD.setAutoFillBackground(False)
+        self.amount_LCD.setFrameShape(QtWidgets.QFrame.Panel)
+        self.amount_LCD.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.amount_LCD.setLineWidth(2)
+        self.amount_LCD.setMidLineWidth(1)
+        self.amount_LCD.setSmallDecimalPoint(True)
+        self.amount_LCD.setDigitCount(3)
+        self.amount_LCD.setSegmentStyle(QtWidgets.QLCDNumber.Filled)
+        self.amount_LCD.setProperty("intValue", 300)
+        self.amount_LCD.setObjectName("amount_LCD")
+
         self.Vortschritt = QtWidgets.QProgressBar(self.centralwidget)
-        self.Vortschritt.setGeometry(QtCore.QRect(50, 330, 500, 50))
-        self.Vortschritt.setProperty("value", 50)
+        self.Vortschritt.setGeometry(QtCore.QRect(50, 315, 500, 30))
+        self.Vortschritt.setProperty("value", 0)
         self.Vortschritt.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
         self.Vortschritt.setObjectName("Vortschritt")
 
         self.Abbruch = QtWidgets.QPushButton(self.centralwidget)
-        self.Abbruch.setGeometry(QtCore.QRect(400, 400, 130, 45))
-        self.Abbruch.setMinimumSize(QtCore.QSize(130, 45))
-        self.Abbruch.setMaximumSize(QtCore.QSize(130, 45))
+        self.Abbruch.setGeometry(QtCore.QRect(325, 400, 130, 45))
+        self.Abbruch.setMinimumSize(QtCore.QSize(200, 45))
+        self.Abbruch.setMaximumSize(QtCore.QSize(200, 45))
         self.Abbruch.setObjectName("Abbruch")
+
+        self.DigitText = QtWidgets.QTextBrowser(self.centralwidget)
+        self.DigitText.setGeometry(QtCore.QRect(105, 358, 134, 28))
+        self.DigitText.setObjectName("Glasvolumen in ml")
+
+        self.StatTxt = QtWidgets.QTextBrowser(self.centralwidget)
+        self.StatTxt.setGeometry(QtCore.QRect(357, 358, 134, 28))
+        self.StatTxt.setObjectName("Status:")
+
+
 
         GUI.setCentralWidget(self.centralwidget)
 
@@ -166,7 +197,7 @@ class Ui_GUI(object):
                                                 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                                                 "p, li { white-space: pre-wrap; }\n"
                                                 "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-                                                "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; font-weight:600;\">RasBari V1.0</span></p></body></html>"))
+                                                "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;\">RasBari V2.0</span></p></body></html>"))
 
         self.Drink1_0.setText(_translate("GUI", getDrinkName("Drink1")))
         self.Drink2_0.setText(_translate("GUI", getDrinkName("Drink2")))
@@ -185,6 +216,11 @@ class Ui_GUI(object):
 
         self.Abbruch.setText(_translate("GUI", "ABBRUCH"))
         self.Abbruch.setStyleSheet("background-color: red")
+
+        self.AddAmount.setText(_translate("GUI", "+"))
+        self.SubtractAmount.setText(_translate("GUI", "-"))
+        self.DigitText.setText(_translate("GUI", "Glasvolumen in ml"))
+        self.StatTxt.setText(_translate("GUI", "Status:"))
 
     def Button_Handler(self,Auswahl):
         if self.RasBari.DrinkList[Auswahl] != False:

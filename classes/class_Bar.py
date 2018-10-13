@@ -1,9 +1,8 @@
+
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from classes.class_Drink import *
 from classes.class_Bottle import *
 import time
-
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
-
 
 class Bar(QObject):
 
@@ -12,13 +11,10 @@ class Bar(QObject):
 
     errorFlag=0
     productionFlag=0
-
-    dots = [".", "..", "...", "....", "....."]
-
     progress = 0
+    amount = 330
 
     changedValSig = pyqtSignal()
-
 
     def __init__(self):
 
@@ -100,33 +96,25 @@ class Bar(QObject):
 
         if self.DrinkList[Auswahl].getStat() == True:
 
-            print("Start mixing of " + self.DrinkList[Auswahl].getName() + " plase wait")
+            print("Start mixing " + str(self.amount) + " ml " + self.DrinkList[Auswahl].getName() + " plase wait")
 
-            self.errorFlag=0
             self.progress=0
 
             for i in range(0,100):
                 if self.errorFlag == False:
                     self.progress=self.progress+1
-                    self.sendSignal("CVS")
+                    self.sendSignal("CVS")                  #"CVS - changeValSig
                     time.sleep(0.05)
                     if self.progress%10 == 0:
-                        print(self.progress)
+                        print(self.progress*self.amount*0.01)
                 else:
                     print("Error flage alive")
                     self.progress=0
-                    break
-
-            if self.errorFlag == True:
-                self.changeErrorFlag(False)
-                return
-
+                    self.errorFlag=0
+                    return
 
             print ("Job is done!")
-
-
             self.changeProductionFlag(False)
-
         else:
             print("Drink unknown - Cant mix it")
             self.changeProductionFlag(False)
@@ -138,10 +126,6 @@ class Bar(QObject):
     def getProgress(self):
         return self.progress
 
-    def test(self):
-        print("Start")
-        time.sleep(5)
-        print("End")
 
 
 
