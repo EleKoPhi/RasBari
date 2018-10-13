@@ -158,13 +158,13 @@ class Ui_GUI(object):
         self.Drink1_2.clicked.connect(lambda: self.Button_Thread_Handler(8))
         self.Drink2_2.clicked.connect(lambda: self.Button_Thread_Handler(9))
         self.Drink3_2.clicked.connect(lambda: self.Button_Thread_Handler(10))
-        self.Drink4_2.clicked.connect(RasBari.sendSignal)
+        self.Drink4_2.clicked.connect(self.RasBari.sendSignal)
 
-        self.Abbruch.clicked.connect(lambda:RasBari.errorFunction())
+        self.Abbruch.clicked.connect(lambda:self.RasBari.errorFunction())
 
         self.Vortschritt.setValue(0)
 
-        RasBari.changedValSig.connect(self.upDateStatusBar)
+        self.RasBari.changedValSig.connect(self.upDateStatusBar)
 
     def retranslateUi(self, GUI):
 
@@ -197,38 +197,37 @@ class Ui_GUI(object):
         self.Abbruch.setStyleSheet("background-color: red")
 
     def Button_Handler(self,Auswahl):
-        if RasBari.DrinkList[Auswahl] != False:
-            RasBari.DrinkList[Auswahl].makeIt()
+        if self.RasBari.DrinkList[Auswahl] != False:
+            self.RasBari.DrinkList[Auswahl].makeIt()
         else: print("Button unused")
 
     def Button_Thread_Handler(self,Auswahl):
 
-        RasBari.changeErrorFlag(False)
+        self.RasBari.changeErrorFlag(False)
 
-        if RasBari.getProductionFlag() == False:
+        if self.RasBari.getProductionFlag() == False:
 
-            if RasBari.DrinkList[Auswahl] != False:
+            if self.RasBari.DrinkList[Auswahl] != False:
 
-                thread = myThread(lambda:RasBari.mixIt(Auswahl))
+                thread = myThread(lambda:self.RasBari.mixIt(Auswahl))
                 progressbar = myThread(self.upDateStatusBar)
 
                 self.threadpool.start(thread)
                 self.threadpool.start(progressbar)
 
-
             else:
                 print("Button unused")
-                RasBari.changeProductionFlag(False)
+                self.RasBari.changeProductionFlag(False)
 
         else:
             print("Production allready running")
 
     def Exit_Thread_Handler(self):
-        exitThread = myThread(RasBari.errorFunction)
+        exitThread = myThread(self.RasBari.errorFunction)
         self.threadpool.start(exitThread)
 
     def upDateStatusBar(self):
-            self.Vortschritt.setValue(RasBari.getProgress())
+            self.Vortschritt.setValue(self.RasBari.getProgress())
 
 
 
@@ -238,7 +237,6 @@ if __name__ == "__main__":
 
     import sys
 
-    RasBari = Bar()
     app = QtWidgets.QApplication(sys.argv)
     GUI = QtWidgets.QMainWindow()
     ui = Ui_GUI()
