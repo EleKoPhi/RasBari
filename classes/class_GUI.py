@@ -130,7 +130,7 @@ class Ui_GUI(object):
         self.amount_LCD.setSmallDecimalPoint(True)
         self.amount_LCD.setDigitCount(3)
         self.amount_LCD.setSegmentStyle(QtWidgets.QLCDNumber.Filled)
-        self.amount_LCD.setProperty("intValue", 330)
+        self.amount_LCD.setProperty("intValue", self.RasBari.getAmount())
         self.amount_LCD.setObjectName("amount_LCD")
 
         self.Vortschritt = QtWidgets.QProgressBar(self.centralwidget)

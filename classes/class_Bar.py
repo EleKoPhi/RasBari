@@ -12,7 +12,7 @@ class Bar(QObject):
     errorFlag=0
     productionFlag=0
     progress = 0
-    amount = 330
+    amount = 300
 
     changedValSig = pyqtSignal()
     changedAmountSig = pyqtSignal()

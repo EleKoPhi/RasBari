@@ -3,10 +3,8 @@ from TxTMethoden import *
 
 class Drink(object):
 
-    dots = [".", "..", "...", "....", "....."]
     Ingredients = []
     alive = False
-    amountLongDrink = 330
 
     def __init__(self, NumberOfDrink):
 
