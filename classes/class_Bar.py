@@ -16,6 +16,7 @@ class Bar(QObject):
 
     changedValSig = pyqtSignal()
     changedAmountSig = pyqtSignal()
+    changedStatus = pyqtSignal()
 
     def __init__(self):
 
@@ -74,12 +75,14 @@ class Bar(QObject):
             self.errorFlag = True
         else:
             self.errorFlag = False
+        self.sendSignal("CS")
 
     def changeProductionFlag(self,stat):
         if stat == True:
             self.productionFlag = True
         else:
             self.productionFlag = False
+        self.sendSignal("CS")
 
     def getErrorFlag(self):
         return self.errorFlag
@@ -91,6 +94,7 @@ class Bar(QObject):
 
         if choosen == "CVS":self.changedValSig.emit()
         if choosen == "CAS":self.changedAmountSig.emit()
+        if choosen == "CS":self.changedStatus.emit()
 
     def mixIt(self,Auswahl):
 
@@ -132,7 +136,7 @@ class Bar(QObject):
         return self.amount
 
     def changeVolume(self,amount):
-        if self.productionFlag == False:
+        if (self.productionFlag == False) & (self.amount>20):
             self.amount=self.amount+amount
             self.sendSignal("CAS")
 

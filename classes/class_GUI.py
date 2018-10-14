@@ -183,8 +183,10 @@ class Ui_GUI(object):
 
         self.Abbruch.clicked.connect(lambda:self.RasBari.errorFunction())
 
-        self.AddAmount.clicked.connect(lambda:self.RasBari.changeVolume(-10))
-        self.SubtractAmount.clicked.connect(lambda:self.RasBari.changeVolume(+10))
+        self.AddAmount.clicked.connect(lambda:self.RasBari.changeVolume(+10))
+        self.SubtractAmount.clicked.connect(lambda:self.RasBari.changeVolume(-10))
+
+        self.RasBari.changedStatus.connect(self.UpdateStausTxt)
 
         self.Vortschritt.setValue(0)
 
@@ -263,3 +265,10 @@ class Ui_GUI(object):
             self.amount_LCD.display(self.RasBari.getAmount())
             GlasString = "Glass volume: " + str(self.RasBari.getAmount()) + " ml"
             self.DigitText.setText(GlasString)
+
+    def UpdateStausTxt(self):
+
+            if self.RasBari.getProductionFlag() == False:
+                self.StatTxt.setText("Status: Wait for input")
+            else:
+                self.StatTxt.setText("Status: Bussy")
