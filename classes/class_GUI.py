@@ -130,7 +130,7 @@ class Ui_GUI(object):
         self.amount_LCD.setSmallDecimalPoint(True)
         self.amount_LCD.setDigitCount(3)
         self.amount_LCD.setSegmentStyle(QtWidgets.QLCDNumber.Filled)
-        self.amount_LCD.setProperty("intValue", 300)
+        self.amount_LCD.setProperty("intValue", 330)
         self.amount_LCD.setObjectName("amount_LCD")
 
         self.Vortschritt = QtWidgets.QProgressBar(self.centralwidget)
@@ -146,11 +146,11 @@ class Ui_GUI(object):
         self.Abbruch.setObjectName("Abbruch")
 
         self.DigitText = QtWidgets.QTextBrowser(self.centralwidget)
-        self.DigitText.setGeometry(QtCore.QRect(105, 358, 134, 28))
+        self.DigitText.setGeometry(QtCore.QRect(75, 358, 200, 28))
         self.DigitText.setObjectName("Glasvolumen in ml")
 
         self.StatTxt = QtWidgets.QTextBrowser(self.centralwidget)
-        self.StatTxt.setGeometry(QtCore.QRect(357, 358, 134, 28))
+        self.StatTxt.setGeometry(QtCore.QRect(325, 358, 200, 28))
         self.StatTxt.setObjectName("Status:")
 
 
@@ -183,9 +183,14 @@ class Ui_GUI(object):
 
         self.Abbruch.clicked.connect(lambda:self.RasBari.errorFunction())
 
+        self.AddAmount.clicked.connect(lambda:self.RasBari.changeVolume(-10))
+        self.SubtractAmount.clicked.connect(lambda:self.RasBari.changeVolume(+10))
+
         self.Vortschritt.setValue(0)
 
         self.RasBari.changedValSig.connect(self.upDateStatusBar)
+
+        self.RasBari.changedAmountSig.connect(self.upDateTxt)
 
     def retranslateUi(self, GUI):
 
@@ -219,13 +224,11 @@ class Ui_GUI(object):
 
         self.AddAmount.setText(_translate("GUI", "+"))
         self.SubtractAmount.setText(_translate("GUI", "-"))
-        self.DigitText.setText(_translate("GUI", "Glasvolumen in ml"))
-        self.StatTxt.setText(_translate("GUI", "Status:"))
+        GlasString = "Glass volume: " + str(self.RasBari.getAmount()) + " ml"
+        self.DigitText.setText(_translate("GUI", GlasString))
+        self.StatTxt.setText(_translate("GUI", "Status: Wait for input"))
 
-    def Button_Handler(self,Auswahl):
-        if self.RasBari.DrinkList[Auswahl] != False:
-            self.RasBari.DrinkList[Auswahl].makeIt()
-        else: print("Button unused")
+
 
     def Button_Thread_Handler(self,Auswahl):
 
@@ -254,3 +257,9 @@ class Ui_GUI(object):
 
     def upDateStatusBar(self):
             self.Vortschritt.setValue(self.RasBari.getProgress())
+
+    def upDateTxt(self):
+
+            self.amount_LCD.display(self.RasBari.getAmount())
+            GlasString = "Glass volume: " + str(self.RasBari.getAmount()) + " ml"
+            self.DigitText.setText(GlasString)
