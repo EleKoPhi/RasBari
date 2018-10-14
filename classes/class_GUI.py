@@ -255,7 +255,14 @@ class Ui_GUI(object):
         self.Drink3_2.setText(_translate("GUI", getDrinkName("Drink11")))
         self.Drink4_2.setText(_translate("GUI", getDrinkName("Drink12")))
 
-        self.Abbruch.setText(_translate("GUI", "ABBRUCH"))
+        stopFont = QtGui.QFont()
+        stopFont.setPointSize(26)
+        stopFont.setBold(True)
+        stopFont.setItalic(False)
+        stopFont.setWeight(75)
+
+        self.Abbruch.setFont(stopFont)
+        self.Abbruch.setText(_translate("GUI", "STOP"))
         self.Abbruch.setStyleSheet("background-color: red")
 
         self.AddAmount.setText(_translate("GUI", "+"))
