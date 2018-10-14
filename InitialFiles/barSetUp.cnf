@@ -51,3 +51,7 @@ Position = 90
 [Linearführung]
 Gesamtlänge = 1000
 
+[GUI_Size]
+x=800
+y=480
+

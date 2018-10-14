@@ -35,6 +35,15 @@ def getAllIngredients(NumberOfDrink):
 def objectCanBeBuild (NumberOfDrink):
     return Mischungen.has_section(NumberOfDrink)
 
+def getGuiWidth():
+    return BarIni.get("GUI_Size","x")
+
+def getGuiHight():
+    return BarIni.get("GUI_Size","y")
+
+
+
+
 
 
 
