@@ -23,6 +23,7 @@ class Drink(object):
         elif allIngredients == False:
             print('Drink unknown')
 
+
     def WhatsIn(self):
 
         if self.alive == True:
@@ -32,7 +33,6 @@ class Drink(object):
 
         else:
             print('Drink unknown - cant show whats in')
-
 
     def getName(self):
         return self.Ingredients[0][1]

@@ -1,5 +1,5 @@
 import configparser
-from Speicherorte import IniDatei, BarHard
+from Speicherorte import IniDatei, BarHard, Email
 
 Mischungen = configparser.ConfigParser()
 Mischungen.sections()
@@ -8,6 +8,12 @@ Mischungen.read(IniDatei)
 BarIni = configparser.ConfigParser()
 BarIni.sections()
 BarIni.read(BarHard)
+
+EmailTxt = configparser.ConfigParser()
+EmailTxt.sections()
+EmailTxt.read(Email)
+
+
 
 def proofIngredients(NumberOfDrink):
     Proof = 0
@@ -41,9 +47,11 @@ def getGuiWidth():
 def getGuiHight():
     return BarIni.get("GUI_Size","y")
 
+def getMailAdress():
+    return EmailTxt.get("Gmail","AD")
 
-
-
+def getMailPassword():
+    return EmailTxt.get("Gmail","PW")
 
 
 

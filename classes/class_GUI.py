@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from classes.class_Bar import *
 from classes.class_myThread import *
-from TxTMethoden import *
+from classes.class_eMailGuard import *
 
 
 class Ui_GUI(object):
@@ -24,6 +24,7 @@ class Ui_GUI(object):
     setUpTxTPos = GUI_Height * 0.83 - setUpTxTHeight
 
     RasBari = Bar()
+    EmailOrder = eMailGuard()
 
     def setupUi(self, GUI):
 
@@ -188,7 +189,6 @@ class Ui_GUI(object):
         self.UnusedButton.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.UnusedButton.setObjectName("Abbruch")
 
-
         GUI.setCentralWidget(self.centralwidget)
 
         self.statusbar = QtWidgets.QStatusBar(GUI)
@@ -227,6 +227,17 @@ class Ui_GUI(object):
         self.RasBari.changedValSig.connect(self.upDateStatusBar)
 
         self.RasBari.changedAmountSig.connect(self.upDateTxt)
+
+        self.EmailOrder.CheckMail.connect(self.exeOrder)
+
+        self.MailTimer = QtCore.QTimer()
+        self.MailTimer.setSingleShot(False)
+        self.MailTimer.start(3000)
+        self.MailTimer.timeout.connect(lambda :self.check4order())
+
+
+
+
 
     def retranslateUi(self, GUI):
 
@@ -274,7 +285,6 @@ class Ui_GUI(object):
         self.UnusedButton.setText(_translate("GUI", "Unused Button"))
 
 
-
     def Button_Thread_Handler(self,Auswahl):
 
         self.RasBari.changeErrorFlag(False)
@@ -314,4 +324,34 @@ class Ui_GUI(object):
             if self.RasBari.getProductionFlag() == False:
                 self.StatTxt.setText("Status: Wait for input")
             else:
-                self.StatTxt.setText("Status: Bussy")
+                self.StatTxt.setText("Status: Busy")
+
+    def check4order(self):
+
+        thread1 = myThread(lambda: self.EmailOrder.gotNewOrder())
+        self.threadpool.start(thread1)
+
+    def exeOrder(self):
+
+        print("Check whats ordered")
+        Order = self.EmailOrder.getLastMessageTitel()
+        print(Order)
+
+        Find=99
+
+        for i in range(len(self.RasBari.DrinkList)):
+            if self.RasBari.DrinkList[i] != False:
+                if self.RasBari.DrinkList[i].getName() in Order:
+                    Find = i
+                    break
+
+        if Find != 99:
+            self.Button_Thread_Handler(Find)
+        else:
+            print("Order received but cant offer - Sorry")
+
+
+
+
+
+

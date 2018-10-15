@@ -68,8 +68,6 @@ class Bar(QObject):
     def ReadBottleInit(self,BottleNum):
         return BarIni.items(BottleNum)
 
-
-
     def changeErrorFlag(self,stat):
         if stat == True:
             self.errorFlag = True
