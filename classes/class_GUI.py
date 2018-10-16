@@ -341,7 +341,7 @@ class Ui_GUI(object):
 
         for i in range(len(self.RasBari.DrinkList)):
             if self.RasBari.DrinkList[i] != False:
-                if self.RasBari.DrinkList[i].getName() in Order:
+                if self.RasBari.DrinkList[i].getName().upper() in Order.upper():
                     Find = i
                     break
 
