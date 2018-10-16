@@ -23,9 +23,9 @@ class eMailGuard(QObject):
         self.imapper.unseen()
         self.lastMessageID = self.getLastMessagelID()
 
-        self.S = smtplib.SMTP('smtp.gmail.com', 587)
-        self.S.starttls()
-        self.S.login(self.login,self.password)
+       # self.S = smtplib.SMTP('smtp.gmail.com', 587)
+        #self.S.starttls()
+        #self.S.login(self.login,self.password)
 
         print("eMailGuard - Ini - Done")
 
@@ -46,9 +46,9 @@ class eMailGuard(QObject):
             mail = self.imapper.mail(mail_id)
             return mail.title
 
-    def SendIT(self):
-        message = "Message_you_need_to_send"
-        self.S.sendmail("Bar.Rasbari@gmail.com","Philipp.mochti@outlook.de",message)
+    #def SendIT(self):
+     #   message = "Message_you_need_to_send"
+      #  self.S.sendmail("Bar.Rasbari@gmail.com","Philipp.mochti@outlook.de",message)
 
 
 
