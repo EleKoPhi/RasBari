@@ -133,9 +133,9 @@ class Bar(QObject):
     def getAmount(self):
         return self.amount
 
-    def changeVolume(self,amount):
-        if (self.productionFlag == False) & (self.amount>20):
-            self.amount=self.amount+amount
+    def change_volume(self, amount):
+        if (self.productionFlag == False) & (self.amount+amount >= 20) & (self.amount+amount <= 999):
+            self.amount = self.amount+amount
             self.sendSignal("CAS")
 
 

@@ -1,15 +1,36 @@
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+from TxTMethoden import *
 
+fromaddr = "Bar.RasBari@gmail.com"
+toaddr = "Bar.RasBari@gmail.com"
 
-import easyimap
+login = getMailAdress()
+password = getMailPassword()
 
-login = 'Bar.RasBari@gmail.com'
-password = 'dehzyp-ceQryj-kujty2'
+msg = MIMEMultipart()
+msg['From'] = fromaddr
+msg['To'] = toaddr
+msg['Subject'] = "Gin Tonic"
+body = "Body_of_the_mail"
+msg.attach(MIMEText(body, 'plain'))
 
-imapper = easyimap.connect('imap.gmail.com', login, password)
+s = smtplib.SMTP('smtp.gmail.com', 587)
 
-while True :
-    for mail_id in imapper.listids(limit=1):
-        mail = imapper.mail(mail_id)
-        print(mail.message_id)
+# start TLS for security
+s.starttls()
 
+# Authentication
+s.login(fromaddr, password)
 
+# Converts the Multipart msg into a string
+text = msg.as_string()
+
+# sending the mail
+s.sendmail(fromaddr, toaddr, text)
+
+# terminating the session
+s.quit()

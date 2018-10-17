@@ -217,8 +217,8 @@ class Ui_GUI(object):
 
         self.Abbruch.clicked.connect(lambda:self.RasBari.errorFunction())
 
-        self.AddAmount.clicked.connect(lambda:self.RasBari.changeVolume(+10))
-        self.SubtractAmount.clicked.connect(lambda:self.RasBari.changeVolume(-10))
+        self.AddAmount.clicked.connect(lambda:self.RasBari.change_volume(+10))
+        self.SubtractAmount.clicked.connect(lambda:self.RasBari.change_volume(-10))
 
         self.RasBari.changedStatus.connect(self.UpdateStausTxt)
 
@@ -333,22 +333,47 @@ class Ui_GUI(object):
 
     def exeOrder(self):
 
-        print("Check whats ordered")
+        Find = 99
         Order = self.EmailOrder.getLastMessageTitel()
-        print(Order)
 
-        Find=99
+        print("Check whats ordered..."+Order)
 
-        for i in range(len(self.RasBari.DrinkList)):
-            if self.RasBari.DrinkList[i] != False:
-                if self.RasBari.DrinkList[i].getName().upper() in Order.upper():
-                    Find = i
-                    break
+        if ((Order != None) & (self.RasBari.getProductionFlag()!=True)):
+
+            for i in range(len(self.RasBari.DrinkList)):
+                if self.RasBari.DrinkList[i] != False:
+                    if self.RasBari.DrinkList[i].getName().upper() in Order.upper():
+                        Find = i
+                        break
 
         if Find != 99:
+
+            Replytxt = self.EmailOrder.orderexecuted + "\n\nYour order: " + self.RasBari.DrinkList[Find].getName()
+
+
+            threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, Replytxt,
+                                         "Automatic replay from RasBari"))
+            self.threadpool.start(threadMail)
+
             self.Button_Thread_Handler(Find)
+
         else:
             print("Order received but cant offer - Sorry")
+
+            if self.RasBari.getProductionFlag()==True:
+                threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, self.EmailOrder.orderallreadrunning,
+                                             "Automatic replay from RasBari"))
+                self.threadpool.start(threadMail)
+            else:
+                threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, self.EmailOrder.unknownorder,
+                                             "Automatic replay from RasBari"))
+                self.threadpool.start(threadMail)
+
+            print(self.EmailOrder.lastSenderAdress)
+            print("Mail sended")
+
+
+
 
 
 

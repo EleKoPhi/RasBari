@@ -53,5 +53,12 @@ def getMailAdress():
 def getMailPassword():
     return EmailTxt.get("Gmail","PW")
 
+def getAllNamesInList():
+    list = ""
+    for i in range(11):
+        DrinkName = "Drink"+str(i+1)
+        if getDrinkName(DrinkName) != "-":
+           list = list + "\n-" + getDrinkName((DrinkName))
 
+    return list
 
