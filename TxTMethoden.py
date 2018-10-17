@@ -13,8 +13,6 @@ EmailTxt = configparser.ConfigParser()
 EmailTxt.sections()
 EmailTxt.read(Email)
 
-
-
 def proofIngredients(NumberOfDrink):
     Proof = 0
     Ingredients=Mischungen.items(NumberOfDrink)

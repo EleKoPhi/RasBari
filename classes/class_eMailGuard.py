@@ -1,16 +1,9 @@
 import easyimap
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
-
-from TxTMethoden import *
+from PyQt5.QtCore import QObject, pyqtSignal
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
 from TxTMethoden import *
-import classes.class_myThread
-
-
 
 class eMailGuard(QObject):
 
@@ -29,11 +22,9 @@ class eMailGuard(QObject):
 
     CheckMail = pyqtSignal()
 
-
     def __init__(self):
 
         QObject.__init__(self)
-
 
         print("eMailGuard - Ini - Start")
 
@@ -47,9 +38,6 @@ class eMailGuard(QObject):
         self.server.ehlo()
         self.server.login(self.login, self.password)
 
-
-
-
         print("eMailGuard - Ini - Done")
 
     def gotNewOrder(self):
@@ -57,8 +45,6 @@ class eMailGuard(QObject):
             self.lastMessageID = self.getLastMessagelID()
             self.lastSenderAdress = self.getlastsenderadress()
             self.CheckMail.emit()
-
-
 
     def getLastMessagelID(self):
         for mail_id in self.imapper.listids(limit=1):
@@ -88,5 +74,3 @@ class eMailGuard(QObject):
 
         text = self.msg.as_string()
         self.server.sendmail(self.login, to, text)
-
-      

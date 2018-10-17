@@ -235,10 +235,6 @@ class Ui_GUI(object):
         if getEmailGuardStat():self.MailTimer.start(3000)
         self.MailTimer.timeout.connect(lambda :self.check4order())
 
-
-
-
-
     def retranslateUi(self, GUI):
 
         _translate = QtCore.QCoreApplication.translate
@@ -278,12 +274,13 @@ class Ui_GUI(object):
 
         self.AddAmount.setText(_translate("GUI", "+"))
         self.SubtractAmount.setText(_translate("GUI", "-"))
+
         GlasString = "Glass volume: " + str(self.RasBari.getAmount()) + " ml"
+
         self.DigitText.setText(_translate("GUI", GlasString))
         self.StatTxt.setText(_translate("GUI", "Status: Wait for input"))
         self.InitTxt.setText(_translate("GUI", "Unused Button Description"))
         self.UnusedButton.setText(_translate("GUI", "Unused Button"))
-
 
     def Button_Thread_Handler(self,Auswahl):
 
