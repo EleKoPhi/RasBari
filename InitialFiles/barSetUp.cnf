@@ -55,3 +55,6 @@ Gesamtlänge = 1000
 x=800
 y=480
 
+[Mailorder]
+stat = 1
+

@@ -47,6 +47,9 @@ def getGuiWidth():
 def getGuiHight():
     return BarIni.get("GUI_Size","y")
 
+def getEmailGuardStat():
+    return bool(BarIni.get("Mailorder","stat"))
+
 def getMailAdress():
     return EmailTxt.get("Gmail","AD")
 

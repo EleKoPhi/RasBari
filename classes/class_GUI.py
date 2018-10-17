@@ -232,7 +232,7 @@ class Ui_GUI(object):
 
         self.MailTimer = QtCore.QTimer()
         self.MailTimer.setSingleShot(False)
-        self.MailTimer.start(3000)
+        if getEmailGuardStat():self.MailTimer.start(3000)
         self.MailTimer.timeout.connect(lambda :self.check4order())
 
 

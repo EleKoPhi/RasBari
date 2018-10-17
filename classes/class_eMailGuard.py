@@ -47,7 +47,7 @@ class eMailGuard(QObject):
         self.server.ehlo()
         self.server.login(self.login, self.password)
 
-        self.msg = MIMEMultipart()
+
 
 
         print("eMailGuard - Ini - Done")
@@ -77,6 +77,8 @@ class eMailGuard(QObject):
 
     def send_mail_to(self, to, message, subject):
 
+        self.msg = MIMEMultipart()
+
         self.msg['From'] = self.login
         self.msg['To'] = to
         self.msg['Subject'] = subject
@@ -86,3 +88,5 @@ class eMailGuard(QObject):
 
         text = self.msg.as_string()
         self.server.sendmail(self.login, to, text)
+
+      
