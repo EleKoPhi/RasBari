@@ -352,7 +352,7 @@ class Ui_GUI(object):
 
 
             threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, Replytxt,
-                                         "Automatic replay from RasBari"))
+                                         "Automatic reply from RasBari"))
             self.threadpool.start(threadMail)
 
             self.Button_Thread_Handler(Find)
@@ -362,11 +362,12 @@ class Ui_GUI(object):
 
             if self.RasBari.getProductionFlag()==True:
                 threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, self.EmailOrder.orderallreadrunning,
-                                             "Automatic replay from RasBari"))
+                                             "Automatic reply from RasBari"))
                 self.threadpool.start(threadMail)
+
             else:
                 threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, self.EmailOrder.unknownorder,
-                                             "Automatic replay from RasBari"))
+                                             "Automatic reply from RasBari"))
                 self.threadpool.start(threadMail)
 
             print(self.EmailOrder.lastSenderAdress)
