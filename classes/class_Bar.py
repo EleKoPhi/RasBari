@@ -13,6 +13,7 @@ class Bar(QObject):
     productionFlag=0
     progress = 0
     amount = 300
+    fuellstand = 0
 
     changedValSig = pyqtSignal()
     changedAmountSig = pyqtSignal()
@@ -56,7 +57,21 @@ class Bar(QObject):
         print("To Position: " + str(position))
 
     def getLiquid(self,Liquid,Amount):
-        print("Gebe " + str(Amount) + "ml " + str(Liquid) + " aus")
+
+        Amount=int(int(Amount)/100*self.amount)
+
+        print("Gebe " + str(int(Amount)) + "ml " + str(Liquid) + " aus")
+
+        for i in range(Amount):
+            if self.errorFlag == False:
+
+                if i%10==0:print("Ausgegebene Menge: " + str(i+10) + " ml")
+                self.fuellstand = self.fuellstand+1
+                self.changeprgress(self.fuellstand/self.amount*100)
+                time.sleep(0.01)
+            else:
+                print("Error flage alive - Ausgabe abgebrochen")
+                return
 
     def checkNumberOfBottles(self):
         i=1
@@ -102,9 +117,20 @@ class Bar(QObject):
 
             print("Start mixing " + str(self.amount) + " ml " + self.DrinkList[Auswahl].getName() + " plase wait")
 
-            self.progress=0
+            self.changeprgress(0)
+            self.fuellstand=0
 
-            for i in range(0,100):
+            for i in range(1,len(self.DrinkList[Auswahl].Ingredients)):
+
+                liquid_to_get = self.DrinkList[Auswahl].Ingredients[i][0]
+                amount_of_liquid = self.DrinkList[Auswahl].Ingredients[i][1]
+
+                if self.DrinkList[Auswahl].Ingredients[i][1] == "0": continue
+
+                else: self.getLiquid(liquid_to_get,amount_of_liquid)
+
+
+            """for i in range(0,100):
                 if self.errorFlag == False:
                     self.progress=self.progress+1
                     self.sendSignal("CVS")                  #"CVS - changeValSig
@@ -118,7 +144,11 @@ class Bar(QObject):
                     return
 
             print ("Job is done!")
+            self.changeProductionFlag(False)"""
+
+            self.changeErrorFlag(False)
             self.changeProductionFlag(False)
+
         else:
             print("Drink unknown - Cant mix it")
             self.changeProductionFlag(False)
@@ -138,9 +168,10 @@ class Bar(QObject):
             self.amount = self.amount+amount
             self.sendSignal("CAS")
 
-
-
-
+    def changeprgress(self,newval):
+        self.progress=newval
+        #print("Progress: " +str(self.progress))
+        self.sendSignal("CVS")
 
 
 

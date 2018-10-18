@@ -347,7 +347,6 @@ class Ui_GUI(object):
 
             Replytxt = self.EmailOrder.orderexecuted + "\n\nYour order: " + self.RasBari.DrinkList[Find].getName()
 
-
             threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, Replytxt,
                                          "Automatic reply from RasBari"))
             self.threadpool.start(threadMail)
@@ -369,6 +368,10 @@ class Ui_GUI(object):
 
             print(self.EmailOrder.lastSenderAdress)
             print("Mail sended")
+
+
+
+
 
 
 
