@@ -20,6 +20,7 @@ class Drink(object):
             else:
                 print('Drink over 100%')
 
+
         elif allIngredients == False:
             print('Drink unknown')
 
@@ -33,7 +34,12 @@ class Drink(object):
             print('Drink unknown - cant show whats in')
 
     def getName(self):
-        return self.Ingredients[0][1]
+        try:
+            return self.Ingredients[0][1]
+
+        except:
+            return "could not read that name"
+
 
     def getStat(self):
         return self.alive

@@ -122,13 +122,13 @@ class Bar(QObject):
 
             for i in range(1,len(self.DrinkList[Auswahl].Ingredients)):
 
+                if self.errorFlag==True:break
+
                 liquid_to_get = self.DrinkList[Auswahl].Ingredients[i][0]
                 amount_of_liquid = self.DrinkList[Auswahl].Ingredients[i][1]
 
                 if self.DrinkList[Auswahl].Ingredients[i][1] == "0": continue
-
                 else: self.getLiquid(liquid_to_get,amount_of_liquid)
-
 
             """for i in range(0,100):
                 if self.errorFlag == False:
