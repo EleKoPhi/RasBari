@@ -38,18 +38,13 @@ class Drink(object):
     def getName(self):
         try:
             return self.Ingredients[0][1]
-
         except:
             return "could not read that name"
 
     def getStat(self):
         return self.alive
 
-    def openval(self):
-        print("open valve")
 
-    def closeval(self):
-        print("close valve")
 
 
 

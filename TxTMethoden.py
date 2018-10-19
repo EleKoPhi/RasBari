@@ -1,8 +1,6 @@
 import configparser
 from Speicherorte import IniDatei, BarHard, Email
 
-import time
-
 Mischungen = configparser.ConfigParser()
 Mischungen.sections()
 Mischungen.read(IniDatei)
@@ -69,7 +67,6 @@ def getallBottleStats(Numberofbottle):
     if BarIni.has_section(Numberofbottle):
         return BarIni.items(Numberofbottle)
     else: return False
-
 
 def changeAmount(BottleNr,newamount):
 
