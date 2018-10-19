@@ -1,6 +1,8 @@
 import configparser
 from Speicherorte import IniDatei, BarHard, Email
 
+import time
+
 Mischungen = configparser.ConfigParser()
 Mischungen.sections()
 Mischungen.read(IniDatei)
@@ -62,4 +64,18 @@ def getAllNamesInList():
            list = list + "\n-" + getDrinkName((DrinkName))
 
     return list
+
+def getallBottleStats(Numberofbottle):
+    if BarIni.has_section(Numberofbottle):
+        return BarIni.items(Numberofbottle)
+    else: return False
+
+
+def changeAmount(BottleNr,newamount):
+
+    BarIni.set("Fluessigkeit"+str(BottleNr),"menge",str(newamount))
+    with open(BarHard, 'w') as configfile:
+        BarIni.write(configfile)
+
+
 

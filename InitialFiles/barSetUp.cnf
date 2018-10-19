@@ -1,59 +1,69 @@
 [Fluessigkeit1]
-Name = Gin
-Menge = 700
-Position = 0
+id = 1
+name = Gin
+menge = 601
+position = 0
 
 [Fluessigkeit2]
-Name = Whiski
-Menge = 700
-Position = 10
+id = 2
+name = Whisky
+menge = 700
+position = 10
 
 [Fluessigkeit3]
-Name = Rum
-Menge = 700
-Position = 20
+id = 3
+name = Rum
+menge = 700
+position = 20
 
 [Fluessigkeit4]
-Name = Wodka
-Menge = 700
-Position = 30
+id = 4
+name = Wodka
+menge = 700
+position = 30
 
 [Fluessigkeit5]
-Name = Cointreau
-Menge = 700
-Position = 40
+id = 5
+name = Cointreau
+menge = 700
+position = 40
 
 [Fluessigkeit6]
-Name = Tonic
-Menge = 1000
-Position = 50
+id = 6
+name = Tonic
+menge = 1000
+position = 50
 
 [Fluessigkeit7]
-Name = Cola
-Menge = 1000
-Position = 60
+id = 7
+name = Cola
+menge = 1000
+position = 60
 
 [Fluessigkeit8]
-Name = Zitronensaft
-Menge = 20
-Position = 70
+id = 8
+name = Zitronensaft
+menge = 20
+position = 70
 
 [Fluessigkeit9]
-Name = Grenadine
-Menge = 500
-Position = 80
+id = 9
+name = Grenadine
+menge = 500
+position = 80
 
 [Fluessigkeit10]
-Name = Zuckersirup
-Menge = 500
-Position = 90
+id = 10
+name = Zuckersirup
+menge = 500
+position = 90
 
 [Linearführung]
-Gesamtlänge = 1000
+gesamtlänge = 1000
 
 [GUI_Size]
-x=800
-y=480
+x = 800
+y = 480
 
 [Mailorder]
 stat = 1

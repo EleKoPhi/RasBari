@@ -40,7 +40,9 @@ class Bar(QObject):
 
         print("\nBottles included:\n")
         for i in range(0,len(self.Bottles)):
-            print(self.Bottles[i].getname())
+            self.Bottles[i].whatsIn()
+            print()
+
 
         print("\nDrinks inncluded:\n")
         for i in range(0,len(self.DrinkList)):
@@ -52,12 +54,12 @@ class Bar(QObject):
 
     def moveSlider(self,direction,speed,position):
 
-        print("Move Slider")
+        print("\nMove Slider")
         print("Direction: " + str(direction))
         print("At Speed: " + str(speed))
-        print("To Position: " + str(position))
+        print("To Position: " + str(position) + "\n")
 
-    def getLiquid(self,Liquid,Amount):
+    def getLiquid(self,Liquid,Amount,Bottle):
 
         Amount=int(int(Amount)/100*self.amount)
 
@@ -67,7 +69,6 @@ class Bar(QObject):
 
         for i in range(Amount):
             if self.errorFlag == False:
-
                 if i%20==0:print("Ausgegebene Menge: " + str(i+10) + " ml")
                 self.fuellstand = self.fuellstand+1
                 self.changeprgress(self.fuellstand/self.amount*100)
@@ -75,6 +76,9 @@ class Bar(QObject):
             else:
                 print("Error flage alive - Ausgabe abgebrochen")
                 return
+
+        self.Bottles[0].degreaseAmount(33)
+
 
     def checkNumberOfBottles(self):
         i=1
@@ -118,7 +122,7 @@ class Bar(QObject):
 
         if self.DrinkList[Auswahl].getStat() == True:
 
-            print("Start mixing " + str(self.amount) + " ml " + self.DrinkList[Auswahl].getName() + " plase wait")
+            print("\nStart mixing " + str(self.amount) + " ml " + self.DrinkList[Auswahl].getName() + " plase wait\n")
 
             self.changeprgress(0)
             self.fuellstand=0
@@ -131,23 +135,16 @@ class Bar(QObject):
                 amount_of_liquid = self.DrinkList[Auswahl].Ingredients[i][1]
 
                 if self.DrinkList[Auswahl].Ingredients[i][1] == "0": continue
-                else: self.getLiquid(liquid_to_get,amount_of_liquid)
 
-            """for i in range(0,100):
-                if self.errorFlag == False:
-                    self.progress=self.progress+1
-                    self.sendSignal("CVS")                  #"CVS - changeValSig
-                    time.sleep(0.05)
-                    if self.progress%10 == 0:
-                        print(self.progress*self.amount*0.01)
                 else:
-                    print("Error flage alive")
-                    self.progress=0
-                    self.errorFlag=0
-                    return
 
-            print ("Job is done!")
-            self.changeProductionFlag(False)"""
+                    for i in range(len(self.Bottles)):
+                        if(liquid_to_get.upper()==self.Bottles[i].getname().upper()):
+                            #self.Bottles[i].degreaseAmount((int(amount_of_liquid)*self.amount*0.01)) #uncomment this line for amount monitoring
+                            print(self.Bottles[i].getname() + " menge geaendert")
+                            break
+
+                    self.getLiquid(liquid_to_get,amount_of_liquid,self.Bottles[i])
 
             self.changeErrorFlag(False)
             self.changeProductionFlag(False)
@@ -179,18 +176,9 @@ class Bar(QObject):
     def getPosition(self,liquid):
         for i in range(len(self.Bottles)):
             if self.Bottles[i].getname().upper()==liquid.upper():
-                return self.Bottles[i].Position
+                return self.Bottles[i].getPos()
 
         return False
-
-
-
-#testbar = Bar()
-
-#print(testbar.getPosition("Gin"))
-
-
-
 
 
 

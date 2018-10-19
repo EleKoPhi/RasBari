@@ -1,36 +1,18 @@
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
 from TxTMethoden import *
+from Speicherorte import BarHard
 
-fromaddr = "Bar.RasBari@gmail.com"
-toaddr = "Bar.RasBari@gmail.com"
+"""BarIni.set("Fluessigkeit1","Name","Gin")
 
-login = getMailAdress()
-password = getMailPassword()
+with open(BarHard, 'w') as configfile:
+    BarIni.write(configfile)"""
 
-msg = MIMEMultipart()
-msg['From'] = fromaddr
-msg['To'] = toaddr
-msg['Subject'] = "Gin Tonic"
-body = "Body_of_the_mail"
-msg.attach(MIMEText(body, 'plain'))
+def changeAmount(BottleNr,newamount):
+    BarIni.set("Fluessigkeit"+str(BottleNr),"menge",str(newamount))
 
-s = smtplib.SMTP('smtp.gmail.com', 587)
+    with open(BarHard, 'w') as configfile:
+        BarIni.write(configfile)
 
-# start TLS for security
-s.starttls()
 
-# Authentication
-s.login(fromaddr, password)
+changeAmount(1,)
 
-# Converts the Multipart msg into a string
-text = msg.as_string()
 
-# sending the mail
-s.sendmail(fromaddr, toaddr, text)
-
-# terminating the session
-s.quit()

@@ -42,12 +42,8 @@ class Drink(object):
         except:
             return "could not read that name"
 
-
     def getStat(self):
         return self.alive
-
-
-
 
 
 
