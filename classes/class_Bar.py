@@ -47,7 +47,8 @@ class Bar(QObject):
 
             if self.DrinkList[i] != False:
                 print(self.DrinkList[i].getName())
-                print(self.DrinkList[i].WhatsIn())
+                self.DrinkList[i].WhatsIn()
+                print()
 
     def moveSlider(self,direction,speed,position):
 
@@ -60,12 +61,14 @@ class Bar(QObject):
 
         Amount=int(int(Amount)/100*self.amount)
 
+        self.moveSlider("right", "normal", self.getPosition(Liquid))
+
         print("Gebe " + str(int(Amount)) + "ml " + str(Liquid) + " aus")
 
         for i in range(Amount):
             if self.errorFlag == False:
 
-                if i%10==0:print("Ausgegebene Menge: " + str(i+10) + " ml")
+                if i%20==0:print("Ausgegebene Menge: " + str(i+10) + " ml")
                 self.fuellstand = self.fuellstand+1
                 self.changeprgress(self.fuellstand/self.amount*100)
                 time.sleep(0.01)
@@ -170,8 +173,21 @@ class Bar(QObject):
 
     def changeprgress(self,newval):
         self.progress=newval
-        #print("Progress: " +str(self.progress))
         self.sendSignal("CVS")
+
+
+    def getPosition(self,liquid):
+        for i in range(len(self.Bottles)):
+            if self.Bottles[i].getname().upper()==liquid.upper():
+                return self.Bottles[i].Position
+
+        return False
+
+
+
+#testbar = Bar()
+
+#print(testbar.getPosition("Gin"))
 
 
 

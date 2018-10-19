@@ -33,6 +33,8 @@ class Drink(object):
         else:
             print('Drink unknown - cant show whats in')
 
+        return
+
     def getName(self):
         try:
             return self.Ingredients[0][1]
