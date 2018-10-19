@@ -45,6 +45,11 @@ class Drink(object):
     def getStat(self):
         return self.alive
 
+    def openval(self):
+        print("open valve")
+
+    def closeval(self):
+        print("close valve")
 
 
 
