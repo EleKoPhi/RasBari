@@ -3,6 +3,7 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from classes.class_Drink import *
 from classes.class_Bottle import *
 import time
+from classes.class_myThread import *
 
 class Bar(QObject):
 
@@ -180,6 +181,32 @@ class Bar(QObject):
                 return self.Bottles[i].getPos()
 
         return False
+
+    def canbemixed(self,Drink,Bottles):
+
+        Flagneed = 0
+        Flaghave = 0
+
+        for i in range(1, len(Drink.Ingredients)):  #that part checks, how many ingredients are necessary
+            if Drink.Ingredients[i][1] != "0":      #for every ingredient in drink != to 0
+                Flagneed=Flagneed+1                 #Flagneed is incremented
+
+        for i in range(1,len(Drink.Ingredients)):   #Loop all Ingredients
+            if Drink.Ingredients[i][1] != "0":      #Look only at ingredients != 0
+                for j in range(0,len(Bottles)):     #Check all bottles
+                    if Bottles[j].getname().upper() == Drink.Ingredients[i][0].upper(): #if bottle name == ingredient
+                        if int(Drink.Ingredients[i][1])*self.amount*0.01 <= int(Bottles[j].getRest()): #check if there is enought liquid remaing
+                            Flaghave = Flaghave+1   #if we have enought of that, increment Flagehave
+
+        if Flagneed == Flaghave: return True
+        else: return False
+
+
+
+
+Testbar = Bar()
+
+print(Testbar.canbemixed(Testbar.DrinkList[0],Testbar.Bottles))
 
 
 

@@ -21,6 +21,9 @@ class Bottle(object):
         for i in range(len(self.Bottlestats)):
             print(self.Bottlestats[i])
 
+    def getRest(self):
+        return self.Bottlestats[2][1]
+
     def outputliquid(self,amount):
         print("Open valve")
         print(str(amount) + " "+ self.getname() + "dispenses")
