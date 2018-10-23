@@ -28,17 +28,26 @@ class eMailGuard(QObject):
 
         print("eMailGuard - Ini - Start")
 
-        self.imapper = easyimap.connect('imap.gmail.com', self.login, self.password)
-        self.imapper.unseen()
-        self.lastMessageID = self.getLastMessagelID()
+        try:
 
-        self.server = smtplib.SMTP('smtp.gmail.com', 587)
-        self.server.ehlo()
-        self.server.starttls()
-        self.server.ehlo()
-        self.server.login(self.login, self.password)
+            self.imapper = easyimap.connect('imap.gmail.com', self.login, self.password)
+            self.imapper.unseen()
+            self.lastMessageID = self.getLastMessagelID()
 
-        print("eMailGuard - Ini - Done")
+            self.server = smtplib.SMTP('smtp.gmail.com', 587)
+            self.server.ehlo()
+            self.server.starttls()
+            self.server.ehlo()
+            self.server.login(self.login, self.password)
+
+            self.status = True
+
+            print("eMailGuard - Ini - Done")
+
+        except:
+            print("eMailGuard - Ini - Fail")
+
+            self.status = False
 
     def gotNewOrder(self):
         if self.lastMessageID != self.getLastMessagelID():

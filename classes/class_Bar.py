@@ -1,5 +1,3 @@
-
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from classes.class_Drink import *
 from classes.class_Bottle import *
 import time
@@ -19,6 +17,8 @@ class Bar(QObject):
     changedValSig = pyqtSignal()
     changedAmountSig = pyqtSignal()
     changedStatus = pyqtSignal()
+    missingIngred = pyqtSignal()
+    drinkunknown = pyqtSignal()
 
     def __init__(self):
 
@@ -60,7 +60,7 @@ class Bar(QObject):
         print("At Speed: " + str(speed))
         print("To Position: " + str(position) + "\n")
 
-    def getLiquid(self,Liquid,Amount,Bottle):
+    def getLiquid(self,Liquid,Amount): # TODO code that function for real output
 
         Amount=int(int(Amount)/100*self.amount)
 
@@ -113,46 +113,55 @@ class Bar(QObject):
 
     def sendSignal(self,choosen):
 
-        if choosen == "CVS":self.changedValSig.emit()
-        if choosen == "CAS":self.changedAmountSig.emit()
-        if choosen == "CS":self.changedStatus.emit()
+        if choosen == "CVS":self.changedValSig.emit()       #Value for progressbar changed
+        if choosen == "CAS":self.changedAmountSig.emit()    #Amount changed
+        if choosen == "CS":self.changedStatus.emit()        #Status changed
+        if choosen == "MI":self.missingIngred.emit()        #Not all ingredients available
+        if choosen == "DUK":self.drinkunknown.emit()        #Don't know that drink
 
-    def mixIt(self,Auswahl):
+    def mixIt(self,Auswahl):    #Main function for mixing Drinks - Runns in extra thread
 
-        self.changeProductionFlag(True)
+        self.changeProductionFlag(True) #If your do that, show the world you work
 
-        if self.DrinkList[Auswahl].getStat() == True:
+        if self.DrinkList[Auswahl].getStat() == True: #If Drinklist has that drink + its alive
 
-            print("\nStart mixing " + str(self.amount) + " ml " + self.DrinkList[Auswahl].getName() + " plase wait\n")
+            if self.canbemixed(self.DrinkList[Auswahl]): #check if all ingredients are available
 
-            self.changeprgress(0)
-            self.fuellstand=0
+                print("\nStart mixing " + str(self.amount) + " ml " \
+                      + self.DrinkList[Auswahl].getName() + " plase wait\n") #initialize output
 
-            for i in range(1,len(self.DrinkList[Auswahl].Ingredients)):
+                self.changeprgress(0)   #reset progress bar
+                self.fuellstand=0       #reset "fuellstand
 
-                if self.errorFlag==True:break
+                for i in range(1,len(self.DrinkList[Auswahl].Ingredients)): #for all ingredients of the drink do ...
 
-                liquid_to_get = self.DrinkList[Auswahl].Ingredients[i][0]
-                amount_of_liquid = self.DrinkList[Auswahl].Ingredients[i][1]
+                    if self.errorFlag==True:break   #do for the next ingredient, only if errorFlag not true
 
-                if self.DrinkList[Auswahl].Ingredients[i][1] == "0": continue
+                    liquid_to_get = self.DrinkList[Auswahl].Ingredients[i][0]
+                    amount_of_liquid = self.DrinkList[Auswahl].Ingredients[i][1]
 
-                else:
+                    if self.DrinkList[Auswahl].Ingredients[i][1] == "0": continue
 
-                    for i in range(len(self.Bottles)):
-                        if(liquid_to_get.upper()==self.Bottles[i].getname().upper()):
-                            #self.Bottles[i].degreaseAmount((int(amount_of_liquid)*self.amount*0.01)) #uncomment this line for amount monitoring
-                            break
+                    else:
 
-                    self.getLiquid(liquid_to_get,amount_of_liquid,self.Bottles[i])
+                        for i in range(len(self.Bottles)):
+                            if(liquid_to_get.upper()==self.Bottles[i].getname().upper()):
+                                #self.Bottles[i].degreaseAmount((int(amount_of_liquid)*self.amount*0.01)) #uncomment this line for amount monitoring
+                                break
 
-                    print("\n" + self.Bottles[i].getname() + " menge geaendert")
+                        self.getLiquid(liquid_to_get,amount_of_liquid) #That function getts the liquid
 
-            self.changeErrorFlag(False)
-            self.changeProductionFlag(False)
+                        print("\n" + self.Bottles[i].getname() + " menge geaendert")
+
+                self.changeErrorFlag(False)
+                self.changeProductionFlag(False)
+
+            else:
+                self.sendSignal("MI")
+                self.changeProductionFlag(False)
 
         else:
-            print("Drink unknown - Cant mix it")
+            self.sendSignal("DUK")
             self.changeProductionFlag(False)
 
     def errorFunction(self):
@@ -182,7 +191,7 @@ class Bar(QObject):
 
         return False
 
-    def canbemixed(self,Drink,Bottles):
+    def canbemixed(self,Drink):
 
         Flagneed = 0
         Flaghave = 0
@@ -193,20 +202,18 @@ class Bar(QObject):
 
         for i in range(1,len(Drink.Ingredients)):   #Loop all Ingredients
             if Drink.Ingredients[i][1] != "0":      #Look only at ingredients != 0
-                for j in range(0,len(Bottles)):     #Check all bottles
-                    if Bottles[j].getname().upper() == Drink.Ingredients[i][0].upper(): #if bottle name == ingredient
-                        if int(Drink.Ingredients[i][1])*self.amount*0.01 <= int(Bottles[j].getRest()): #check if there is enought liquid remaing
+                for j in range(0,len(self.Bottles)):     #Check all bottles
+                    if self.Bottles[j].getname().upper() == Drink.Ingredients[i][0].upper(): #if bottle name == ingredient
+                        if int(Drink.Ingredients[i][1])*self.amount*0.01 <= int(self.Bottles[j].getRest()): #check if there is enought liquid remaing
                             Flaghave = Flaghave+1   #if we have enought of that, increment Flagehave
 
         if Flagneed == Flaghave: return True
         else: return False
 
 
+#Testbar = Bar()
 
-
-Testbar = Bar()
-
-print(Testbar.canbemixed(Testbar.DrinkList[0],Testbar.Bottles))
+#print(Testbar.canbemixed(Testbar.DrinkList[0],Testbar.Bottles))
 
 
 

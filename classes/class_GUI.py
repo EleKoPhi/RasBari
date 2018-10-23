@@ -222,6 +222,9 @@ class Ui_GUI(object):
 
         self.RasBari.changedStatus.connect(self.UpdateStausTxt)
 
+        self.RasBari.missingIngred.connect(lambda:print("missing ingredients")) #implement whats TODO e.g. pop up
+        self.RasBari.drinkunknown.connect(lambda:print("drink unknown")) #implement whats TODO e.g. pop up
+
         self.Vortschritt.setValue(0)
 
         self.RasBari.changedValSig.connect(self.upDateStatusBar)
@@ -232,7 +235,7 @@ class Ui_GUI(object):
 
         self.MailTimer = QtCore.QTimer()
         self.MailTimer.setSingleShot(False)
-        if getEmailGuardStat():self.MailTimer.start(3000)
+        if getEmailGuardStat() & self.EmailOrder.status:self.MailTimer.start(3000)
         self.MailTimer.timeout.connect(lambda :self.check4order())
 
     def retranslateUi(self, GUI):
