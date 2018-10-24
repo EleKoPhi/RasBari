@@ -2,9 +2,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from classes.class_Bar import *
 from classes.class_myThread import *
 from classes.class_eMailGuard import *
+from PyQt5 import *
 
 
-class Ui_GUI(object):
+
+class Ui_GUI(QWidget):
 
     GUI_Width = int(getGuiWidth())
     GUI_Height = int(getGuiHight())
@@ -38,6 +40,8 @@ class Ui_GUI(object):
         GUI.setMinimumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
         GUI.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Width))
         GUI.setAnimated(True)
+
+
 
         self.threadpool = QThreadPool()
 
@@ -222,8 +226,8 @@ class Ui_GUI(object):
 
         self.RasBari.changedStatus.connect(self.UpdateStausTxt)
 
-        self.RasBari.missingIngred.connect(lambda:print("missing ingredients")) #implement whats TODO e.g. pop up
-        self.RasBari.drinkunknown.connect(lambda:print("drink unknown")) #implement whats TODO e.g. pop up
+        self.RasBari.missingIngred.connect(self.showmsgboxempty)
+        self.RasBari.drinkunknown.connect(lambda:self.showmsgbox)
 
         self.Vortschritt.setValue(0)
 
@@ -285,6 +289,8 @@ class Ui_GUI(object):
         self.InitTxt.setText(_translate("GUI", "Unused Button Description"))
         self.UnusedButton.setText(_translate("GUI", "Unused Button"))
 
+
+
     def Button_Thread_Handler(self,Auswahl):
 
         self.RasBari.changeErrorFlag(False)
@@ -300,7 +306,7 @@ class Ui_GUI(object):
                 self.threadpool.start(progressbar)
 
             else:
-                print("Button unused")
+                self.showmsgboxunknown()
                 self.RasBari.changeProductionFlag(False)
 
         else:
@@ -372,7 +378,20 @@ class Ui_GUI(object):
             print(self.EmailOrder.lastSenderAdress)
             print("Mail sended")
 
+    def showmsgboxempty(self):
 
+        msgBox = QMessageBox.information(self, 'Some empty bottles', "Would you like to change\nthe empty bottle",
+                                         QMessageBox.No | QMessageBox.Yes, QMessageBox.No)
+
+        #TODO INCLUDE THE RESET FUNKTION
+
+    def showmsgboxunknown(self):
+        msgBox = QMessageBox.information(self, 'Unknown drink', "Sorry, we can't mix\nthis drink.",QMessageBox.Close)
+
+
+
+    #TODO http://zetcode.com/gui/pyqt5/firstprograms/ Center on desktop
+    #TODO https://pythonspot.com/pyqt5-messagebox/ get messagebox function
 
 
 
