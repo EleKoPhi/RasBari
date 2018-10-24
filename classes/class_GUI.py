@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from classes.class_Bar import *
 from classes.class_myThread import *
 from classes.class_eMailGuard import *
-from PyQt5 import *
+
 
 
 
@@ -40,6 +40,8 @@ class Ui_GUI(QWidget):
         GUI.setMinimumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
         GUI.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Width))
         GUI.setAnimated(True)
+
+
 
 
 
