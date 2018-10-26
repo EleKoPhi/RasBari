@@ -407,9 +407,9 @@ class Ui_GUI(QWidget):
         Resetwindow.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
 
         b1 = QPushButton("Done", Resetwindow)
-        b1.setGeometry(0,0,120,60)
+        b1.setGeometry(QtCore.QRect(self.GUI_Width-self.setUp_getin-self.setUpButtonWith,self.setUpButtonPos, self.setUpButtonWith, self.setUpButtonHeight))
 
-        b1.move(self.GUI_Width-120-20, self.GUI_Height-60-20)
+
         Resetwindow.setWindowTitle("Bottle Reset")
         Resetwindow.setWindowModality(Qt.ApplicationModal)
         Resetwindow.move(0,0)
