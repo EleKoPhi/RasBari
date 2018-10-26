@@ -211,6 +211,8 @@ class Bar(QObject):
         else: return False
 
 
+
+
 #Testbar = Bar()
 
 #print(Testbar.canbemixed(Testbar.DrinkList[0],Testbar.Bottles))

@@ -30,7 +30,7 @@ class eMailGuard(QObject):
 
         try:
 
-            self.imapper = easyimap.connect('imap.gmail.com', self.login, self.password)
+            #self.imapper = easyimap.connect('imap.gmail.com', self.login, self.password)
             self.imapper.unseen()
             self.lastMessageID = self.getLastMessagelID()
 
@@ -38,9 +38,9 @@ class eMailGuard(QObject):
             self.server.ehlo()
             self.server.starttls()
             self.server.ehlo()
-            self.server.login(self.login, self.password)
+            #self.server.login(self.login, self.password)
 
-            self.status = True
+            #self.status = True
 
             print("eMailGuard - Ini - Done")
 

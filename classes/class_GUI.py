@@ -5,7 +5,6 @@ from classes.class_eMailGuard import *
 
 
 
-
 class Ui_GUI(QWidget):
 
     GUI_Width = int(getGuiWidth())
@@ -30,6 +29,7 @@ class Ui_GUI(QWidget):
 
     def setupUi(self, GUI):
 
+
         GUI.setObjectName("GUI")
         GUI.resize(self.GUI_Width, self.GUI_Height)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -40,8 +40,6 @@ class Ui_GUI(QWidget):
         GUI.setMinimumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
         GUI.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Width))
         GUI.setAnimated(True)
-
-
 
 
 
@@ -244,6 +242,9 @@ class Ui_GUI(QWidget):
         if getEmailGuardStat() & self.EmailOrder.status:self.MailTimer.start(3000)
         self.MailTimer.timeout.connect(lambda :self.check4order())
 
+
+
+
     def retranslateUi(self, GUI):
 
         _translate = QtCore.QCoreApplication.translate
@@ -290,6 +291,8 @@ class Ui_GUI(QWidget):
         self.StatTxt.setText(_translate("GUI", "Status: Wait for input"))
         self.InitTxt.setText(_translate("GUI", "Unused Button Description"))
         self.UnusedButton.setText(_translate("GUI", "Unused Button"))
+
+
 
 
 
@@ -385,6 +388,9 @@ class Ui_GUI(QWidget):
         msgBox = QMessageBox.information(self, 'Some empty bottles', "Would you like to change\nthe empty bottle",
                                          QMessageBox.No | QMessageBox.Yes, QMessageBox.No)
 
+        if msgBox == QMessageBox.Yes:
+            self.resetwindow()
+
         #TODO INCLUDE THE RESET FUNKTION
 
     def showmsgboxunknown(self):
@@ -392,8 +398,29 @@ class Ui_GUI(QWidget):
 
 
 
-    #TODO http://zetcode.com/gui/pyqt5/firstprograms/ Center on desktop
-    #TODO https://pythonspot.com/pyqt5-messagebox/ get messagebox function
+    def resetwindow(self):
+
+        print("starte reset window")
+
+        Resetwindow = QDialog()
+        Resetwindow.setMinimumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
+        Resetwindow.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
+
+        b1 = QPushButton("Done", Resetwindow)
+        b1.setGeometry(0,0,120,60)
+
+        b1.move(self.GUI_Width-120-20, self.GUI_Height-60-20)
+        Resetwindow.setWindowTitle("Bottle Reset")
+        Resetwindow.setWindowModality(Qt.ApplicationModal)
+        Resetwindow.move(0,0)
+
+        b1.clicked.connect(Resetwindow.close)
+
+        Resetwindow.exec_()
+
+
+        print("beende reset window")
+
 
 
 
