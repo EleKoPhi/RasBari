@@ -402,11 +402,13 @@ class Ui_GUI(QWidget):
 
         print("starte reset window")
 
+
+
         Resetwindow = QDialog()
         Resetwindow.setMinimumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
         Resetwindow.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
 
-        b1 = QPushButton("Done", Resetwindow)
+        b1 = QtWidgets.QPushButton("Done", Resetwindow)
         b1.setGeometry(QtCore.QRect(self.GUI_Width-self.setUp_getin-self.setUpButtonWith,self.setUpButtonPos, self.setUpButtonWith, self.setUpButtonHeight))
 
 
