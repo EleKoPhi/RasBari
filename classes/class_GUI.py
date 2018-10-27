@@ -4,7 +4,6 @@ from classes.class_myThread import *
 from classes.class_eMailGuard import *
 
 
-
 class Ui_GUI(QWidget):
 
     GUI_Width = int(getGuiWidth())
@@ -402,9 +401,7 @@ class Ui_GUI(QWidget):
 
         print("starte reset window")
 
-
-
-        Resetwindow = QDialog()
+        """Resetwindow = QDialog()
         Resetwindow.setMinimumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
         Resetwindow.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
 
@@ -417,8 +414,8 @@ class Ui_GUI(QWidget):
         Resetwindow.move(0,0)
 
         b1.clicked.connect(Resetwindow.close)
-
-        Resetwindow.exec_()
+        
+        Resetwindow.exec_() """
 
 
         print("beende reset window")
