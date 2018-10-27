@@ -4,45 +4,31 @@ from classes.class_myThread import *
 from classes.class_eMailGuard import *
 
 
+
 class Ui_GUI(QWidget):
-
-    GUI_Width = int(getGuiWidth())
-    GUI_Height = int(getGuiHight())
-
-    SpaceBwOj = GUI_Height/100
-    space = SpaceBwOj
-    space_Gen = GUI_Height/50
-    setUp_getin = GUI_Width*0.05
-
-    ButtonWith = GUI_Width/4-space_Gen*1.3
-
-    setUpButtonWith = GUI_Width/4
-    setUpButtonHeight = GUI_Height*0.1
-    setUpTxTHeight = GUI_Height*0.06
-
-    setUpButtonPos = GUI_Height * 0.84
-    setUpTxTPos = GUI_Height * 0.83 - setUpTxTHeight
 
     RasBari = Bar()
     EmailOrder = eMailGuard()
 
-    def setupUi(self, GUI):
+    def setupUi(self, GUI,width,height):
 
+        ################################### ---> START GUI SETUP <--- ##############################################
+
+        self.calculateGUI(width,height)
+        self.threadpool = QThreadPool()
 
         GUI.setObjectName("GUI")
         GUI.resize(self.GUI_Width, self.GUI_Height)
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(GUI.sizePolicy().hasHeightForWidth())
         GUI.setSizePolicy(sizePolicy)
-        GUI.setMinimumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
-        GUI.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Width))
         GUI.setAnimated(True)
 
 
-
-        self.threadpool = QThreadPool()
+        ################################### ---> START GUI OBJECTS <--- ##############################################
 
         self.centralwidget = QtWidgets.QWidget(GUI)
         self.centralwidget.setObjectName("centralwidget")
@@ -52,7 +38,8 @@ class Ui_GUI(QWidget):
         self.Titel.setObjectName("Titel")
 
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, self.setUpButtonHeight+self.space_Gen, self.GUI_Width, self.GUI_Height*0.55))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, self.setUpButtonHeight+self.space_Gen, self.GUI_Width,
+                                                       self.GUI_Height*0.55))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.AuswahlGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.AuswahlGrid.setObjectName("AuswahlGrid")
@@ -136,12 +123,14 @@ class Ui_GUI(QWidget):
         self.AuswahlGrid.addWidget(self.Drink4_2, 3, 3, 1, 1)
 
         self.AddAmount = QtWidgets.QPushButton(self.centralwidget)
-        self.AddAmount.setGeometry(QtCore.QRect(self.setUp_getin+self.setUpButtonWith-self.setUpButtonHeight,  self.setUpButtonPos, self.setUpButtonHeight, self.setUpButtonHeight))
+        self.AddAmount.setGeometry(QtCore.QRect(self.setUp_getin+self.setUpButtonWith-self.setUpButtonHeight,
+                                                self.setUpButtonPos, self.setUpButtonHeight, self.setUpButtonHeight))
         self.AddAmount.setMinimumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
         self.AddAmount.setMaximumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
 
         self.SubtractAmount = QtWidgets.QPushButton(self.centralwidget)
-        self.SubtractAmount.setGeometry(QtCore.QRect(self.setUp_getin,  self.setUpButtonPos, self.setUpButtonHeight, self.setUpButtonHeight))
+        self.SubtractAmount.setGeometry(QtCore.QRect(self.setUp_getin,  self.setUpButtonPos, self.setUpButtonHeight,
+                                                     self.setUpButtonHeight))
         self.SubtractAmount.setMinimumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
         self.SubtractAmount.setMaximumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
 
@@ -163,31 +152,37 @@ class Ui_GUI(QWidget):
         self.amount_LCD.setObjectName("amount_LCD")
 
         self.Vortschritt = QtWidgets.QProgressBar(self.centralwidget)
-        self.Vortschritt.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpTxTPos*0.87,self.GUI_Width-2*self.setUp_getin, self.GUI_Height*0.08))
+        self.Vortschritt.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpTxTPos*0.87,
+                                                  self.GUI_Width-2*self.setUp_getin, self.GUI_Height*0.08))
         self.Vortschritt.setProperty("value", 0)
         self.Vortschritt.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
         self.Vortschritt.setObjectName("Vortschritt")
 
         self.Abbruch = QtWidgets.QPushButton(self.centralwidget)
-        self.Abbruch.setGeometry(QtCore.QRect(self.GUI_Width/2-self.setUpButtonWith/2, self.setUpButtonPos, self.setUpButtonWith, self.setUpButtonHeight))
+        self.Abbruch.setGeometry(QtCore.QRect(self.GUI_Width/2-self.setUpButtonWith/2, self.setUpButtonPos,
+                                              self.setUpButtonWith, self.setUpButtonHeight))
         self.Abbruch.setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.Abbruch.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.Abbruch.setObjectName("Abbruch")
 
         self.DigitText = QtWidgets.QTextBrowser(self.centralwidget)
-        self.DigitText.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpTxTPos, self.setUpButtonWith, self.setUpTxTHeight))
+        self.DigitText.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpTxTPos,
+                                                self.setUpButtonWith, self.setUpTxTHeight))
         self.DigitText.setObjectName("Glasvolumen in ml")
 
         self.StatTxt = QtWidgets.QTextBrowser(self.centralwidget)
-        self.StatTxt.setGeometry(QtCore.QRect(self.GUI_Width/2-self.setUpButtonWith/2, self.setUpTxTPos, self.setUpButtonWith, self.setUpTxTHeight))
+        self.StatTxt.setGeometry(QtCore.QRect(self.GUI_Width/2-self.setUpButtonWith/2, self.setUpTxTPos,
+                                              self.setUpButtonWith, self.setUpTxTHeight))
         self.StatTxt.setObjectName("Status:")
 
         self.InitTxt = QtWidgets.QTextBrowser(self.centralwidget)
-        self.InitTxt.setGeometry(QtCore.QRect(self.GUI_Width-self.setUp_getin-self.setUpButtonWith, self.setUpTxTPos, self.setUpButtonWith, self.setUpTxTHeight))
+        self.InitTxt.setGeometry(QtCore.QRect(self.GUI_Width-self.setUp_getin-self.setUpButtonWith,
+                                              self.setUpTxTPos, self.setUpButtonWith, self.setUpTxTHeight))
         self.InitTxt.setObjectName("Initialize")
 
         self.UnusedButton = QtWidgets.QPushButton(self.centralwidget)
-        self.UnusedButton.setGeometry(QtCore.QRect(self.GUI_Width-self.setUp_getin-self.setUpButtonWith,self.setUpButtonPos, self.setUpButtonWith, self.setUpTxTHeight))
+        self.UnusedButton.setGeometry(QtCore.QRect(self.GUI_Width-self.setUp_getin-self.setUpButtonWith,
+                                                   self.setUpButtonPos, self.setUpButtonWith, self.setUpTxTHeight))
         self.UnusedButton.setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.UnusedButton.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.UnusedButton.setObjectName("Abbruch")
@@ -200,8 +195,12 @@ class Ui_GUI(QWidget):
         self.statusbar.setObjectName("statusbar")
         GUI.setStatusBar(self.statusbar)
 
+        ################################### ---> END GUI OBJECTS <--- ###############################################
+
         self.retranslateUi(GUI)
         QtCore.QMetaObject.connectSlotsByName(GUI)
+
+        ################################### ---> START CONNECTION<--- ###############################################
 
         self.Drink1_0.clicked.connect(lambda: self.Button_Thread_Handler(0))
         self.Drink2_0.clicked.connect(lambda: self.Button_Thread_Handler(1))
@@ -223,7 +222,13 @@ class Ui_GUI(QWidget):
         self.AddAmount.clicked.connect(lambda:self.RasBari.change_volume(+10))
         self.SubtractAmount.clicked.connect(lambda:self.RasBari.change_volume(-10))
 
+        self.UnusedButton.clicked.connect(quit)
+
         self.RasBari.changedStatus.connect(self.UpdateStausTxt)
+
+        ################################### ---> END BUTTONS <--- #################################################
+
+        ################################### ---> START SIGNALS <--- ###############################################
 
         self.RasBari.missingIngred.connect(self.showmsgboxempty)
         self.RasBari.drinkunknown.connect(lambda:self.showmsgbox)
@@ -236,12 +241,17 @@ class Ui_GUI(QWidget):
 
         self.EmailOrder.CheckMail.connect(self.exeOrder)
 
+        ################################### ---> END CONECTIONS <--- ###############################################
+
+        ################################### ---> START TIMER <--- ##################################################
+
+
         self.MailTimer = QtCore.QTimer()
         self.MailTimer.setSingleShot(False)
         if getEmailGuardStat() & self.EmailOrder.status:self.MailTimer.start(3000)
         self.MailTimer.timeout.connect(lambda :self.check4order())
 
-
+        ################################### ---> END TIMER <--- ##################################################
 
 
     def retranslateUi(self, GUI):
@@ -250,11 +260,17 @@ class Ui_GUI(QWidget):
 
         GUI.setWindowTitle(_translate("GUI", "Rasbari"))
 
-        self.Titel.setHtml(_translate("GUI",    "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                                "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+        self.Titel.setHtml(_translate("GUI",    "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+                                                "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                                "<html><head><meta name=\"qrichtext\" content=\"1\""
+                                                " /><style type=\"text/css\">\n"
                                                 "p, li { white-space: pre-wrap; }\n"
-                                                "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-                                                "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;\">RasBari V2.0</span></p></body></html>"))
+                                                "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; "
+                                                "font-weight:400; font-style:normal;\">\n"
+                                                "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px;"
+                                                " margin-left:0px; margin-right:0px; -qt-block-indent:0;"
+                                                " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
+                                                "\">RasBari V2.0</span></p></body></html>"))
 
         self.Drink1_0.setText(_translate("GUI", getDrinkName("Drink1")))
         self.Drink2_0.setText(_translate("GUI", getDrinkName("Drink2")))
@@ -290,9 +306,6 @@ class Ui_GUI(QWidget):
         self.StatTxt.setText(_translate("GUI", "Status: Wait for input"))
         self.InitTxt.setText(_translate("GUI", "Unused Button Description"))
         self.UnusedButton.setText(_translate("GUI", "Unused Button"))
-
-
-
 
 
     def Button_Thread_Handler(self,Auswahl):
@@ -393,7 +406,7 @@ class Ui_GUI(QWidget):
         #TODO INCLUDE THE RESET FUNKTION
 
     def showmsgboxunknown(self):
-        msgBox = QMessageBox.information(self, 'Unknown drink', "Sorry, we can't mix\nthis drink.",QMessageBox.Close)
+        msgBox =QMessageBox.information(self, 'Unknown drink', "Sorry, we can't mix\nthis drink.",QMessageBox.Close)
 
 
 
@@ -417,8 +430,31 @@ class Ui_GUI(QWidget):
         
         Resetwindow.exec_() """
 
-
         print("beende reset window")
+
+    def calculateGUI(self,width,height):
+
+        self.GUI_Width = width*1.048*0.58 #TODO CHANGE THIS !!!
+        self.GUI_Height = height*0.5479
+
+        self.SpaceBwOj = self.GUI_Height / 100
+        self.space = self.SpaceBwOj
+        self.space_Gen = self.GUI_Height / 50
+        self.setUp_getin = self.GUI_Width * 0.05
+
+        self.ButtonWith = self.GUI_Width / 4 - self.space_Gen * 1.3
+
+        self.setUpButtonWith = self.GUI_Width / 4
+        self.setUpButtonHeight = self.GUI_Height * 0.1
+        self.setUpTxTHeight = self.GUI_Height * 0.06
+
+        self.setUpButtonPos = self.GUI_Height * 0.84
+        self.setUpTxTPos = self.GUI_Height * 0.83 - self.setUpTxTHeight
+
+
+
+
+
 
 
 

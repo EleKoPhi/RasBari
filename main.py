@@ -14,10 +14,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 if __name__ == "__main__":
 
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
+
+    screen = app.primaryScreen()
+    rect = screen.availableGeometry()
+
     GUI = QtWidgets.QMainWindow()
     ui = Ui_GUI()
-    ui.setupUi(GUI)
+    ui.setupUi(GUI,rect.width(),rect.height())
     #GUI.showFullScreen()
     GUI.show()
     sys.exit(app.exec_())
