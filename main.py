@@ -18,6 +18,7 @@ if __name__ == "__main__":
     GUI = QtWidgets.QMainWindow()
     ui = Ui_GUI()
     ui.setupUi(GUI)
+    #GUI.showFullScreen()
     GUI.show()
     sys.exit(app.exec_())
 
