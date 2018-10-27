@@ -9,21 +9,23 @@
 #
 
 from classes.class_GUI import Ui_GUI
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 
 if __name__ == "__main__":
 
     import sys
 
     app = QtWidgets.QApplication(sys.argv)
+    StackedWidget = QtWidgets.QStackedWidget()
 
     screen = app.primaryScreen()
     rect = screen.availableGeometry()
 
-    GUI = QtWidgets.QMainWindow()
-    ui = Ui_GUI()
-    ui.setupUi(GUI,rect.width(),rect.height())
-    #GUI.showFullScreen()
-    GUI.show()
+    ui = Ui_GUI(rect.width(),rect.height())
+    ui.setupUi(StackedWidget)
+
+    #StackedWidget.showFullScreen() #Comment line 28 or 29 in for full or part screen
+    StackedWidget.show()
+
     sys.exit(app.exec_())
 

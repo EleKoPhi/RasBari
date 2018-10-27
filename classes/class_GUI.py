@@ -3,204 +3,47 @@ from classes.class_Bar import *
 from classes.class_myThread import *
 from classes.class_eMailGuard import *
 
-
-
-class Ui_GUI(QWidget):
+class Ui_GUI(QWidget,QObject):
 
     RasBari = Bar()
     EmailOrder = eMailGuard()
 
-    def setupUi(self, GUI,width,height):
+    showBottlewidget = pyqtSignal()
 
-        ################################### ---> START GUI SETUP <--- ##############################################
-
-        self.calculateGUI(width,height)
+    def __init__(self,width,height):
+        QObject.__init__(self)
+        self.calculateGUI(width, height)
         self.threadpool = QThreadPool()
 
-        GUI.setObjectName("GUI")
-        GUI.resize(self.GUI_Width, self.GUI_Height)
+    def setupUi(self,StackedWidget):
 
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(GUI.sizePolicy().hasHeightForWidth())
-        GUI.setSizePolicy(sizePolicy)
-        GUI.setAnimated(True)
+        StackedWidget.setObjectName("StackedWidget")
 
+        ################################### ---> START GUI SETUP <--- #################################################
 
-        ################################### ---> START GUI OBJECTS <--- ##############################################
+        StackedWidget.setObjectName("GUI")
+        StackedWidget.resize(self.GUI_Width, self.GUI_Height)
 
-        self.centralwidget = QtWidgets.QWidget(GUI)
-        self.centralwidget.setObjectName("centralwidget")
+        ################################### ---> DEFINE WIDGETS HER <--- ##############################################
 
-        self.Titel = QtWidgets.QTextBrowser(self.centralwidget)
-        self.Titel.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height*0.1))
-        self.Titel.setObjectName("Titel")
+        self.Mainwig = QtWidgets.QWidget()
+        self.Mainwig.setObjectName("Mainwig")
+        StackedWidget.addWidget(self.Mainwig)
 
-        self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, self.setUpButtonHeight+self.space_Gen, self.GUI_Width,
-                                                       self.GUI_Height*0.55))
-        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
-        self.AuswahlGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
-        self.AuswahlGrid.setObjectName("AuswahlGrid")
+        self.page1 = QtWidgets.QWidget()
+        self.page1.setObjectName("page1")
+        StackedWidget.addWidget(self.page1)
 
-        self.Drink1_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.Drink1_0.sizePolicy().hasHeightForWidth())
+        ################################### ---> BUILD WIDGETS HER <--- ###############################################
 
-        self.Drink1_0.setSizePolicy(sizePolicy)
-        self.Drink1_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink1_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink1_0.setObjectName("Drink1_0")
-        self.AuswahlGrid.addWidget(self.Drink1_0, 0, 0, 1, 1)
+        self.buildmainwidget(self.Mainwig)
 
-        self.Drink1_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink1_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink1_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink1_1.setObjectName("Drink1_1")
-        self.AuswahlGrid.addWidget(self.Drink1_1, 2, 0, 1, 1)
+        ################################### ---> END GUI OBJECTS <--- #################################################
 
-        self.Drink1_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink1_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink1_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink1_2.setObjectName("Drink1_2")
-        self.AuswahlGrid.addWidget(self.Drink1_2, 3, 0, 1, 1)
+        self.retranslateUi(StackedWidget)
+        QtCore.QMetaObject.connectSlotsByName(StackedWidget)
 
-        self.Drink2_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink2_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink2_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink2_0.setObjectName("Drink2_0")
-        self.AuswahlGrid.addWidget(self.Drink2_0, 0, 1, 1, 1)
-
-        self.Drink2_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink2_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink2_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink2_1.setObjectName("Drink2_1")
-        self.AuswahlGrid.addWidget(self.Drink2_1, 2, 1, 1, 1)
-
-        self.Drink2_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink2_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink2_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink2_2.setObjectName("Drink2_2")
-        self.AuswahlGrid.addWidget(self.Drink2_2, 3, 1, 1, 1)
-
-        self.Drink3_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink3_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink3_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink3_0.setObjectName("Drink3_0")
-        self.AuswahlGrid.addWidget(self.Drink3_0, 0, 2, 1, 1)
-
-        self.Drink3_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink3_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink3_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink3_1.setObjectName("Drink3_1")
-        self.AuswahlGrid.addWidget(self.Drink3_1, 2, 2, 1, 1)
-
-        self.Drink3_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink3_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink3_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink3_2.setObjectName("Drink3_2")
-        self.AuswahlGrid.addWidget(self.Drink3_2, 3, 2, 1, 1)
-
-        self.Drink4_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink4_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink4_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink4_0.setObjectName("Drink4_0")
-        self.AuswahlGrid.addWidget(self.Drink4_0, 0, 3, 1, 1)
-
-        self.Drink4_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink4_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink4_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink4_1.setObjectName("Drink4_1")
-        self.AuswahlGrid.addWidget(self.Drink4_1, 2, 3, 1, 1)
-
-        self.Drink4_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink4_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink4_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height*0.55*(1/4)))
-        self.Drink4_2.setObjectName("Drink4_2")
-        self.AuswahlGrid.addWidget(self.Drink4_2, 3, 3, 1, 1)
-
-        self.AddAmount = QtWidgets.QPushButton(self.centralwidget)
-        self.AddAmount.setGeometry(QtCore.QRect(self.setUp_getin+self.setUpButtonWith-self.setUpButtonHeight,
-                                                self.setUpButtonPos, self.setUpButtonHeight, self.setUpButtonHeight))
-        self.AddAmount.setMinimumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
-        self.AddAmount.setMaximumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
-
-        self.SubtractAmount = QtWidgets.QPushButton(self.centralwidget)
-        self.SubtractAmount.setGeometry(QtCore.QRect(self.setUp_getin,  self.setUpButtonPos, self.setUpButtonHeight,
-                                                     self.setUpButtonHeight))
-        self.SubtractAmount.setMinimumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
-        self.SubtractAmount.setMaximumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
-
-        self.amount_LCD = QtWidgets.QLCDNumber(self.centralwidget)
-
-        DigitWidth = self.setUpButtonWith-2*self.setUpButtonHeight-2*self.space
-        DigitPos = self.setUp_getin + (self.setUpButtonWith / 2) - (DigitWidth / 2)
-
-        self.amount_LCD.setGeometry(QtCore.QRect(DigitPos, self.setUpButtonPos,DigitWidth,self.setUpButtonHeight))
-        self.amount_LCD.setAutoFillBackground(False)
-        self.amount_LCD.setFrameShape(QtWidgets.QFrame.Panel)
-        self.amount_LCD.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.amount_LCD.setLineWidth(2)
-        self.amount_LCD.setMidLineWidth(1)
-        self.amount_LCD.setSmallDecimalPoint(True)
-        self.amount_LCD.setDigitCount(3)
-        self.amount_LCD.setSegmentStyle(QtWidgets.QLCDNumber.Filled)
-        self.amount_LCD.setProperty("intValue", self.RasBari.getAmount())
-        self.amount_LCD.setObjectName("amount_LCD")
-
-        self.Vortschritt = QtWidgets.QProgressBar(self.centralwidget)
-        self.Vortschritt.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpTxTPos*0.87,
-                                                  self.GUI_Width-2*self.setUp_getin, self.GUI_Height*0.08))
-        self.Vortschritt.setProperty("value", 0)
-        self.Vortschritt.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
-        self.Vortschritt.setObjectName("Vortschritt")
-
-        self.Abbruch = QtWidgets.QPushButton(self.centralwidget)
-        self.Abbruch.setGeometry(QtCore.QRect(self.GUI_Width/2-self.setUpButtonWith/2, self.setUpButtonPos,
-                                              self.setUpButtonWith, self.setUpButtonHeight))
-        self.Abbruch.setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
-        self.Abbruch.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
-        self.Abbruch.setObjectName("Abbruch")
-
-        self.DigitText = QtWidgets.QTextBrowser(self.centralwidget)
-        self.DigitText.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpTxTPos,
-                                                self.setUpButtonWith, self.setUpTxTHeight))
-        self.DigitText.setObjectName("Glasvolumen in ml")
-
-        self.StatTxt = QtWidgets.QTextBrowser(self.centralwidget)
-        self.StatTxt.setGeometry(QtCore.QRect(self.GUI_Width/2-self.setUpButtonWith/2, self.setUpTxTPos,
-                                              self.setUpButtonWith, self.setUpTxTHeight))
-        self.StatTxt.setObjectName("Status:")
-
-        self.InitTxt = QtWidgets.QTextBrowser(self.centralwidget)
-        self.InitTxt.setGeometry(QtCore.QRect(self.GUI_Width-self.setUp_getin-self.setUpButtonWith,
-                                              self.setUpTxTPos, self.setUpButtonWith, self.setUpTxTHeight))
-        self.InitTxt.setObjectName("Initialize")
-
-        self.UnusedButton = QtWidgets.QPushButton(self.centralwidget)
-        self.UnusedButton.setGeometry(QtCore.QRect(self.GUI_Width-self.setUp_getin-self.setUpButtonWith,
-                                                   self.setUpButtonPos, self.setUpButtonWith, self.setUpTxTHeight))
-        self.UnusedButton.setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
-        self.UnusedButton.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
-        self.UnusedButton.setObjectName("Abbruch")
-
-        GUI.setCentralWidget(self.centralwidget)
-
-        self.statusbar = QtWidgets.QStatusBar(GUI)
-        self.statusbar.setEnabled(False)
-        self.statusbar.setSizeGripEnabled(False)
-        self.statusbar.setObjectName("statusbar")
-        GUI.setStatusBar(self.statusbar)
-
-        ################################### ---> END GUI OBJECTS <--- ###############################################
-
-        self.retranslateUi(GUI)
-        QtCore.QMetaObject.connectSlotsByName(GUI)
-
-        ################################### ---> START CONNECTION<--- ###############################################
+        ############################# ---> START CONNECTION [BUTTONS]<--- #############################################
 
         self.Drink1_0.clicked.connect(lambda: self.Button_Thread_Handler(0))
         self.Drink2_0.clicked.connect(lambda: self.Button_Thread_Handler(1))
@@ -222,43 +65,40 @@ class Ui_GUI(QWidget):
         self.AddAmount.clicked.connect(lambda:self.RasBari.change_volume(+10))
         self.SubtractAmount.clicked.connect(lambda:self.RasBari.change_volume(-10))
 
-        self.UnusedButton.clicked.connect(quit)
+        self.UnusedButton.clicked.connect(lambda:StackedWidget.setCurrentIndex(1))
 
         self.RasBari.changedStatus.connect(self.UpdateStausTxt)
 
-        ################################### ---> END BUTTONS <--- #################################################
-
-        ################################### ---> START SIGNALS <--- ###############################################
+        ############################### ---> START CONNECTION [CodeSignals]<--- #######################################
 
         self.RasBari.missingIngred.connect(self.showmsgboxempty)
         self.RasBari.drinkunknown.connect(lambda:self.showmsgbox)
-
-        self.Vortschritt.setValue(0)
-
         self.RasBari.changedValSig.connect(self.upDateStatusBar)
-
         self.RasBari.changedAmountSig.connect(self.upDateTxt)
 
         self.EmailOrder.CheckMail.connect(self.exeOrder)
 
-        ################################### ---> END CONECTIONS <--- ###############################################
+        self.showBottlewidget.connect(lambda: StackedWidget.setCurrentIndex(0))
 
-        ################################### ---> START TIMER <--- ##################################################
-
+        ################################### ---> START TIMER <--- #####################################################
 
         self.MailTimer = QtCore.QTimer()
         self.MailTimer.setSingleShot(False)
         if getEmailGuardStat() & self.EmailOrder.status:self.MailTimer.start(3000)
         self.MailTimer.timeout.connect(lambda :self.check4order())
 
-        ################################### ---> END TIMER <--- ##################################################
+        ################################### ---> END TIMER <--- #######################################################
 
+        StackedWidget.setCurrentIndex(0)
+        QtCore.QMetaObject.connectSlotsByName(StackedWidget)
 
-    def retranslateUi(self, GUI):
+        ################################### ---> END setUp_Ui <--- ####################################################
+
+    def retranslateUi(self, StackedWidget):
 
         _translate = QtCore.QCoreApplication.translate
 
-        GUI.setWindowTitle(_translate("GUI", "Rasbari"))
+        StackedWidget.setWindowTitle(_translate("GUI", "Rasbari"))
 
         self.Titel.setHtml(_translate("GUI",    "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
                                                 "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -307,7 +147,6 @@ class Ui_GUI(QWidget):
         self.InitTxt.setText(_translate("GUI", "Unused Button Description"))
         self.UnusedButton.setText(_translate("GUI", "Unused Button"))
 
-
     def Button_Thread_Handler(self,Auswahl):
 
         self.RasBari.changeErrorFlag(False)
@@ -327,7 +166,7 @@ class Ui_GUI(QWidget):
                 self.RasBari.changeProductionFlag(False)
 
         else:
-            print("Production allready running")
+            print("Production already running")
 
     def Exit_Thread_Handler(self):
         exitThread = myThread(self.RasBari.errorFunction)
@@ -351,10 +190,10 @@ class Ui_GUI(QWidget):
 
     def check4order(self):
 
-        thread1 = myThread(lambda: self.EmailOrder.gotNewOrder())
-        self.threadpool.start(thread1)
+        c4o_thread = myThread(lambda: self.EmailOrder.gotNewOrder())
+        self.threadpool.start(c4o_thread)
 
-    def exeOrder(self):
+    def exeOrder(self): #TODO implement the rasbari.canbemix method her
 
         Find = 99
         Order = self.EmailOrder.getLastMessageTitel()
@@ -406,31 +245,12 @@ class Ui_GUI(QWidget):
         #TODO INCLUDE THE RESET FUNKTION
 
     def showmsgboxunknown(self):
-        msgBox =QMessageBox.information(self, 'Unknown drink', "Sorry, we can't mix\nthis drink.",QMessageBox.Close)
-
-
+        QMessageBox.information(self, 'Unknown drink', "Sorry, we can't mix\nthis drink.",QMessageBox.Close)
 
     def resetwindow(self):
 
-        print("starte reset window")
-
-        """Resetwindow = QDialog()
-        Resetwindow.setMinimumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
-        Resetwindow.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
-
-        b1 = QtWidgets.QPushButton("Done", Resetwindow)
-        b1.setGeometry(QtCore.QRect(self.GUI_Width-self.setUp_getin-self.setUpButtonWith,self.setUpButtonPos, self.setUpButtonWith, self.setUpButtonHeight))
-
-
-        Resetwindow.setWindowTitle("Bottle Reset")
-        Resetwindow.setWindowModality(Qt.ApplicationModal)
-        Resetwindow.move(0,0)
-
-        b1.clicked.connect(Resetwindow.close)
-        
-        Resetwindow.exec_() """
-
-        print("beende reset window")
+        print("show bottle widget")
+        self.showBottlewidget.emit()
 
     def calculateGUI(self,width,height):
 
@@ -450,6 +270,162 @@ class Ui_GUI(QWidget):
 
         self.setUpButtonPos = self.GUI_Height * 0.84
         self.setUpTxTPos = self.GUI_Height * 0.83 - self.setUpTxTHeight
+
+    def buildmainwidget(self,widget):
+
+        self.Titel = QtWidgets.QTextBrowser(widget)
+        self.Titel.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
+        self.Titel.setObjectName("Titel")
+
+        self.gridLayoutWidget = QtWidgets.QWidget(widget)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, self.setUpButtonHeight + self.space_Gen, self.GUI_Width,
+                                                       self.GUI_Height * 0.55))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+        self.AuswahlGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.AuswahlGrid.setObjectName("AuswahlGrid")
+
+        self.Drink1_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.Drink1_0.sizePolicy().hasHeightForWidth())
+
+        self.Drink1_0.setSizePolicy(sizePolicy)
+        self.Drink1_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink1_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink1_0.setObjectName("Drink1_0")
+        self.AuswahlGrid.addWidget(self.Drink1_0, 0, 0, 1, 1)
+
+        self.Drink1_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink1_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink1_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink1_1.setObjectName("Drink1_1")
+        self.AuswahlGrid.addWidget(self.Drink1_1, 2, 0, 1, 1)
+
+        self.Drink1_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink1_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink1_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink1_2.setObjectName("Drink1_2")
+        self.AuswahlGrid.addWidget(self.Drink1_2, 3, 0, 1, 1)
+
+        self.Drink2_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink2_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink2_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink2_0.setObjectName("Drink2_0")
+        self.AuswahlGrid.addWidget(self.Drink2_0, 0, 1, 1, 1)
+
+        self.Drink2_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink2_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink2_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink2_1.setObjectName("Drink2_1")
+        self.AuswahlGrid.addWidget(self.Drink2_1, 2, 1, 1, 1)
+
+        self.Drink2_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink2_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink2_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink2_2.setObjectName("Drink2_2")
+        self.AuswahlGrid.addWidget(self.Drink2_2, 3, 1, 1, 1)
+
+        self.Drink3_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink3_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink3_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink3_0.setObjectName("Drink3_0")
+        self.AuswahlGrid.addWidget(self.Drink3_0, 0, 2, 1, 1)
+
+        self.Drink3_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink3_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink3_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink3_1.setObjectName("Drink3_1")
+        self.AuswahlGrid.addWidget(self.Drink3_1, 2, 2, 1, 1)
+
+        self.Drink3_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink3_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink3_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink3_2.setObjectName("Drink3_2")
+        self.AuswahlGrid.addWidget(self.Drink3_2, 3, 2, 1, 1)
+
+        self.Drink4_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink4_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink4_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink4_0.setObjectName("Drink4_0")
+        self.AuswahlGrid.addWidget(self.Drink4_0, 0, 3, 1, 1)
+
+        self.Drink4_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink4_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink4_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink4_1.setObjectName("Drink4_1")
+        self.AuswahlGrid.addWidget(self.Drink4_1, 2, 3, 1, 1)
+
+        self.Drink4_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.Drink4_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink4_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
+        self.Drink4_2.setObjectName("Drink4_2")
+        self.AuswahlGrid.addWidget(self.Drink4_2, 3, 3, 1, 1)
+
+        self.AddAmount = QtWidgets.QPushButton(widget)
+        self.AddAmount.setGeometry(QtCore.QRect(self.setUp_getin + self.setUpButtonWith - self.setUpButtonHeight,
+                                                self.setUpButtonPos, self.setUpButtonHeight, self.setUpButtonHeight))
+        self.AddAmount.setMinimumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
+        self.AddAmount.setMaximumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
+
+        self.SubtractAmount = QtWidgets.QPushButton(widget)
+        self.SubtractAmount.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpButtonPos, self.setUpButtonHeight,
+                                                     self.setUpButtonHeight))
+        self.SubtractAmount.setMinimumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
+        self.SubtractAmount.setMaximumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
+
+        self.amount_LCD = QtWidgets.QLCDNumber(widget)
+
+        DigitWidth = self.setUpButtonWith - 2 * self.setUpButtonHeight - 2 * self.space
+        DigitPos = self.setUp_getin + (self.setUpButtonWith / 2) - (DigitWidth / 2)
+
+        self.amount_LCD.setGeometry(QtCore.QRect(DigitPos, self.setUpButtonPos, DigitWidth, self.setUpButtonHeight))
+        self.amount_LCD.setAutoFillBackground(False)
+        self.amount_LCD.setFrameShape(QtWidgets.QFrame.Panel)
+        self.amount_LCD.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.amount_LCD.setLineWidth(2)
+        self.amount_LCD.setMidLineWidth(1)
+        self.amount_LCD.setSmallDecimalPoint(True)
+        self.amount_LCD.setDigitCount(3)
+        self.amount_LCD.setSegmentStyle(QtWidgets.QLCDNumber.Filled)
+        self.amount_LCD.setProperty("intValue", self.RasBari.getAmount())
+        self.amount_LCD.setObjectName("amount_LCD")
+
+        self.Vortschritt = QtWidgets.QProgressBar(widget)
+        self.Vortschritt.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpTxTPos * 0.87,
+                                                  self.GUI_Width - 2 * self.setUp_getin, self.GUI_Height * 0.08))
+        self.Vortschritt.setProperty("value", 0)
+        self.Vortschritt.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
+        self.Vortschritt.setObjectName("Vortschritt")
+
+        self.Abbruch = QtWidgets.QPushButton(widget)
+        self.Abbruch.setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2, self.setUpButtonPos,
+                                              self.setUpButtonWith, self.setUpButtonHeight))
+        self.Abbruch.setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
+        self.Abbruch.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
+        self.Abbruch.setObjectName("Abbruch")
+
+        self.DigitText = QtWidgets.QTextBrowser(widget)
+        self.DigitText.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpTxTPos,
+                                                self.setUpButtonWith, self.setUpTxTHeight))
+        self.DigitText.setObjectName("Glasvolumen in ml")
+
+        self.StatTxt = QtWidgets.QTextBrowser(widget)
+        self.StatTxt.setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2, self.setUpTxTPos,
+                                              self.setUpButtonWith, self.setUpTxTHeight))
+        self.StatTxt.setObjectName("Status:")
+
+        self.InitTxt = QtWidgets.QTextBrowser(widget)
+        self.InitTxt.setGeometry(QtCore.QRect(self.GUI_Width - self.setUp_getin - self.setUpButtonWith,
+                                              self.setUpTxTPos, self.setUpButtonWith, self.setUpTxTHeight))
+        self.InitTxt.setObjectName("Initialize")
+
+        self.UnusedButton = QtWidgets.QPushButton(widget)
+        self.UnusedButton.setGeometry(QtCore.QRect(self.GUI_Width - self.setUp_getin - self.setUpButtonWith,
+                                                   self.setUpButtonPos, self.setUpButtonWith, self.setUpTxTHeight))
+        self.UnusedButton.setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
+        self.UnusedButton.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
+        self.UnusedButton.setObjectName("Abbruch")
 
 
 
