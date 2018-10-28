@@ -78,7 +78,7 @@ class Bar(QObject):
                 print("Error flage alive - Ausgabe abgebrochen")
                 return
 
-        self.Bottles[0].degreaseAmount(33)
+
 
 
     def checkNumberOfBottles(self):

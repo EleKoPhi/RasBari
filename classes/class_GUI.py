@@ -93,7 +93,7 @@ class Ui_GUI(QWidget,QObject):
 
         ################################### ---> END TIMER <--- #######################################################
 
-        StackedWidget.setCurrentIndex(1)
+        StackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(StackedWidget)
 
         ################################### ---> END setUp_Ui <--- ####################################################
@@ -430,7 +430,10 @@ class Ui_GUI(QWidget,QObject):
         Lines = []
 
         for i in range(0,10):
-            Lines.extend([self.BottleLine(self,widget,self.RasBari.Bottles[i],0,60+i*(self.setUpButtonHeight*0.6+self.space_Gen))])
+            try:
+                Lines.extend([self.BottleLine(self,widget,self.RasBari.Bottles[i],0,60+i*(self.setUpButtonHeight*0.6+self.space_Gen))])
+            except:
+                print("Error")
 
     def setmyHtmlTitel(self,TitelObj,StackedWidget):
 
