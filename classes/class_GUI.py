@@ -13,7 +13,6 @@ class Ui_GUI(QWidget,QObject):
     WidgetTitel = []
     newTitel = []
 
-
     def __init__(self,width,height):
         QObject.__init__(self)
         self.calculateGUI(width, height)
@@ -432,10 +431,6 @@ class Ui_GUI(QWidget,QObject):
 
         for i in range(0,10):
             Lines.extend([self.BottleLine(self,widget,self.RasBari.Bottles[i],0,60+i*(self.setUpButtonHeight*0.6+self.space_Gen))])
-
-
-
-
 
     def setmyHtmlTitel(self,TitelObj,StackedWidget):
 
