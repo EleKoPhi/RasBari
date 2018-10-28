@@ -1,10 +1,9 @@
-import sys
-from PyQt5 import QtWidgets
+def test(a):
+    a=5
+    print(a)
 
-app = QtWidgets.QApplication(sys.argv)
-screen = app.primaryScreen()
-print('Screen: %s' % screen.name())
-size = screen.size()
-print('Size: %d x %d' % (size.width(), size.height()))
-rect = screen.availableGeometry()
-print('Available: %d x %d' % (rect.width(), rect.height()))
+a=10
+
+print(a)
+test(a)
+print(a)

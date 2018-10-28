@@ -93,7 +93,7 @@ class Ui_GUI(QWidget,QObject):
 
         ################################### ---> END TIMER <--- #######################################################
 
-        StackedWidget.setCurrentIndex(0)
+        StackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(StackedWidget)
 
         ################################### ---> END setUp_Ui <--- ####################################################
@@ -482,6 +482,31 @@ class Ui_GUI(QWidget,QObject):
             self.Resetbutton = QtWidgets.QPushButton(self.wg)
             self.Resetbutton.setGeometry(QtCore.QRect(xResetbutton, self.rev_y, self.MAINGUI.setUpButtonWith, self.MAINGUI.setUpButtonHeight*0.6))
             self.Resetbutton.setText("RESET")
+
+            self.Resetbutton.clicked.connect(lambda:self.placeNewBottle())
+            self.ClearButton.clicked.connect(lambda:self.emptyBottle())
+
+        def placeNewBottle(self):
+
+            print("Reset Bottle")
+
+            for i in range(len(Ui_GUI.RasBari.Bottles)):
+
+                if self.Bottle_in.getname()==Ui_GUI.RasBari.Bottles[i].getname():
+                    Ui_GUI.RasBari.Bottles[i].putAmount(Ui_GUI.RasBari.Bottles[i].getbottlesize())
+                    self.Bottle_in=Ui_GUI.RasBari.Bottles[i]
+                    break
+
+            self.level.setProperty("value", (int(self.Bottle_in.getlevel())/(int(self.Bottle_in.getbottlesize())))*100)
+
+
+        def emptyBottle(self):
+
+            print("empty Bottle")
+
+            self.Bottle_in.getliqout()
+            self.level.setProperty("value",(int(self.Bottle_in.getlevel()) / (int(self.Bottle_in.getbottlesize()))) * 100)
+
 
 
 

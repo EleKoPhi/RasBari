@@ -46,6 +46,20 @@ class Bottle(object):
     def getbottlesize(self):
         return self.Bottlestats[4][1]
 
+    def getRestAmount(self):
+        return self.Bottlestats[2][1]
+
+    def putAmount(self,newamount):
+        self.level=newamount
+        changeAmount(int(self.getID()), newamount)
+
+    def getlevel(self):
+        return self.level
+
+    def getliqout(self):
+        self.level=0
+
+
 
 
 
