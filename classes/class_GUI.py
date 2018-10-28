@@ -13,6 +13,7 @@ class Ui_GUI(QWidget,QObject):
     WidgetTitel = []
     newTitel = []
 
+
     def __init__(self,width,height):
         QObject.__init__(self)
         self.calculateGUI(width, height)
@@ -420,7 +421,41 @@ class Ui_GUI(QWidget,QObject):
         self.UnusedButton.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.UnusedButton.setObjectName("Abbruch")
 
-    def buildbottlewidget(self,widget,StackedWidget):
+    def buildbottlewidget(self,widget,StackedWidget): #TODO BUILD THIS - Class that inhabits all elements to display
+                                                      #TODO BUILD THIS - and rest a bottle
+
+
+        """class Line(Ui_GUI):
+            def __init__(self,widget):
+                super(Line, self).__init__(widget)
+                Resetbutton = QtWidgets.QPushButton(widget)
+                Resetbutton.setGeometry(QtCore.QRect(200, 200,self.setUpButtonWith, self.setUpButtonHeight))
+
+        class Line(QWidget):
+            def __init__(self, widget, Bottle, x, y):
+                Resetbutton = QtWidgets.QPushButton(widget)
+                Resetbutton.setGeometry(QtCore.QRect(y, x,
+                                                     self.setUpButtonWith, self.setUpButtonHeight))
+                Resetbutton.setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
+                Resetbutton.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
+                Resetbutton.setObjectName("Abbruch")
+                super().__init__(self)
+
+        L1 = Line(widget)
+
+        for i in range(len(self.RasBari.Bottles)):
+            ResetButton.extend([QtWidgets.QPushButton(widget)])
+            ResetButton[-1] = QtWidgets.QPushButton(widget)
+            ResetButton[-1].setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2, 100+i*80,
+                                                  self.setUpButtonWith, self.setUpButtonHeight))
+            ResetButton[-1].setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
+            ResetButton[-1].setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
+            ResetButton[-1].setObjectName("Abbruch")
+
+        for i in range(5):
+            Lines.extend([Line(widget,"a",20,50*i)])"""
+
+
 
         self.TitelBottle = QtWidgets.QTextBrowser(widget)
         self.TitelBottle.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
@@ -442,6 +477,11 @@ class Ui_GUI(QWidget,QObject):
                                               " margin-left:0px; margin-right:0px; -qt-block-indent:0;"
                                               " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
                                               "\">RasBari V2.0</span></p></body></html>"))
+
+
+
+
+
 
 
 
