@@ -146,7 +146,7 @@ class Bar(QObject):
 
                         for i in range(len(self.Bottles)):
                             if(liquid_to_get.upper()==self.Bottles[i].getname().upper()):
-                                #self.Bottles[i].degreaseAmount((int(amount_of_liquid)*self.amount*0.01)) #uncomment this line for amount monitoring
+                                self.Bottles[i].degreaseAmount((int(amount_of_liquid)*self.amount*0.01)) #uncomment this line for amount monitoring
                                 break
 
                         self.getLiquid(liquid_to_get,amount_of_liquid) #That function getts the liquid

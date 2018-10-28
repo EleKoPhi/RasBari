@@ -21,7 +21,7 @@ if __name__ == "__main__":
     screen = app.primaryScreen()
     rect = screen.availableGeometry()
 
-    ui = Ui_GUI(rect.width(),rect.height())
+    ui = Ui_GUI(rect.width(),rect.height(),StackedWidget)
     ui.setupUi(StackedWidget)
 
     #StackedWidget.showFullScreen() #Comment line 28 or 29 in for full or part screen
