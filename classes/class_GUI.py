@@ -10,6 +10,9 @@ class Ui_GUI(QWidget,QObject):
 
     showBottlewidget = pyqtSignal()
 
+    WidgetTitel = []
+    newTitel = []
+
     def __init__(self,width,height):
         QObject.__init__(self)
         self.calculateGUI(width, height)
@@ -30,13 +33,14 @@ class Ui_GUI(QWidget,QObject):
         self.Mainwig.setObjectName("Mainwig")
         StackedWidget.addWidget(self.Mainwig)
 
-        self.page1 = QtWidgets.QWidget()
-        self.page1.setObjectName("page1")
-        StackedWidget.addWidget(self.page1)
+        self.Bottlewig = QtWidgets.QWidget()
+        self.Bottlewig.setObjectName("Bottlewig")
+        StackedWidget.addWidget(self.Bottlewig)
 
         ################################### ---> BUILD WIDGETS HER <--- ###############################################
 
-        self.buildmainwidget(self.Mainwig)
+        self.buildmainwidget(self.Mainwig,StackedWidget)
+        self.buildbottlewidget(self.Bottlewig,StackedWidget)
 
         ################################### ---> END GUI OBJECTS <--- #################################################
 
@@ -78,7 +82,7 @@ class Ui_GUI(QWidget,QObject):
 
         self.EmailOrder.CheckMail.connect(self.exeOrder)
 
-        self.showBottlewidget.connect(lambda: StackedWidget.setCurrentIndex(0))
+        self.showBottlewidget.connect(lambda: StackedWidget.setCurrentIndex(1))
 
         ################################### ---> START TIMER <--- #####################################################
 
@@ -99,18 +103,6 @@ class Ui_GUI(QWidget,QObject):
         _translate = QtCore.QCoreApplication.translate
 
         StackedWidget.setWindowTitle(_translate("GUI", "Rasbari"))
-
-        self.Titel.setHtml(_translate("GUI",    "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-                                                "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                                "<html><head><meta name=\"qrichtext\" content=\"1\""
-                                                " /><style type=\"text/css\">\n"
-                                                "p, li { white-space: pre-wrap; }\n"
-                                                "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; "
-                                                "font-weight:400; font-style:normal;\">\n"
-                                                "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px;"
-                                                " margin-left:0px; margin-right:0px; -qt-block-indent:0;"
-                                                " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
-                                                "\">RasBari V2.0</span></p></body></html>"))
 
         self.Drink1_0.setText(_translate("GUI", getDrinkName("Drink1")))
         self.Drink2_0.setText(_translate("GUI", getDrinkName("Drink2")))
@@ -271,11 +263,12 @@ class Ui_GUI(QWidget,QObject):
         self.setUpButtonPos = self.GUI_Height * 0.84
         self.setUpTxTPos = self.GUI_Height * 0.83 - self.setUpTxTHeight
 
-    def buildmainwidget(self,widget):
+    def buildmainwidget(self,widget,StackedWidget):
 
-        self.Titel = QtWidgets.QTextBrowser(widget)
-        self.Titel.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
-        self.Titel.setObjectName("Titel")
+        self.TitelMain = QtWidgets.QTextBrowser(widget)
+        self.TitelMain.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
+        self.TitelMain.setObjectName("TitelMain")
+        self.setmyHtmlTitel(self.TitelMain, StackedWidget)
 
         self.gridLayoutWidget = QtWidgets.QWidget(widget)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(0, self.setUpButtonHeight + self.space_Gen, self.GUI_Width,
@@ -427,8 +420,28 @@ class Ui_GUI(QWidget,QObject):
         self.UnusedButton.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.UnusedButton.setObjectName("Abbruch")
 
+    def buildbottlewidget(self,widget,StackedWidget):
 
+        self.TitelBottle = QtWidgets.QTextBrowser(widget)
+        self.TitelBottle.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
+        self.TitelBottle.setObjectName("TitelBottle")
+        self.setmyHtmlTitel(self.TitelBottle,StackedWidget)
 
+    def setmyHtmlTitel(self,TitelObj,StackedWidget):
+
+        _translate = QtCore.QCoreApplication.translate
+        StackedWidget.setWindowTitle(_translate("GUI", "Rasbari"))
+        TitelObj.setHtml(_translate("GUI", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+                                              "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                              "<html><head><meta name=\"qrichtext\" content=\"1\""
+                                              " /><style type=\"text/css\">\n"
+                                              "p, li { white-space: pre-wrap; }\n"
+                                              "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; "
+                                              "font-weight:400; font-style:normal;\">\n"
+                                              "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px;"
+                                              " margin-left:0px; margin-right:0px; -qt-block-indent:0;"
+                                              " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
+                                              "\">RasBari V2.0</span></p></body></html>"))
 
 
 
