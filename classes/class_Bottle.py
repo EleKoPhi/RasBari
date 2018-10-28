@@ -43,6 +43,9 @@ class Bottle(object):
     def resetBottle(self):
         print("-> NEW BOTTLE IN SYSTEM <-")
 
+    def getbottlesize(self):
+        return self.Bottlestats[4][1]
+
 
 
 

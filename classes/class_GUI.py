@@ -421,46 +421,21 @@ class Ui_GUI(QWidget,QObject):
         self.UnusedButton.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.UnusedButton.setObjectName("Abbruch")
 
-    def buildbottlewidget(self,widget,StackedWidget): #TODO BUILD THIS - Class that inhabits all elements to display
-                                                      #TODO BUILD THIS - and rest a bottle
-
-
-        """class Line(Ui_GUI):
-            def __init__(self,widget):
-                super(Line, self).__init__(widget)
-                Resetbutton = QtWidgets.QPushButton(widget)
-                Resetbutton.setGeometry(QtCore.QRect(200, 200,self.setUpButtonWith, self.setUpButtonHeight))
-
-        class Line(QWidget):
-            def __init__(self, widget, Bottle, x, y):
-                Resetbutton = QtWidgets.QPushButton(widget)
-                Resetbutton.setGeometry(QtCore.QRect(y, x,
-                                                     self.setUpButtonWith, self.setUpButtonHeight))
-                Resetbutton.setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
-                Resetbutton.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
-                Resetbutton.setObjectName("Abbruch")
-                super().__init__(self)
-
-        L1 = Line(widget)
-
-        for i in range(len(self.RasBari.Bottles)):
-            ResetButton.extend([QtWidgets.QPushButton(widget)])
-            ResetButton[-1] = QtWidgets.QPushButton(widget)
-            ResetButton[-1].setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2, 100+i*80,
-                                                  self.setUpButtonWith, self.setUpButtonHeight))
-            ResetButton[-1].setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
-            ResetButton[-1].setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
-            ResetButton[-1].setObjectName("Abbruch")
-
-        for i in range(5):
-            Lines.extend([Line(widget,"a",20,50*i)])"""
-
-
+    def buildbottlewidget(self,widget,StackedWidget):
 
         self.TitelBottle = QtWidgets.QTextBrowser(widget)
         self.TitelBottle.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
         self.TitelBottle.setObjectName("TitelBottle")
-        self.setmyHtmlTitel(self.TitelBottle,StackedWidget)
+        self.setmyHtmlTitel(self.TitelBottle, StackedWidget)
+
+        Lines = []
+
+        for i in range(0,10):
+            Lines.extend([self.BottleLine(self,widget,self.RasBari.Bottles[i],0,60+i*(self.setUpButtonHeight*0.6+self.space_Gen))])
+
+
+
+
 
     def setmyHtmlTitel(self,TitelObj,StackedWidget):
 
@@ -478,6 +453,40 @@ class Ui_GUI(QWidget,QObject):
                                               " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
                                               "\">RasBari V2.0</span></p></body></html>"))
 
+    class BottleLine():
+        def __init__(self, Master, widget, Bottle, total_x,total_y):
+            self.wg = widget
+            self.Bottle_in = Bottle
+            self.rev_x=total_x+10
+            self.rev_y=total_y
+            self.MAINGUI = Master
+
+            self.buildline()
+
+        def buildline(self):
+
+            self.BottleNameDsp = QtWidgets.QTextBrowser(self.wg)
+            self.BottleNameDsp.setGeometry(QtCore.QRect(self.rev_x, self.rev_y,self.MAINGUI.GUI_Width*0.145, self.MAINGUI.setUpButtonHeight*0.6))
+            self.BottleNameDsp.setObjectName("Bottle Name")
+            self.BottleNameDsp.setText(self.Bottle_in.getname())
+
+            xLevel = self.rev_x+self.MAINGUI.GUI_Width*0.145+self.MAINGUI.space_Gen
+
+            self.level = QtWidgets.QProgressBar(self.wg)
+            self.level.setGeometry(QtCore.QRect(xLevel, self.rev_y,self.MAINGUI.GUI_Width*0.3, self.MAINGUI.setUpButtonHeight*0.6))
+            self.level.setProperty("value", (int(self.Bottle_in.getRest())/(int(self.Bottle_in.getbottlesize())))*100)
+
+            xClear = xLevel + self.MAINGUI.space_Gen + self.MAINGUI.GUI_Width*0.3
+
+            self.ClearButton = QtWidgets.QPushButton(self.wg)
+            self.ClearButton.setGeometry(QtCore.QRect(xClear, self.rev_y, self.MAINGUI.setUpButtonWith,self.MAINGUI.setUpButtonHeight*0.6))
+            self.ClearButton.setText("Output")
+
+            xResetbutton = xClear + self.MAINGUI.space_Gen + self.MAINGUI.setUpButtonWith
+
+            self.Resetbutton = QtWidgets.QPushButton(self.wg)
+            self.Resetbutton.setGeometry(QtCore.QRect(xResetbutton, self.rev_y, self.MAINGUI.setUpButtonWith, self.MAINGUI.setUpButtonHeight*0.6))
+            self.Resetbutton.setText("RESET")
 
 
 
