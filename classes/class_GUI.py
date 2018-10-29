@@ -596,7 +596,8 @@ class Ui_GUI(QWidget,QObject):
                 if self.Bottle_in.getname()==Ui_GUI.RasBari.Bottles[i].getname():
 
                     self.Bottle_in = Ui_GUI.RasBari.Bottles[i]
-                    value = int(((Ui_GUI.RasBari.Bottles[i].getlevel())/int(self.Bottle_in.getbottlesize()))*100)
+                    value = int((int(Ui_GUI.RasBari.Bottles[i].getlevel())/int(self.Bottle_in.getbottlesize()))*100)
+                    if value < 0:value=0
                     self.level.setProperty("value",value)
                     break
 

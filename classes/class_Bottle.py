@@ -36,7 +36,7 @@ class Bottle(object):
         print("close valve")
 
     def degreaseAmount(self,amount):
-        newamount = self.level-int(amount)
+        newamount = int(self.level)-int(amount)
         self.level=newamount
         changeAmount(int(self.getID()),newamount)
 
