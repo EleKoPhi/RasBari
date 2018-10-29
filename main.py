@@ -8,8 +8,9 @@
 #
 #
 
-from classes.class_GUI import Ui_GUI
 from PyQt5 import QtWidgets
+
+from classes.class_GUI import Ui_GUI
 
 if __name__ == "__main__":
 
@@ -28,4 +29,3 @@ if __name__ == "__main__":
     StackedWidget.show()
 
     sys.exit(app.exec_())
-
