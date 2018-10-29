@@ -1,8 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from classes.class_Bar import *
-from classes.class_myThread import *
-from classes.class_eMailGuard import *
 
+from classes.class_Bar import *
+from classes.class_eMailGuard import *
+from classes.class_myThread import *
 
 
 class Ui_GUI(QWidget,QObject):
@@ -44,10 +44,19 @@ class Ui_GUI(QWidget,QObject):
         self.Bottlewig_1.setObjectName("Bottlewig_1")
         StackedWidget.addWidget(self.Bottlewig_1)
 
+        self.MissingIngriwig = QtWidgets.QWidget()
+        self.MissingIngriwig.setObjectName("Missing_Ingred")
+        StackedWidget.addWidget(self.MissingIngriwig)
+
+        self.Unknownwig = QtWidgets.QWidget()
+        self.Unknownwig.setObjectName("UnknownDrink")
+        StackedWidget.addWidget(self.Unknownwig)
+
         ################################### ---> BUILD WIDGETS HER <--- ###############################################
 
         self.buildmainwidget(self.Mainwig,StackedWidget)
         self.buildbottlewidgets(self.Bottlewig,self.Bottlewig_1,StackedWidget)
+        self.buildmisIngwidget(self.MissingIngriwig, StackedWidget)
 
         ################################### ---> END GUI OBJECTS <--- #################################################
 
@@ -233,13 +242,7 @@ class Ui_GUI(QWidget,QObject):
 
     def showmsgboxempty(self):
 
-        msgBox = QMessageBox.information(self, 'Some empty bottles', "Would you like to change\nthe empty bottle",
-                                         QMessageBox.No | QMessageBox.Yes, QMessageBox.No)
-
-        if msgBox == QMessageBox.Yes:
-            self.resetwindow()
-
-        #TODO INCLUDE THE RESET FUNKTION
+        self.GW.setCurrentIndex(3)
 
     def showmsgboxunknown(self):
         QMessageBox.information(self, 'Unknown drink', "Sorry, we can't mix\nthis drink.",QMessageBox.Close)
@@ -503,6 +506,41 @@ class Ui_GUI(QWidget,QObject):
         self.Changeright1.clicked.connect(lambda:self.showBottlePage(1,Lines))
 
         self.showBottlewidget.connect(lambda:self.showBottlePage_Start(Lines))
+
+    def buildmisIngwidget(self, widget, StackedWidget):
+
+        ButtonHight = self.setUpButtonHeight
+        ButtonWidth = self.setUpButtonWith
+        ButtonY = self.GUI_Height / 2 - ButtonHight / 2
+        YesX = self.setUp_getin
+        NoX = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
+
+        MessageHight = self.setUpButtonHeight * 2
+        MessageWidth = self.setUpButtonWith
+        MessageX = self.GUI_Width / 2 - MessageWidth / 2
+        MessageY = self.GUI_Height / 2 - MessageHight / 2
+        Message = "You have missing ingredients\n\nDo you want to reset them?\nPlease make a desision"
+
+        self.TitelBottle = QtWidgets.QTextBrowser(widget)
+        self.TitelBottle.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
+        self.TitelBottle.setObjectName("TitelBottle")
+        self.setmyHtmlTitel(self.TitelBottle, StackedWidget)
+
+        self.YESBut = QtWidgets.QPushButton(widget)
+        self.YESBut.setGeometry(QtCore.QRect(YesX, ButtonY, ButtonWidth, ButtonHight))
+        self.YESBut.setText("Yes")
+
+        self.NowBut = QtWidgets.QPushButton(widget)
+        self.NowBut.setGeometry(QtCore.QRect(NoX, ButtonY, ButtonWidth, ButtonHight))
+        self.NowBut.setText("No")
+
+        self.Message = QtWidgets.QTextBrowser(widget)
+        self.Message.setGeometry(QtCore.QRect(MessageX, MessageY, MessageWidth, MessageHight))
+        self.Message.setObjectName("Initialize")
+        self.Message.setText(Message)
+
+        self.YESBut.clicked.connect(lambda: self.GW.setCurrentIndex(1))
+        self.NowBut.clicked.connect(lambda: self.GW.setCurrentIndex(0))
 
     def setmyHtmlTitel(self,TitelObj,StackedWidget):
 
