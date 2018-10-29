@@ -141,8 +141,8 @@ class Ui_GUI(QWidget,QObject):
 
         self.DigitText.setText(_translate("GUI", GlasString))
         self.StatTxt.setText(_translate("GUI", "Status: Wait for input"))
-        self.InitTxt.setText(_translate("GUI", "Unused Button Description"))
-        self.UnusedButton.setText(_translate("GUI", "Unused Button"))
+        self.InitTxt.setText(_translate("GUI", "Welcome!"))
+        self.UnusedButton.setText(_translate("GUI", "Menue"))
 
     def Button_Thread_Handler(self,Auswahl):
 
@@ -397,7 +397,7 @@ class Ui_GUI(QWidget,QObject):
         self.Vortschritt.setObjectName("Vortschritt")
 
         self.Abbruch = QtWidgets.QPushButton(widget)
-        self.Abbruch.setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2, self.setUpButtonPos,
+        self.Abbruch.setGeometry(QtCore.QRect(self.GUI_Width - self.setUp_getin - self.setUpButtonWith, self.setUpButtonPos,
                                               self.setUpButtonWith, self.setUpButtonHeight))
         self.Abbruch.setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.Abbruch.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
@@ -409,17 +409,18 @@ class Ui_GUI(QWidget,QObject):
         self.DigitText.setObjectName("Glasvolumen in ml")
 
         self.StatTxt = QtWidgets.QTextBrowser(widget)
-        self.StatTxt.setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2, self.setUpTxTPos,
+        self.StatTxt.setGeometry(QtCore.QRect( self.GUI_Width - self.setUp_getin - self.setUpButtonWith, self.setUpTxTPos,
                                               self.setUpButtonWith, self.setUpTxTHeight))
         self.StatTxt.setObjectName("Status:")
 
         self.InitTxt = QtWidgets.QTextBrowser(widget)
-        self.InitTxt.setGeometry(QtCore.QRect(self.GUI_Width - self.setUp_getin - self.setUpButtonWith,
+        self.InitTxt.setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2,
                                               self.setUpTxTPos, self.setUpButtonWith, self.setUpTxTHeight))
         self.InitTxt.setObjectName("Initialize")
 
+
         self.UnusedButton = QtWidgets.QPushButton(widget)
-        self.UnusedButton.setGeometry(QtCore.QRect(self.GUI_Width - self.setUp_getin - self.setUpButtonWith,
+        self.UnusedButton.setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2,
                                                    self.setUpButtonPos, self.setUpButtonWith, self.setUpTxTHeight))
         self.UnusedButton.setMinimumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.UnusedButton.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))

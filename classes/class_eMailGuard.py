@@ -29,7 +29,6 @@ class eMailGuard(QObject):
         print("eMailGuard - Ini - Start")
 
         try:
-
             #self.imapper = easyimap.connect('imap.gmail.com', self.login, self.password)
             self.imapper.unseen()
             self.lastMessageID = self.getLastMessagelID()
