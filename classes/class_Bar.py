@@ -204,7 +204,7 @@ class Bar(QObject):
             if Drink.Ingredients[i][1] != "0":      #Look only at ingredients != 0
                 for j in range(0,len(self.Bottles)):     #Check all bottles
                     if self.Bottles[j].getname().upper() == Drink.Ingredients[i][0].upper(): #if bottle name == ingredient
-                        if int(Drink.Ingredients[i][1])*self.amount*0.01 <= int(self.Bottles[j].getRest()): #check if there is enought liquid remaing
+                        if int(Drink.Ingredients[i][1])*self.amount*0.01 <= int(self.Bottles[j].getlevel()): #check if there is enought liquid remaing
                             Flaghave = Flaghave+1   #if we have enought of that, increment Flagehave
 
         if Flagneed == Flaghave: return True

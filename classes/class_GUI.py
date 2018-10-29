@@ -89,8 +89,6 @@ class Ui_GUI(QWidget,QObject):
 
         self.EmailOrder.CheckMail.connect(self.exeOrder)
 
-       # self.showBottlewidget.connect(lambda: StackedWidget.setCurrentIndex(1))
-
         ################################### ---> START TIMER <--- #####################################################
 
         self.MailTimer = QtCore.QTimer()
@@ -578,6 +576,7 @@ class Ui_GUI(QWidget,QObject):
 
                 if self.Bottle_in.getname()==Ui_GUI.RasBari.Bottles[i].getname():
                     Ui_GUI.RasBari.Bottles[i].putAmount(Ui_GUI.RasBari.Bottles[i].getbottlesize())
+                    print(Ui_GUI.RasBari.Bottles[i].getlevel())
                     self.Bottle_in=Ui_GUI.RasBari.Bottles[i]
                     break
 
