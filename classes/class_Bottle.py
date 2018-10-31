@@ -59,7 +59,3 @@ class Bottle(object):
     def getliqout(self):
         self.level=0
 
-
-
-
-

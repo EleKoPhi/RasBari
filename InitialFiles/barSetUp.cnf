@@ -1,70 +1,70 @@
 [Fluessigkeit1]
 id = 1
 name = Gin
-menge = 610
+menge = 218
 position = 0
 bottlesize = 700
 
 [Fluessigkeit2]
 id = 2
 name = Whisky
-menge = 700
+menge = 488
 position = 10
 bottlesize = 700
 
 [Fluessigkeit3]
 id = 3
 name = Rum
-menge = 700
+menge = 518
 position = 20
 bottlesize = 700
 
 [Fluessigkeit4]
 id = 4
 name = Wodka
-menge = 700
+menge = 398
 position = 30
 bottlesize = 700
 
 [Fluessigkeit5]
 id = 5
 name = Cointreau
-menge = 700
+menge = 518
 position = 40
 bottlesize = 700
 
 [Fluessigkeit6]
 id = 6
 name = Tonic
-menge = 580
+menge = 188
 position = 50
 bottlesize = 1000
 
 [Fluessigkeit7]
 id = 7
 name = Cola
-menge = 1000
+menge = 698
 position = 60
 bottlesize = 1000
 
 [Fluessigkeit8]
 id = 8
 name = Zitronensaft
-menge = 100
+menge = 9
 position = 70
 bottlesize = 100
 
 [Fluessigkeit9]
 id = 9
 name = Grenadine
-menge = 500
+menge = 318
 position = 80
 bottlesize = 500
 
 [Fluessigkeit10]
 id = 10
 name = Zuckersirup
-menge = 500
+menge = 318
 position = 90
 bottlesize = 500
 

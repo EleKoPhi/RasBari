@@ -12,17 +12,19 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink2]
-Name=WodkaZauber
+Name=TestDrinkAll
 Gin=10
 Whisky=10
-Rum=0
-Wodka=40
-Cointreau=0
-Tonic=0
-Cola=40
-Zitronensaft=0
-Genadinesirup=0
-Zuckersirup=0
+Rum=10
+Wodka=10
+Cointreau=10
+Tonic=10
+Cola=10
+Zitronensaft=10
+Grenadine=10
+Zuckersirup=10
+
+
 
 
 
