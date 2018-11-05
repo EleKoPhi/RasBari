@@ -1,71 +1,78 @@
 [Fluessigkeit1]
 id = 1
 name = Gin
-menge = 610
+menge = 430
 position = 0
 bottlesize = 700
 
 [Fluessigkeit2]
 id = 2
 name = Whisky
-menge = 458
+menge = 700
 position = 10
 bottlesize = 700
 
 [Fluessigkeit3]
 id = 3
 name = Rum
-menge = 488
+menge = 700
 position = 20
 bottlesize = 700
 
 [Fluessigkeit4]
 id = 4
 name = Wodka
-menge = 368
+menge = 700
 position = 30
 bottlesize = 700
 
 [Fluessigkeit5]
 id = 5
 name = Cointreau
-menge = 488
+menge = 700
 position = 40
 bottlesize = 700
 
 [Fluessigkeit6]
 id = 6
 name = Tonic
-menge = 760
+menge = 370
 position = 50
 bottlesize = 1000
 
 [Fluessigkeit7]
 id = 7
 name = Cola
-menge = 970
+menge = 1000
 position = 60
 bottlesize = 1000
 
 [Fluessigkeit8]
 id = 8
 name = Zitronensaft
-menge = 70
+menge = 100
 position = 70
 bottlesize = 100
 
 [Fluessigkeit9]
 id = 9
 name = Grenadine
-menge = 470
+menge = 500
 position = 80
 bottlesize = 500
 
 [Fluessigkeit10]
 id = 10
-name = Zuckersirup
-menge = 470
-position = 90
+name = TestSaft
+menge = 500
+position = 80
+bottlesize = 500
+
+[Fluessigkeit11]
+id = 11
+name = TestSaft2
+menge = 500
+position = 80
 bottlesize = 500
 
 [Linearführung]
@@ -76,5 +83,5 @@ x = 800
 y = 480
 
 [Mailorder]
-stat = 1
+stat = 0
 

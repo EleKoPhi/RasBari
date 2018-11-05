@@ -10,6 +10,8 @@ class Ui_GUI(QWidget,QObject):
     RasBari = Bar()
     EmailOrder = eMailGuard()
 
+    Bottle_pages = []
+
     showBottlewidget = pyqtSignal()
     showDrinkwidget = pyqtSignal()
     updateGUI = pyqtSignal()
@@ -29,38 +31,12 @@ class Ui_GUI(QWidget,QObject):
         StackedWidget.setObjectName("GUI")
         StackedWidget.resize(self.GUI_Width, self.GUI_Height)
 
-        ################################### ---> DEFINE WIDGETS HER <--- ##############################################
-
-        self.Mainwig = QtWidgets.QWidget()
-        self.Mainwig.setObjectName("Mainwig")
-        StackedWidget.addWidget(self.Mainwig)
-
-        self.Bottlewig = QtWidgets.QWidget()
-        self.Bottlewig.setObjectName("Bottlewig")
-        StackedWidget.addWidget(self.Bottlewig)
-
-        self.Bottlewig_1 = QtWidgets.QWidget()
-        self.Bottlewig_1.setObjectName("Bottlewig_1")
-        StackedWidget.addWidget(self.Bottlewig_1)
-
-        self.MissingIngriwig = QtWidgets.QWidget()
-        self.MissingIngriwig.setObjectName("Missing_Ingred")
-        StackedWidget.addWidget(self.MissingIngriwig)
-
-        self.Unknownwig = QtWidgets.QWidget()
-        self.Unknownwig.setObjectName("UnknownDrink")
-        StackedWidget.addWidget(self.Unknownwig)
-
-        self.NewDrinkwig = QtWidgets.QWidget()
-        self.NewDrinkwig.setObjectName("New_Drink")
-        StackedWidget.addWidget(self.NewDrinkwig)
-
         ################################### ---> BUILD WIDGETS HER <--- ###############################################
 
-        self.main_Widget(self.Mainwig, StackedWidget)
-        self.bottle_Widget(self.Bottlewig, self.Bottlewig_1, StackedWidget)
-        self.ingredient_Widget(self.MissingIngriwig, StackedWidget)
-        self.newDrink_Widget(self.NewDrinkwig, StackedWidget)
+        self.main_Widget(StackedWidget)
+        self.bottle_Widget(StackedWidget)
+        self.ingredient_Widget(StackedWidget)
+        self.newDrink_Widget(StackedWidget)
 
         ################################### ---> END GUI OBJECTS <--- #################################################
 
@@ -93,7 +69,7 @@ class Ui_GUI(QWidget,QObject):
 
         ############################### ---> START CONNECTION [CodeSignals]<--- #######################################
 
-        self.RasBari.missingIngred.connect(self.showmsgboxempty)
+        self.RasBari.missingIngred.connect(self.showIngred_widget)
         self.RasBari.drinkunknown.connect(lambda:self.showmsgbox)
         self.RasBari.changedValSig.connect(self.upDateStatusBar)
         self.RasBari.changedAmountSig.connect(self.upDateTxt)
@@ -109,7 +85,8 @@ class Ui_GUI(QWidget,QObject):
 
         ################################### ---> END TIMER <--- #######################################################
 
-        StackedWidget.setCurrentIndex(0)
+        MainWidgetIndex = StackedWidget.indexOf(self.Mainwig)
+        StackedWidget.setCurrentIndex(MainWidgetIndex)
         QtCore.QMetaObject.connectSlotsByName(StackedWidget)
 
         ################################### ---> END setUp_Ui <--- ####################################################
@@ -154,17 +131,21 @@ class Ui_GUI(QWidget,QObject):
         self.StatTxt.setText(_translate("GUI", "Status: Wait for input"))
         self.InitTxt.setText(_translate("GUI", "Welcome!"))
 
-    def main_Widget(self, widget, StackedWidget):
+    def main_Widget(self, StackedWidget):
+
+        self.Mainwig = QtWidgets.QWidget()
+        self.Mainwig.setObjectName("Mainwig")
+        StackedWidget.addWidget(self.Mainwig)
 
         stdHight = self.setUpButtonHeight
         std_Y = self.setUpButtonPos
 
-        self.TitelMain = QtWidgets.QTextBrowser(widget)
+        self.TitelMain = QtWidgets.QTextBrowser(self.Mainwig)
         self.TitelMain.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
         self.TitelMain.setObjectName("TitelMain")
         self.setmyHtmlTitel(self.TitelMain, StackedWidget)
 
-        self.gridLayoutWidget = QtWidgets.QWidget(widget)
+        self.gridLayoutWidget = QtWidgets.QWidget(self.Mainwig)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(0, self.setUpButtonHeight + self.space_Gen, self.GUI_Width,
                                                        self.GUI_Height * 0.55))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
@@ -249,19 +230,19 @@ class Ui_GUI(QWidget,QObject):
         self.Drink4_2.setObjectName("Drink4_2")
         self.AuswahlGrid.addWidget(self.Drink4_2, 3, 3, 1, 1)
 
-        self.AddAmount = QtWidgets.QPushButton(widget)
+        self.AddAmount = QtWidgets.QPushButton(self.Mainwig)
         self.AddAmount.setGeometry(QtCore.QRect(self.setUp_getin + self.setUpButtonWith - self.setUpButtonHeight,
                                                 self.setUpButtonPos, self.setUpButtonHeight, self.setUpButtonHeight))
         self.AddAmount.setMinimumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
         self.AddAmount.setMaximumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
 
-        self.SubtractAmount = QtWidgets.QPushButton(widget)
+        self.SubtractAmount = QtWidgets.QPushButton(self.Mainwig)
         self.SubtractAmount.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpButtonPos, self.setUpButtonHeight,
                                                      self.setUpButtonHeight))
         self.SubtractAmount.setMinimumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
         self.SubtractAmount.setMaximumSize(QtCore.QSize(self.setUpButtonHeight, self.setUpButtonHeight))
 
-        self.amount_LCD = QtWidgets.QLCDNumber(widget)
+        self.amount_LCD = QtWidgets.QLCDNumber(self.Mainwig)
 
         DigitWidth = self.setUpButtonWith - 2 * self.setUpButtonHeight - 2 * self.space
         DigitPos = self.setUp_getin + (self.setUpButtonWith / 2) - (DigitWidth / 2)
@@ -278,14 +259,14 @@ class Ui_GUI(QWidget,QObject):
         self.amount_LCD.setProperty("intValue", self.RasBari.getAmount())
         self.amount_LCD.setObjectName("amount_LCD")
 
-        self.Vortschritt = QtWidgets.QProgressBar(widget)
+        self.Vortschritt = QtWidgets.QProgressBar(self.Mainwig)
         self.Vortschritt.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpTxTPos * 0.87,
                                                   self.GUI_Width - 2 * self.setUp_getin, self.GUI_Height * 0.08))
         self.Vortschritt.setProperty("value", 0)
         self.Vortschritt.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
         self.Vortschritt.setObjectName("Vortschritt")
 
-        self.Abbruch = QtWidgets.QPushButton(widget)
+        self.Abbruch = QtWidgets.QPushButton(self.Mainwig)
         self.Abbruch.setGeometry(
             QtCore.QRect(self.GUI_Width - self.setUp_getin - self.setUpButtonWith, self.setUpButtonPos,
                          self.setUpButtonWith, self.setUpButtonHeight))
@@ -293,18 +274,18 @@ class Ui_GUI(QWidget,QObject):
         self.Abbruch.setMaximumSize(QtCore.QSize(self.setUpButtonWith, self.setUpButtonHeight))
         self.Abbruch.setObjectName("Abbruch")
 
-        self.DigitText = QtWidgets.QTextBrowser(widget)
+        self.DigitText = QtWidgets.QTextBrowser(self.Mainwig)
         self.DigitText.setGeometry(QtCore.QRect(self.setUp_getin, self.setUpTxTPos,
                                                 self.setUpButtonWith, self.setUpTxTHeight))
         self.DigitText.setObjectName("Glasvolumen in ml")
 
-        self.StatTxt = QtWidgets.QTextBrowser(widget)
+        self.StatTxt = QtWidgets.QTextBrowser(self.Mainwig)
         self.StatTxt.setGeometry(
             QtCore.QRect(self.GUI_Width - self.setUp_getin - self.setUpButtonWith, self.setUpTxTPos,
                          self.setUpButtonWith, self.setUpTxTHeight))
         self.StatTxt.setObjectName("Status:")
 
-        self.InitTxt = QtWidgets.QTextBrowser(widget)
+        self.InitTxt = QtWidgets.QTextBrowser(self.Mainwig)
         self.InitTxt.setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2,
                                               self.setUpTxTPos, self.setUpButtonWith, self.setUpTxTHeight))
         self.InitTxt.setObjectName("Initialize")
@@ -314,7 +295,7 @@ class Ui_GUI(QWidget,QObject):
         Bottles_x = (self.GUI_Width / 2 - self.setUpButtonWith / 2)
         Bottles_width = self.setUpButtonWith / 2 - self.space / 2
 
-        self.Bottles = QtWidgets.QPushButton(widget)
+        self.Bottles = QtWidgets.QPushButton(self.Mainwig)
         self.Bottles.setGeometry(QtCore.QRect(Bottles_x, std_Y, Bottles_width, stdHight))
         self.Bottles.setText("Bottles")
 
@@ -325,86 +306,118 @@ class Ui_GUI(QWidget,QObject):
         Drinks_x = (self.GUI_Width / 2 - self.setUpButtonWith / 2) + Bottles_width + self.space
         Drinks_width = Bottles_width
 
-        self.Drinks = QtWidgets.QPushButton(widget)
+        self.Drinks = QtWidgets.QPushButton(self.Mainwig)
         self.Drinks.setGeometry(QtCore.QRect(Drinks_x, std_Y, Drinks_width, stdHight))
         self.Drinks.setText("Drinks")
 
         self.Drinks.clicked.connect(lambda: self.showDrinkwidget.emit())
 
-    def bottle_Widget(self, widgetA, widgetB, StackedWidget):
+    def bottle_Widget(self, StackedWidget):
 
-        Lines = []
+        # Function to update bottle_Widget (statusbar)
 
         def updateWidget():
             for i in range(0, len(Lines)):
                 Lines[i].updateStatusBar()
 
+        # std. values
+
+        Lines = []
+        Topspace = self.GUI_Height * 0.16
+        MainWidgetIndex = StackedWidget.indexOf(self.Mainwig)
+
+        # Signals for showing the fist bottle widget & updating all statusbar's
+
+        self.showBottlewidget.connect(lambda: self.showBottlePage(self.Bottle_pages[0]))
         self.updateGUI.connect(updateWidget)
 
-        self.showBottlewidget.connect(lambda: self.showBottlePage(1))
+        # Calculate the necessary number of bottle_Widgets
 
-        # Headline - Contains Software title on bottle_WidgetA
+        totalNr_Widgets = int(len(self.RasBari.Bottles) / 5)
 
-        self.buildHeader(widgetA, StackedWidget)
+        if len(self.RasBari.Bottles) % 5 != 0:
+            totalNr_Widgets += 1
 
-        # Headline - Contains Software title on bottle_WidgetB
+        # Build all necessary widgets, to show all bottles included in Rasbari
 
-        self.buildHeader(widgetB, StackedWidget)
+        for i in range(totalNr_Widgets):
+            self.Bottle_pages.extend([QtWidgets.QWidget()])
+            self.Bottle_pages[i].setObjectName("Bottlepage" + str(i))
+            StackedWidget.addWidget(self.Bottle_pages[i])
+            self.buildHeader(self.Bottle_pages[i], StackedWidget)
 
-        Topspace = self.GUI_Height * 0.16
+        # Build the bottomNavigation for every bottle_Widget
 
-        if len(self.RasBari.Bottles) > 5:
-            FirstPageElements = int(len(self.RasBari.Bottles) / 2)
+        for i in range(len(self.Bottle_pages)):
 
-            for i in range(FirstPageElements):
-                Lines.extend([self.BottleLine(self, widgetA, self.RasBari.Bottles[i], 0,
-                                              Topspace + i * (self.setUpButtonHeight + self.space_Gen * 1.7))])
+            PageLeft = self.Bottle_pages[i - 1]
 
-            space = 0
+            try:
+                PageRight = self.Bottle_pages[i + 1]
+            except:
+                PageRight = self.Bottle_pages[0]
 
-            for i in range(FirstPageElements, len(self.RasBari.Bottles)):
-                Lines.extend([self.BottleLine(self, widgetB, self.RasBari.Bottles[i], 0,
-                                              Topspace + space * (self.setUpButtonHeight + self.space_Gen * 1.7))])
-                space = space + 1
+            self.bottomNavigation(self.Bottle_pages[i], PageLeft, PageRight, MainWidgetIndex)
 
-        else:
-            for i in range(self.RasBari.Bottles):
-                Lines.extend([self.BottleLine(self, widgetA, self.RasBari.Bottles[i], 0,
-                                              Topspace + i * (self.setUpButtonHeight + self.space_Gen * 1.7))])
+        # Build for every bottle one line thats shows - NAME - LEVEL + REST_Button + CLEAR_Button
 
-        self.bottomNavigation(widgetA, 2, 2, 0)
-        self.bottomNavigation(widgetB, 1, 1, 0)  # TODO make that automatic
+        page = -1
+        j = 0
 
-    def ingredient_Widget(self, widget, StackedWidget):
+        for i in range(len(self.RasBari.Bottles)):
+
+            if i % 5 == 0:
+                page += 1
+                j = 0
+
+            Line_y = Topspace + j * (self.setUpButtonHeight + self.space_Gen * 1.7)
+
+            Lines.extend([self.BottleLine(self, self.Bottle_pages[page], self.RasBari.Bottles[i], 0, Line_y)])
+
+            j += 1
+
+        ############################ END of bottle_Widget(self, widgetA, widgetB, StackedWidget) #######################
+
+    def ingredient_Widget(self, StackedWidget):
+
+        # Build of new widget
+
+        self.ingredWidg = QtWidgets.QWidget()
+        self.ingredWidg.setObjectName("Missing_Ingred")
+        StackedWidget.addWidget(self.ingredWidg)
+
+        # Std. values
 
         std_width = self.setUpButtonWith
         std_hight = self.setUpButtonHeight
 
         # Headline - Contains Software title
 
-        self.buildHeader(widget, StackedWidget)
+        self.buildHeader(self.ingredWidg, StackedWidget)
 
         # YESBut - Button for navigation to the bottle widget
 
         YESBut_x = self.setUp_getin
         YESBut_y = self.GUI_Height / 2 - std_hight / 2
+        FstBottleWidgetIndex = StackedWidget.indexOf(self.Bottle_pages[0])
 
-        self.YESBut = QtWidgets.QPushButton(widget)
+        self.YESBut = QtWidgets.QPushButton(self.ingredWidg)
         self.YESBut.setGeometry(QtCore.QRect(YESBut_x, YESBut_y, std_width, std_hight))
         self.YESBut.setText("Yes")
 
-        self.YESBut.clicked.connect(lambda: self.GW.setCurrentIndex(1))
+        self.YESBut.clicked.connect(lambda: self.GW.setCurrentIndex(FstBottleWidgetIndex))
 
         # NOBut - Button for navigation to the main widget
 
         NOBut_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
         NOBut_y = YESBut_y
+        MainWidgetIndex = StackedWidget.indexOf(self.Mainwig)
 
-        self.NOBut = QtWidgets.QPushButton(widget)
+        self.NOBut = QtWidgets.QPushButton(self.ingredWidg)
         self.NOBut.setGeometry(QtCore.QRect(NOBut_x, NOBut_y, std_width, std_hight))
         self.NOBut.setText("No")
 
-        self.NOBut.clicked.connect(lambda: self.GW.setCurrentIndex(0))
+        self.NOBut.clicked.connect(lambda: self.GW.setCurrentIndex(MainWidgetIndex))
 
         # Message - Textbrowser that shows the message for missing ingredients
 
@@ -413,37 +426,44 @@ class Ui_GUI(QWidget,QObject):
         Message_hight = std_hight * 2
         Message_content = "You have missing ingredients\n\nDo you want to reset them?\nPlease make a desision"
 
-        self.Message = QtWidgets.QTextBrowser(widget)
+        self.Message = QtWidgets.QTextBrowser(self.ingredWidg)
         self.Message.setGeometry(QtCore.QRect(Message_x, Message_y, std_width, Message_hight))
         self.Message.setText(Message_content)
 
         ############################ END of ingredient_Widget(self, widget, StackedWidget) #############################
 
-    def newDrink_Widget(self, widget, StackedWidget):
+    def newDrink_Widget(self, StackedWidget):
+
+        # Build of new widget
+
+        self.NewDrinkwig = QtWidgets.QWidget()
+        self.NewDrinkwig.setObjectName("New_Drink")
+        StackedWidget.addWidget(self.NewDrinkwig)
+
+        # Std. values
 
         std_Hight = self.setUpButtonHeight
         std_Width = self.setUpButtonWith
         std_Y = self.setUpButtonPos
 
-        self.showDrinkwidget.connect(lambda: StackedWidget.setCurrentIndex(5))
-
         # Headline - Contains Software title
 
-        self.buildHeader(widget, StackedWidget)
+        self.buildHeader(self.NewDrinkwig, StackedWidget)
 
         # ExitButton - Button to navigate from the first drink widget back to the main widget
 
         ExitButton_x = (self.GUI_Width / 2 - self.setUpButtonWith / 2)
+        MainWidgetIndex = StackedWidget.indexOf(self.Mainwig)
 
-        self.ExitButton = QtWidgets.QPushButton(widget)
+        self.ExitButton = QtWidgets.QPushButton(self.NewDrinkwig)
         self.ExitButton.setGeometry(QtCore.QRect(ExitButton_x, std_Y, std_Width, std_Hight))
         self.ExitButton.setText("Exit")
 
-        self.ExitButton.clicked.connect(lambda: StackedWidget.setCurrentIndex(0))
+        self.ExitButton.clicked.connect(lambda: StackedWidget.setCurrentIndex(MainWidgetIndex))
 
         # Save - Button to Save the current drink setup as a new drink
 
-        self.Save = QtWidgets.QPushButton(widget)
+        self.Save = QtWidgets.QPushButton(self.NewDrinkwig)
         self.Save.setGeometry(QtCore.QRect(self.setUp_getin, std_Y, std_Width, std_Hight))
         self.Save.setText("Save Drink")
 
@@ -451,7 +471,7 @@ class Ui_GUI(QWidget,QObject):
 
         Reset_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
 
-        self.Reset = QtWidgets.QPushButton(widget)
+        self.Reset = QtWidgets.QPushButton(self.NewDrinkwig)
         self.Reset.setGeometry(QtCore.QRect(Reset_x, std_Y, std_Width, std_Hight))
         self.Reset.setText("Reset")
 
@@ -545,9 +565,10 @@ class Ui_GUI(QWidget,QObject):
             print(self.EmailOrder.lastSenderAdress)
             print("Mail sended")
 
-    def showmsgboxempty(self):
+    def showIngred_widget(self):
 
-        self.GW.setCurrentIndex(3)
+        Ingred_Wig_Index = self.GW.indexOf(self.ingredWidg)
+        self.GW.setCurrentIndex(Ingred_Wig_Index)
 
     def resetwindow(self):
 
@@ -589,17 +610,10 @@ class Ui_GUI(QWidget,QObject):
                                               " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
                                               "\">RasBari V2.0</span></p></body></html>"))
 
-    def showBottlePage(self, Auswahl):
+    def showBottlePage(self, Page):
 
         self.updateGUI.emit()
-
-        if Auswahl == 2:
-            self.GW.setCurrentIndex(2)
-        else:
-            self.GW.setCurrentIndex(1)
-
-    def showBottlePage_Start(self, Lines):
-        self.showBottlePage(1, Lines)
+        self.GW.setCurrentIndex(self.GW.indexOf(Page))
 
     def buildHeader(self, widget, StackedWidget):
         self.Titel = QtWidgets.QTextBrowser(widget)
