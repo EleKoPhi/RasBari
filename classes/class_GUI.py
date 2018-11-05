@@ -12,6 +12,7 @@ class Ui_GUI(QWidget,QObject):
 
     showBottlewidget = pyqtSignal()
     showDrinkwidget = pyqtSignal()
+    updateGUI = pyqtSignal()
 
     def __init__(self,width,height,GlobalWidged):
         QObject.__init__(self)
@@ -330,19 +331,25 @@ class Ui_GUI(QWidget,QObject):
 
         self.Drinks.clicked.connect(lambda: self.showDrinkwidget.emit())
 
-    def bottle_Widget(self, widget, widget1, StackedWidget):
+    def bottle_Widget(self, widgetA, widgetB, StackedWidget):
 
         Lines = []
 
-        self.TitelBottle = QtWidgets.QTextBrowser(widget)
-        self.TitelBottle.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
-        self.TitelBottle.setObjectName("TitelBottle")
-        self.setmyHtmlTitel(self.TitelBottle, StackedWidget)
+        def updateWidget():
+            for i in range(0, len(Lines)):
+                Lines[i].updateStatusBar()
 
-        self.TitelBottle1 = QtWidgets.QTextBrowser(widget1)
-        self.TitelBottle1.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
-        self.TitelBottle1.setObjectName("TitelBottle")
-        self.setmyHtmlTitel(self.TitelBottle1, StackedWidget)
+        self.updateGUI.connect(updateWidget)
+
+        self.showBottlewidget.connect(lambda: self.showBottlePage(1))
+
+        # Headline - Contains Software title on bottle_WidgetA
+
+        self.buildHeader(widgetA, StackedWidget)
+
+        # Headline - Contains Software title on bottle_WidgetB
+
+        self.buildHeader(widgetB, StackedWidget)
 
         Topspace = self.GUI_Height * 0.16
 
@@ -350,61 +357,23 @@ class Ui_GUI(QWidget,QObject):
             FirstPageElements = int(len(self.RasBari.Bottles) / 2)
 
             for i in range(FirstPageElements):
-                Lines.extend([self.BottleLine(self, widget, self.RasBari.Bottles[i], 0,
+                Lines.extend([self.BottleLine(self, widgetA, self.RasBari.Bottles[i], 0,
                                               Topspace + i * (self.setUpButtonHeight + self.space_Gen * 1.7))])
 
             space = 0
 
             for i in range(FirstPageElements, len(self.RasBari.Bottles)):
-                Lines.extend([self.BottleLine(self, widget1, self.RasBari.Bottles[i], 0,
+                Lines.extend([self.BottleLine(self, widgetB, self.RasBari.Bottles[i], 0,
                                               Topspace + space * (self.setUpButtonHeight + self.space_Gen * 1.7))])
                 space = space + 1
 
         else:
             for i in range(self.RasBari.Bottles):
-                Lines.extend([self.BottleLine(self, widget, self.RasBari.Bottles[i], 0,
+                Lines.extend([self.BottleLine(self, widgetA, self.RasBari.Bottles[i], 0,
                                               Topspace + i * (self.setUpButtonHeight + self.space_Gen * 1.7))])
 
-        self.ExitButton = QtWidgets.QPushButton(widget)
-        self.ExitButton.setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2,
-                                                 self.setUpButtonPos, self.setUpButtonWith, self.setUpButtonHeight))
-        self.ExitButton.setText("Exit")
-
-        self.Changeleft = QtWidgets.QPushButton(widget)
-        self.Changeleft.setGeometry(QtCore.QRect(self.setUp_getin,
-                                                 self.setUpButtonPos, self.setUpButtonWith, self.setUpButtonHeight))
-        self.Changeleft.setText("<- Change page")
-
-        self.Changeright = QtWidgets.QPushButton(widget)
-        self.Changeright.setGeometry(QtCore.QRect(self.GUI_Width - self.setUp_getin - self.setUpButtonWith,
-                                                  self.setUpButtonPos, self.setUpButtonWith, self.setUpButtonHeight))
-        self.Changeright.setText("Change page ->")
-
-        self.ExitButton1 = QtWidgets.QPushButton(widget1)
-        self.ExitButton1.setGeometry(QtCore.QRect(self.GUI_Width / 2 - self.setUpButtonWith / 2,
-                                                  self.setUpButtonPos, self.setUpButtonWith, self.setUpButtonHeight))
-        self.ExitButton1.setText("Exit")
-
-        self.Changeleft1 = QtWidgets.QPushButton(widget1)
-        self.Changeleft1.setGeometry(QtCore.QRect(self.setUp_getin,
-                                                  self.setUpButtonPos, self.setUpButtonWith, self.setUpButtonHeight))
-        self.Changeleft1.setText("<- Change page")
-
-        self.Changeright1 = QtWidgets.QPushButton(widget1)
-        self.Changeright1.setGeometry(QtCore.QRect(self.GUI_Width - self.setUp_getin - self.setUpButtonWith,
-                                                   self.setUpButtonPos, self.setUpButtonWith, self.setUpButtonHeight))
-        self.Changeright1.setText("Change page ->")
-
-        self.ExitButton.clicked.connect(lambda: StackedWidget.setCurrentIndex(0))
-        self.ExitButton1.clicked.connect(lambda: StackedWidget.setCurrentIndex(0))
-
-        self.Changeleft.clicked.connect(lambda: self.showBottlePage(2, Lines))
-        self.Changeright.clicked.connect(lambda: self.showBottlePage(2, Lines))
-
-        self.Changeleft1.clicked.connect(lambda: self.showBottlePage(1, Lines))
-        self.Changeright1.clicked.connect(lambda: self.showBottlePage(1, Lines))
-
-        self.showBottlewidget.connect(lambda: self.showBottlePage_Start(Lines))
+        self.bottomNavigation(widgetA, 2, 2, 0)
+        self.bottomNavigation(widgetB, 1, 1, 0)  # TODO make that automatic
 
     def ingredient_Widget(self, widget, StackedWidget):
 
@@ -620,9 +589,10 @@ class Ui_GUI(QWidget,QObject):
                                               " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
                                               "\">RasBari V2.0</span></p></body></html>"))
 
-    def showBottlePage(self, Auswahl,Lines):
-        for i in range(len(Lines)):
-            Lines[i].updateStatusBar()
+    def showBottlePage(self, Auswahl):
+
+        self.updateGUI.emit()
+
         if Auswahl == 2:
             self.GW.setCurrentIndex(2)
         else:
@@ -636,7 +606,43 @@ class Ui_GUI(QWidget,QObject):
         self.Titel.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
         self.setmyHtmlTitel(self.Titel, StackedWidget)
 
-    ####################################--Classes for simplyfied GUI design--###############################################
+    def bottomNavigation(self, widget, destination_Left, destination_Right, destination_exit):
+
+        std_width = self.setUpButtonWith
+        std_hight = self.setUpButtonHeight
+        std_y = self.setUpButtonPos
+
+        ExitBUtton_x = self.GUI_Width / 2 - self.setUpButtonWith / 2
+        Changeleft_x = self.setUp_getin
+        Changeright_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
+
+        # ExitButton - for navigation from widget to destination_exit
+
+        self.ExitButton = QtWidgets.QPushButton(widget)
+        self.ExitButton.setGeometry(QtCore.QRect(ExitBUtton_x, std_y, std_width, std_hight))
+        self.ExitButton.setText("Exit")
+
+        self.ExitButton.clicked.connect(lambda: self.GW.setCurrentIndex(destination_exit))
+
+        # Changeleft - for navigation from widget to destination_Left
+
+        self.Changeleft = QtWidgets.QPushButton(widget)
+        self.Changeleft.setGeometry(QtCore.QRect(Changeleft_x, std_y, std_width, std_hight))
+        self.Changeleft.setText("<- Change page")
+
+        self.Changeleft.clicked.connect(lambda: self.showBottlePage(destination_Left))
+
+        # Changeright - for navigation from widget to destination_right
+
+        self.Changeright = QtWidgets.QPushButton(widget)
+        self.Changeright.setGeometry(QtCore.QRect(Changeright_x, std_y, std_width, std_hight))
+        self.Changeright.setText("Change page ->")
+
+        self.Changeright.clicked.connect(lambda: self.showBottlePage(destination_Right))
+
+    ########### END of bottomNavigation(self,widget,destination_Left,destination_Right,destination_exit) ###############
+
+    ####################################--Classes for simplyfied GUI design--##########################################
 
     class BottleLine():
         def __init__(self, Master, widget, Bottle, total_x,total_y):
