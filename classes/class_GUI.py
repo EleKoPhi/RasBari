@@ -68,6 +68,7 @@ class Ui_GUI(QWidget,QObject):
 
         ################################### ---> END setUp_Ui <--- ####################################################
 
+
     def main_Widget(self, StackedWidget):
 
         # Build of new widget
