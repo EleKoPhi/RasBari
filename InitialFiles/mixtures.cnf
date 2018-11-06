@@ -1,5 +1,5 @@
 [Drink1]
-Name=Gin Tonic
+Name=Gin Tonic1
 Gin=30
 Whisky=0
 Rum=0
@@ -25,7 +25,7 @@ Grenadine=10
 Zuckersirup=10
 
 [Drink3]
-Name=Gin Tonic
+Name=Gin Tonic3
 Gin=30
 Whisky=0
 Rum=0
@@ -38,7 +38,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink4]
-Name=Gin Tonic
+Name=Gin Tonic4
 Gin=30
 Whisky=0
 Rum=0
@@ -51,7 +51,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink5]
-Name=Gin Tonic
+Name=Gin Tonic5
 Gin=30
 Whisky=0
 Rum=0
@@ -64,7 +64,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink6]
-Name=Gin Tonic
+Name=Gin Tonic6
 Gin=30
 Whisky=0
 Rum=0
@@ -77,7 +77,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink7]
-Name=Gin Tonic
+Name=Gin Tonic7
 Gin=30
 Whisky=0
 Rum=0
@@ -90,7 +90,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink8]
-Name=Gin Tonic
+Name=Gin Tonic8
 Gin=30
 Whisky=0
 Rum=0

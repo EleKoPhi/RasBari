@@ -16,6 +16,9 @@ class Ui_GUI(QWidget,QObject):
     showDrinkwidget = pyqtSignal()
     updateGUI = pyqtSignal()
 
+    live_drink = 0
+
+
     def __init__(self,width,height,GlobalWidged):
         QObject.__init__(self)
         self.calculateGUI(width, height)
@@ -38,6 +41,8 @@ class Ui_GUI(QWidget,QObject):
         self.bottle_Widget(StackedWidget)
         self.ingredient_Widget(StackedWidget)
         self.newDrink_Widget(StackedWidget)
+        self.drinks_menue_widget(StackedWidget)
+        self.included_Drinks_widget(StackedWidget)
 
         ################################### ---> END GUI OBJECTS <--- #################################################
 
@@ -413,7 +418,121 @@ class Ui_GUI(QWidget,QObject):
         self.Reset.setGeometry(QtCore.QRect(Reset_x, std_Y, std_Width, std_Hight))
         self.Reset.setText("Reset")
 
+
         ############################ END of newDrink_Widget(self, StackedWidget) #######################################
+
+    def drinks_menue_widget(self, StackedWidget):
+
+        self.showDrinkwidget.connect(lambda: self.showWidget(self.drinks_menue_widget))
+
+        # Build of new widget
+
+        self.drinks_menue_widget = QtWidgets.QWidget()
+        self.drinks_menue_widget.setObjectName("Drink_menue")
+        StackedWidget.addWidget(self.drinks_menue_widget)
+
+        # Std. values
+
+        std_Hight = self.setUpButtonHeight
+        std_Width = self.setUpButtonWith
+        std_Width_menue = self.GUI_Width / 2 - self.setUp_getin * 1.5
+        std_Y_menue = self.GUI_Height / 2 - std_Hight / 2
+        std_Y = self.setUpButtonPos
+
+        # Headline - Contains Software title
+
+        self.buildHeader(self.drinks_menue_widget, StackedWidget)
+
+        # NewDrink pushbutton to navigate to the newdrink widget
+
+        self.NewDrink = QtWidgets.QPushButton(self.drinks_menue_widget)
+        self.NewDrink.setGeometry(QtCore.QRect(self.setUp_getin, std_Y_menue, std_Width_menue, std_Hight))
+        self.NewDrink.setText("Let me make a new drink!")
+
+        self.NewDrink.clicked.connect(lambda: self.showWidget(self.NewDrinkwig))
+
+        # ShowDrink pushbutton to naviate to the widget that shows all included drinks
+
+        ShowDrink_x = self.GUI_Width - self.setUp_getin - std_Width_menue
+
+        self.ShowDrink = QtWidgets.QPushButton(self.drinks_menue_widget)
+        self.ShowDrink.setGeometry(QtCore.QRect(ShowDrink_x, std_Y_menue, std_Width_menue, std_Hight))
+        self.ShowDrink.setText("Show included drinks!")
+
+        self.ShowDrink.clicked.connect(lambda: self.showWidget(self.included_Drinks_widget))
+
+        # ExitButton - Button to navigate back to the main widget
+
+        ExitButton_x = (self.GUI_Width / 2 - self.setUpButtonWith / 2)
+
+        self.ExitButton = QtWidgets.QPushButton(self.drinks_menue_widget)
+        self.ExitButton.setGeometry(QtCore.QRect(ExitButton_x, std_Y, std_Width, std_Hight))
+        self.ExitButton.setText("Exit")
+
+        self.ExitButton.clicked.connect(lambda: self.showWidget(self.Mainwig))
+
+    def included_Drinks_widget(self, StackedWidget):
+
+        std_Hight = self.setUpButtonHeight
+        std_Width = self.setUpButtonWith
+        std_Width_menue = self.GUI_Width / 2 - self.setUp_getin * 1.5
+        std_Y_menue = self.GUI_Height / 2 - std_Hight / 2
+        std_Y = self.setUpButtonPos
+
+        # Build of new widget
+
+        self.included_Drinks_widget = QtWidgets.QWidget()
+        self.included_Drinks_widget.setObjectName("Drinks")
+        StackedWidget.addWidget(self.included_Drinks_widget)
+
+        # Headline - Contains Software title
+
+        self.buildHeader(self.included_Drinks_widget, StackedWidget)
+
+        DrinkTxt_width = self.setUpButtonWith * 1.8
+        DrinkTxt_height = self.setUpButtonWith * 1.2
+        DrinkTxt_x = self.GUI_Width / 2 - DrinkTxt_width / 2
+        DrinkTxt_y = self.GUI_Height / 2 - DrinkTxt_height / 2
+
+        self.DrinkTxt = QtWidgets.QTextBrowser(self.included_Drinks_widget)
+        self.DrinkTxt.setGeometry(QtCore.QRect(DrinkTxt_x, DrinkTxt_y, DrinkTxt_width, DrinkTxt_height))
+        self.DrinkTxt.setObjectName("Middle_Txt_Box")
+        self.DrinkTxt.setText(self.RasBari.DrinkList[self.live_drink].getIngredientString())
+
+        ExitButton_x = (self.GUI_Width / 2 - self.setUpButtonWith / 2)
+
+        self.ExitButton = QtWidgets.QPushButton(self.included_Drinks_widget)
+        self.ExitButton.setGeometry(QtCore.QRect(ExitButton_x, std_Y, std_Width, std_Hight))
+        self.ExitButton.setText("Exit")
+
+        self.ExitButton.clicked.connect(lambda: self.showWidget(self.Mainwig))
+
+        Next_button_size = self.setUpButtonHeight * 1.5
+        Next_button_y = self.GUI_Height / 2 - Next_button_size / 2
+        Next_left_x = (self.GUI_Width / 2 - DrinkTxt_width / 2) / 2 - Next_button_size / 2
+        Next_right_x = self.GUI_Width - Next_left_x - Next_button_size
+
+        self.Next_left = QtWidgets.QPushButton(self.included_Drinks_widget)
+        self.Next_left.setGeometry(QtCore.QRect(Next_left_x, Next_button_y, Next_button_size, Next_button_size))
+        self.Next_left.setObjectName("change_left")
+        self.Next_left.setText("<-")
+        self.Next_left.clicked.connect(lambda: self.changeDrinkTxt(0))
+
+        self.Next_right = QtWidgets.QPushButton(self.included_Drinks_widget)
+        self.Next_right.setGeometry(QtCore.QRect(Next_right_x, Next_button_y, Next_button_size, Next_button_size))
+        self.Next_right.setObjectName("change_right")
+        self.Next_right.setText("->")
+        self.Next_right.clicked.connect(lambda: self.changeDrinkTxt(1))
+
+    def changeDrinkTxt(self, direction):
+        if direction == 1:
+            self.live_drink = self.live_drink + 1
+            if self.live_drink > len(self.RasBari.DrinkList) - 1: self.live_drink = 0
+        if direction == 0:
+            self.live_drink = self.live_drink - 1
+            if self.live_drink < 0: self.live_drink = len(self.RasBari.DrinkList) - 1
+
+        self.DrinkTxt.setText(self.RasBari.DrinkList[self.live_drink].getIngredientString())
 
     def Button_Thread_Handler(self,Auswahl):
 
@@ -552,6 +671,10 @@ class Ui_GUI(QWidget,QObject):
 
         self.updateGUI.emit()
         self.GW.setCurrentIndex(self.GW.indexOf(Page))
+
+    def showWidget(self, widget):
+        self.updateGUI.emit()
+        self.GW.setCurrentIndex(self.GW.indexOf(widget))
 
     def buildHeader(self, widget, StackedWidget):
         self.Titel = QtWidgets.QTextBrowser(widget)

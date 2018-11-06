@@ -44,9 +44,10 @@ class Drink(object):
     def getStat(self):
         return self.alive
 
+    def getIngredientString(self):
+        string = "Name:" + self.getName() + "\n"
+        for i in range(1, len(self.Ingredients)):
+            if self.Ingredients[i][1] == "0": continue
+            string = string + self.Ingredients[i][0] + ":" + self.Ingredients[i][1] + "\n"
 
-
-
-
-
-
+        return string
