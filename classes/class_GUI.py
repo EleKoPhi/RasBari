@@ -30,6 +30,7 @@ class Ui_GUI(QWidget,QObject):
 
         StackedWidget.setObjectName("GUI")
         StackedWidget.resize(self.GUI_Width, self.GUI_Height)
+        StackedWidget.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
 
         ################################### ---> BUILD WIDGETS HER <--- ###############################################
 
@@ -40,28 +41,7 @@ class Ui_GUI(QWidget,QObject):
 
         ################################### ---> END GUI OBJECTS <--- #################################################
 
-        self.retranslateUi(StackedWidget)
         QtCore.QMetaObject.connectSlotsByName(StackedWidget)
-
-        ############################# ---> START CONNECTION [BUTTONS]<--- #############################################
-
-        """self.Drink1_0.clicked.connect(lambda: self.Button_Thread_Handler(0))
-        self.Drink2_0.clicked.connect(lambda: self.Button_Thread_Handler(1))
-        self.Drink3_0.clicked.connect(lambda: self.Button_Thread_Handler(2))
-        self.Drink4_0.clicked.connect(lambda: self.Button_Thread_Handler(3))
-
-        self.Drink1_1.clicked.connect(lambda: self.Button_Thread_Handler(4))
-        self.Drink2_1.clicked.connect(lambda: self.Button_Thread_Handler(5))
-        self.Drink3_1.clicked.connect(lambda: self.Button_Thread_Handler(6))
-        self.Drink4_1.clicked.connect(lambda: self.Button_Thread_Handler(7))
-
-        self.Drink1_2.clicked.connect(lambda: self.Button_Thread_Handler(8))
-        self.Drink2_2.clicked.connect(lambda: self.Button_Thread_Handler(9))
-        self.Drink3_2.clicked.connect(lambda: self.Button_Thread_Handler(10))
-        self.Drink4_2.clicked.connect(self.RasBari.sendSignal)"""
-
-
-
 
         ############################### ---> START CONNECTION [CodeSignals]<--- #######################################
 
@@ -88,33 +68,6 @@ class Ui_GUI(QWidget,QObject):
 
         ################################### ---> END setUp_Ui <--- ####################################################
 
-    def retranslateUi(self, StackedWidget):
-
-        _translate = QtCore.QCoreApplication.translate
-
-        StackedWidget.setWindowTitle(_translate("GUI", "Rasbari"))
-
-        self.Drink1_0.setText(_translate("GUI", getDrinkName("Drink1")))
-        self.Drink2_0.setText(_translate("GUI", getDrinkName("Drink2")))
-        self.Drink3_0.setText(_translate("GUI", getDrinkName("Drink3")))
-        self.Drink4_0.setText(_translate("GUI", getDrinkName("Drink4")))
-
-        self.Drink1_1.setText(_translate("GUI", getDrinkName("Drink5")))
-        self.Drink2_1.setText(_translate("GUI", getDrinkName("Drink6")))
-        self.Drink3_1.setText(_translate("GUI", getDrinkName("Drink7")))
-        self.Drink4_1.setText(_translate("GUI", getDrinkName("Drink8")))
-
-        self.Drink1_2.setText(_translate("GUI", getDrinkName("Drink9")))
-        self.Drink2_2.setText(_translate("GUI", getDrinkName("Drink10")))
-        self.Drink3_2.setText(_translate("GUI", getDrinkName("Drink11")))
-        self.Drink4_2.setText(_translate("GUI", getDrinkName("Drink12")))
-
-
-
-
-
-
-
     def main_Widget(self, StackedWidget):
 
         # Build of new widget
@@ -131,9 +84,13 @@ class Ui_GUI(QWidget,QObject):
         std_Hight_txt = self.setUpTxTHeight
         std_Width = self.setUpButtonWith
 
+        GridButton = []
+
         # Headline - Contains Software title
 
         self.buildHeader(self.Mainwig, StackedWidget)
+
+        # gridWidget contains all buttons, that start a mixture
 
         gridWidget_x = 0
         gridWidget_y = self.setUpButtonHeight + self.space_Gen
@@ -147,85 +104,29 @@ class Ui_GUI(QWidget,QObject):
         self.ButtonGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.ButtonGrid.setObjectName("AuswahlGrid")
 
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        # sizePolicy.setHeightForWidth(self.Drink1_0.sizePolicy().hasHeightForWidth())
+        numberOfRows = -(-len(self.RasBari.DrinkList) // 4)
+        gridButtonHight = gridHight / numberOfRows * 0.9
+        gridButtonWidth = gridWidth / 4 * 0.8
 
-        # print(self.RasBari.DrinkList)
+        column = 0
+        line = 0
 
-        self.Drink1_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink1_0.setSizePolicy(sizePolicy)
-        self.Drink1_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink1_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink1_0.setObjectName("Drink1_0")
-        self.ButtonGrid.addWidget(self.Drink1_0, 0, 0, 1, 1)
+        # include the buttons in the ButtonGrid
 
-        self.Drink1_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink1_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink1_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink1_1.setObjectName("Drink1_1")
-        self.ButtonGrid.addWidget(self.Drink1_1, 2, 0, 1, 1)
+        for i in range(len(self.RasBari.DrinkList)):
 
-        self.Drink1_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink1_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink1_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink1_2.setObjectName("Drink1_2")
-        self.ButtonGrid.addWidget(self.Drink1_2, 3, 0, 1, 1)
+            GridButton.extend([QtWidgets.QPushButton(self.gridLayoutWidget)])
+            GridButton[i].setMinimumSize(QtCore.QSize(gridButtonWidth, gridButtonHight))
+            GridButton[i].setObjectName("Button_" + str(i))
+            GridButton[i].setText(self.RasBari.DrinkList[i].getName())
+            GridButton[i].clicked.connect(lambda: self.Button_Thread_Handler(i))
+            self.ButtonGrid.addWidget(GridButton[i], line, column)
 
-        self.Drink2_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink2_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink2_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink2_0.setObjectName("Drink2_0")
-        self.ButtonGrid.addWidget(self.Drink2_0, 0, 1, 1, 1)
+            column = column + 1
 
-        self.Drink2_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink2_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink2_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink2_1.setObjectName("Drink2_1")
-        self.ButtonGrid.addWidget(self.Drink2_1, 2, 1, 1, 1)
-
-        self.Drink2_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink2_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink2_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink2_2.setObjectName("Drink2_2")
-        self.ButtonGrid.addWidget(self.Drink2_2, 3, 1, 1, 1)
-
-        self.Drink3_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink3_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink3_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink3_0.setObjectName("Drink3_0")
-        self.ButtonGrid.addWidget(self.Drink3_0, 0, 2, 1, 1)
-
-        self.Drink3_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink3_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink3_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink3_1.setObjectName("Drink3_1")
-        self.ButtonGrid.addWidget(self.Drink3_1, 2, 2, 1, 1)
-
-        self.Drink3_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink3_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink3_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink3_2.setObjectName("Drink3_2")
-        self.ButtonGrid.addWidget(self.Drink3_2, 3, 2, 1, 1)
-
-        self.Drink4_0 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink4_0.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink4_0.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink4_0.setObjectName("Drink4_0")
-        self.ButtonGrid.addWidget(self.Drink4_0, 0, 3, 1, 1)
-
-        self.Drink4_1 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink4_1.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink4_1.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink4_1.setObjectName("Drink4_1")
-        self.ButtonGrid.addWidget(self.Drink4_1, 2, 3, 1, 1)
-
-        self.Drink4_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.Drink4_2.setMinimumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink4_2.setMaximumSize(QtCore.QSize(self.ButtonWith, self.GUI_Height * 0.55 * (1 / 4)))
-        self.Drink4_2.setObjectName("Drink4_2")
-        self.ButtonGrid.addWidget(self.Drink4_2, 3, 3, 1, 1)
+            if column == 4:
+                column = 0
+                line = line + 1
 
         # Progessbar that shows the progress of the mixture
 
@@ -345,6 +246,8 @@ class Ui_GUI(QWidget,QObject):
         self.Drinks.setText("Drinks")
 
         self.Drinks.clicked.connect(lambda: self.showDrinkwidget.emit())
+
+        ################################### END of main_Widget(self, StackedWidget) ####################################
 
     def bottle_Widget(self, StackedWidget):
 
@@ -509,7 +412,7 @@ class Ui_GUI(QWidget,QObject):
         self.Reset.setGeometry(QtCore.QRect(Reset_x, std_Y, std_Width, std_Hight))
         self.Reset.setText("Reset")
 
-        ############################ END of newDrink_Widget(self,widget,StackedWidget) ################################
+        ############################ END of newDrink_Widget(self, StackedWidget) #######################################
 
     def Button_Thread_Handler(self,Auswahl):
 

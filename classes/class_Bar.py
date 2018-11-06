@@ -1,7 +1,9 @@
-from classes.class_Drink import *
-from classes.class_Bottle import *
 import time
+
+from classes.class_Bottle import *
+from classes.class_Drink import *
 from classes.class_myThread import *
+
 
 class Bar(QObject):
 
@@ -24,18 +26,15 @@ class Bar(QObject):
 
         QObject.__init__(self)
 
-        for i in range(1, self.checkNumberOfBottles()):
+        for i in range(1, self.numberOfBottles()):
             self.Bottles.extend([Bottle(i)])
 
-        for j in range(0, 12):
-            self.DrinkList.extend([False])
+        for i in range(1, self.NumberOfDrinks() + 1):
 
-        for i in range(0, 12):
-
-            ChoosenDrink = "Drink" + str(i + 1)
+            ChoosenDrink = "Drink" + str(i)
 
             if objectCanBeBuild(ChoosenDrink):
-                self.DrinkList[i] = Drink(ChoosenDrink)
+                self.DrinkList.extend([Drink(ChoosenDrink)])
 
         print("\nBar has been initialized")
 
@@ -43,7 +42,6 @@ class Bar(QObject):
         for i in range(0,len(self.Bottles)):
             self.Bottles[i].whatsIn()
             print()
-
 
         print("\nDrinks inncluded:\n")
         for i in range(0,len(self.DrinkList)):
@@ -78,15 +76,20 @@ class Bar(QObject):
                 print("Error flage alive - Ausgabe abgebrochen")
                 return
 
-
-
-
-    def checkNumberOfBottles(self):
+    def numberOfBottles(self):
         i=1
         while True:
             if BarIni.has_section("Fluessigkeit"+str(i))==False:break
             i=i+1
         return i
+
+    def NumberOfDrinks(self):
+        i = 1
+        while True:
+            if Mischungen.has_section("Drink" + str(i)) == False: break
+            i = i + 1
+        return i - 1
+
 
     def ReadBottleInit(self,BottleNum):
         return BarIni.items(BottleNum)
