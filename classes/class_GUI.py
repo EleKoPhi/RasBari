@@ -444,6 +444,7 @@ class Ui_GUI(QWidget,QObject):
         for i in range(len(self.RasBari.Bottles)):
 
             Slider.extend([QtWidgets.QSlider(Qt.Horizontal)])
+            Slider[i].setMaximum(100)
 
             Name.extend([QtWidgets.QTextBrowser()])
             Name[i].setFont(Font)
