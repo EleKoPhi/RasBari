@@ -1,3 +1,5 @@
+from functools import partial
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from classes.class_Bar import *
@@ -17,7 +19,6 @@ class Ui_GUI(QWidget,QObject):
     updateGUI = pyqtSignal()
 
     live_drink = 0
-
 
     def __init__(self,width,height,GlobalWidged):
         QObject.__init__(self)
@@ -377,6 +378,9 @@ class Ui_GUI(QWidget,QObject):
 
     def newDrink_Widget(self, StackedWidget):
 
+        def Amount_Slider(i):
+            Amount[i].setText(str(Slider[i].value()))
+
         # Build of new widget
 
         self.NewDrinkwig = QtWidgets.QWidget()
@@ -418,6 +422,37 @@ class Ui_GUI(QWidget,QObject):
         self.Reset.setGeometry(QtCore.QRect(Reset_x, std_Y, std_Width, std_Hight))
         self.Reset.setText("Reset")
 
+        gridWidth = self.GUI_Width
+        gridHight = self.GUI_Height * 0.7
+        gridWidget_x = 0
+        gridWidget_y = self.setUpButtonHeight + self.space_Gen
+
+        self.gridLayoutWidget = QtWidgets.QWidget(self.NewDrinkwig)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(gridWidget_x, gridWidget_y, gridWidth, gridHight))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+
+        self.BottleGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.BottleGrid.setObjectName("BottleGrid")
+
+        Slider = []
+        Name = []
+        Amount = []
+
+        Font = QtGui.QFont()
+        Font.setPointSize(8)
+
+        for i in range(0, len(self.RasBari.Bottles)):
+            Slider.extend([QtWidgets.QSlider(Qt.Horizontal)])
+            Name.extend([QtWidgets.QTextBrowser()])
+            Amount.extend([QtWidgets.QTextBrowser()])
+            self.BottleGrid.addWidget(Slider[i], i, 0, 1, 1)
+            self.BottleGrid.addWidget(Name[i], i, 1, 1, 1)
+            self.BottleGrid.addWidget(Amount[i], i, 2, 1, 1)
+            Amount[i].setFont(Font)
+            Amount[i].setText("0")
+            Name[i].setFont(Font)
+            Name[i].setText(self.RasBari.Bottles[i].getname())
+            Slider[i].valueChanged.connect(partial(Amount_Slider, i))
 
         ############################ END of newDrink_Widget(self, StackedWidget) #######################################
 
