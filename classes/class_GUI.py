@@ -441,17 +441,22 @@ class Ui_GUI(QWidget,QObject):
         Font = QtGui.QFont()
         Font.setPointSize(8)
 
-        for i in range(0, len(self.RasBari.Bottles)):
+        for i in range(len(self.RasBari.Bottles)):
+
             Slider.extend([QtWidgets.QSlider(Qt.Horizontal)])
+
             Name.extend([QtWidgets.QTextBrowser()])
+            Name[i].setFont(Font)
+            Name[i].setText(self.RasBari.Bottles[i].getname())
+
             Amount.extend([QtWidgets.QTextBrowser()])
+            Amount[i].setFont(Font)
+            Amount[i].setText("0")
+
             self.BottleGrid.addWidget(Slider[i], i, 0, 1, 1)
             self.BottleGrid.addWidget(Name[i], i, 1, 1, 1)
             self.BottleGrid.addWidget(Amount[i], i, 2, 1, 1)
-            Amount[i].setFont(Font)
-            Amount[i].setText("0")
-            Name[i].setFont(Font)
-            Name[i].setText(self.RasBari.Bottles[i].getname())
+
             Slider[i].valueChanged.connect(partial(Amount_Slider, i))
 
         ############################ END of newDrink_Widget(self, StackedWidget) #######################################
