@@ -26,6 +26,7 @@ class Ui_GUI(QWidget,QObject):
         self.threadpool = QThreadPool()
         self.GW = GlobalWidged
 
+
     def setupUi(self,StackedWidget):
 
         StackedWidget.setObjectName("StackedWidget")
@@ -381,6 +382,15 @@ class Ui_GUI(QWidget,QObject):
         def Amount_Slider(i):
             Amount[i].setText(str(Slider[i].value()))
 
+        def newMaxima(callingSlider):
+            sum = 0
+
+            for i in range(len(Slider)):
+                sum = sum + Slider[i].value()
+
+            if sum >= 100:
+                Slider[callingSlider].setSliderPosition(Slider[callingSlider].value() - (sum - 100))
+
         # Build of new widget
 
         self.NewDrinkwig = QtWidgets.QWidget()
@@ -407,6 +417,7 @@ class Ui_GUI(QWidget,QObject):
         self.ExitButton.setText("Exit")
 
         self.ExitButton.clicked.connect(lambda: StackedWidget.setCurrentIndex(MainWidgetIndex))
+
 
         # Save - Button to Save the current drink setup as a new drink
 
@@ -445,6 +456,8 @@ class Ui_GUI(QWidget,QObject):
 
             Slider.extend([QtWidgets.QSlider(Qt.Horizontal)])
             Slider[i].setMaximum(100)
+            Slider[i].setMinimum(0)
+            Slider[i].setMinimumSize(20, 20)
 
             Name.extend([QtWidgets.QTextBrowser()])
             Name[i].setFont(Font)
@@ -459,6 +472,7 @@ class Ui_GUI(QWidget,QObject):
             self.BottleGrid.addWidget(Amount[i], i, 2, 1, 1)
 
             Slider[i].valueChanged.connect(partial(Amount_Slider, i))
+            Slider[i].valueChanged.connect(partial(newMaxima, i))
 
         ############################ END of newDrink_Widget(self, StackedWidget) #######################################
 

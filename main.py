@@ -10,6 +10,7 @@
 
 from PyQt5 import QtWidgets
 
+from StyleFunctions import ApplyStyleSheets
 from classes.class_GUI import Ui_GUI
 
 if __name__ == "__main__":
@@ -17,6 +18,7 @@ if __name__ == "__main__":
     import sys
 
     app = QtWidgets.QApplication(sys.argv)
+    ApplyStyleSheets(app)
     StackedWidget = QtWidgets.QStackedWidget()
 
     screen = app.primaryScreen()
