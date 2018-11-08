@@ -15,6 +15,7 @@ class Drink(object):
             if proofIngredients(NumberOfDrink):
 
                 self.Ingredients = allIngredients
+
                 self.alive = True
 
             else:
@@ -51,3 +52,12 @@ class Drink(object):
             string = string + self.Ingredients[i][0] + ":" + self.Ingredients[i][1] + "\n"
 
         return string
+
+    def SetUpNew(self, Amount, Bottles, Name):
+
+        del self.Ingredients
+
+        self.Ingredients.extend([("Name", Name)])
+
+        for i in range(len(Amount)):
+            self.Ingredients.extend([(Bottles[i].getname(), str(Amount[i].value()))])

@@ -1,3 +1,4 @@
+from copy import deepcopy
 from functools import partial
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -127,7 +128,7 @@ class Ui_GUI(QWidget,QObject):
             GridButton[i].setMinimumSize(QtCore.QSize(gridButtonWidth, gridButtonHight))
             GridButton[i].setObjectName("Button_" + str(i))
             GridButton[i].setText(self.RasBari.DrinkList[i].getName())
-            GridButton[i].clicked.connect(lambda: self.Button_Thread_Handler(i))
+            GridButton[i].clicked.connect(partial(self.Button_Thread_Handler, i))
             self.ButtonGrid.addWidget(GridButton[i], line, column)
 
             column = column + 1
@@ -425,6 +426,8 @@ class Ui_GUI(QWidget,QObject):
         self.Save.setGeometry(QtCore.QRect(self.setUp_getin, std_Y, std_Width, std_Hight))
         self.Save.setText("Save Drink")
 
+        self.Save.clicked.connect(lambda: self.saveNewDrink(Slider, self.RasBari.Bottles))
+
         # Reset - Button to reset the current choose
 
         Reset_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
@@ -475,6 +478,13 @@ class Ui_GUI(QWidget,QObject):
             Slider[i].valueChanged.connect(partial(newMaxima, i))
 
         ############################ END of newDrink_Widget(self, StackedWidget) #######################################
+
+    def saveNewDrink(self, Slider, Bottles):  # TODO clear all that a bit
+
+        self.DemoDrink = deepcopy(self.RasBari.DrinkList[0])
+        self.DemoDrink.SetUpNew(Slider, Bottles, "MyFirstRealDynamicShit")
+        self.RasBari.DrinkList.extend([self.DemoDrink])
+        print(self.RasBari.DrinkList[-1].getIngredientString())
 
     def drinks_menue_widget(self, StackedWidget):
 
