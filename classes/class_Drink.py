@@ -46,7 +46,7 @@ class Drink(object):
         try:
             return self.Ingredients[0][1]
         except:
-            return "could not read that name"
+            return "Error while reading returning drink name"
 
     def getStat(self):
         return self.alive

@@ -15,7 +15,6 @@ class Ui_GUI(QWidget,QObject):
     Bottle_pages = []
     GridButton = []
 
-
     showBottlewidget = pyqtSignal()
     showDrinkwidget = pyqtSignal()
     updateGUI = pyqtSignal()
@@ -221,7 +220,6 @@ class Ui_GUI(QWidget,QObject):
         self.Drinks.clicked.connect(lambda: self.showDrinkwidget.emit())
 
         def updateWidget():
-            print("Update main_Widget")
 
             self.GridLayout = self.Mainwig.findChild(QtWidgets.QWidget, "gridLayoutWidget")
             self.ButtonGrid = self.Mainwig.findChild(QtWidgets.QGridLayout, "AuswahlGrid")
@@ -232,12 +230,14 @@ class Ui_GUI(QWidget,QObject):
 
                 for i in range(len(self.GridButton)):
                     Button = self.Mainwig.findChild(QtWidgets.QPushButton, "Button_" + str(i))
+                    Button.disconect()
                     Button.deleteLater()
+
+                self.buildButtonGrid()
 
             except:
                 self.buildButtonGrid()
 
-        # self.updateGUI.connect(self.gridLayoutWidget.deleteLater)
         self.updateGUI.connect(lambda: updateWidget())
 
 
@@ -270,21 +270,22 @@ class Ui_GUI(QWidget,QObject):
 
         i = 0
 
+        self.GridButton.clear()
+
         for i in range(len(self.RasBari.DrinkList)):
 
             self.GridButton.extend([QtWidgets.QPushButton(self.gridLayoutWidget)])
-            """self.GridButton[i].setMinimumSize(QtCore.QSize(gridButtonWidth, gridButtonHight))
+            self.GridButton[i].setMinimumSize(QtCore.QSize(gridButtonWidth, gridButtonHight))
             self.GridButton[i].setObjectName("Button_" + str(i))
             self.GridButton[i].setText(self.RasBari.DrinkList[i].getName())
             self.GridButton[i].clicked.connect(partial(self.Button_Thread_Handler, i))
-            self.ButtonGrid.addWidget(self.GridButton[i], line, column)"""
+            self.ButtonGrid.addWidget(self.GridButton[i], line, column)
 
             column = column + 1
 
             if column == 4:
                 column = 0
                 line = line + 1
-
 
     def bottle_Widget(self, StackedWidget):
 
@@ -480,7 +481,7 @@ class Ui_GUI(QWidget,QObject):
         Amount = []
 
         Font = QtGui.QFont()
-        Font.setPointSize(8)
+        Font.setPointSize(8)  # TODO split the displayed bottles to more widgets if len(Bottles)>5
 
         for i in range(len(self.RasBari.Bottles)):
 
@@ -497,6 +498,8 @@ class Ui_GUI(QWidget,QObject):
             Amount[i].setFont(Font)
             Amount[i].setText("0")
 
+            #TODO try to change die size of Name and Amount
+
             self.BottleGrid.addWidget(Slider[i], i, 0, 1, 1)
             self.BottleGrid.addWidget(Name[i], i, 1, 1, 1)
             self.BottleGrid.addWidget(Amount[i], i, 2, 1, 1)
@@ -508,21 +511,31 @@ class Ui_GUI(QWidget,QObject):
 
     def saveNewDrink(self, Slider, Bottles):
 
-        self.Ingredients = []
-
-        NewDrinkName = "Newdrink_" + str(len(self.RasBari.DrinkList))
-
-        self.Ingredients.extend([("name", NewDrinkName)])
+        sum = 0
 
         for i in range(len(Slider)):
-            Ingred = [Bottles[i].getname(), str(Slider[i].value())]
-            self.Ingredients.extend([Ingred])
+            sum = sum + Slider[i].value()
 
-        NewDrink = Drink(self.Ingredients)
+        if sum == 100:
 
-        self.RasBari.DrinkList.extend([NewDrink])
+            self.Ingredients = []
 
-        self.resetSlder(Slider)
+            NewDrinkName = "Newdrink_" + str(len(self.RasBari.DrinkList))
+
+            self.Ingredients.extend([("name", NewDrinkName)])
+
+            for i in range(len(Slider)):
+                Ingred = [Bottles[i].getname(), str(Slider[i].value())]
+                self.Ingredients.extend([Ingred])
+
+            NewDrink = Drink(self.Ingredients)
+
+            self.RasBari.DrinkList.extend([NewDrink])
+
+            self.resetSlder(Slider)
+
+        else:
+            print("Drink not completed")  #TODO change the reset button to an textbrowser that indictes status
 
     def resetSlder(self, Slider):
         for i in range(len(Slider)):
@@ -804,7 +817,7 @@ class Ui_GUI(QWidget,QObject):
         self.ExitButton.setGeometry(QtCore.QRect(ExitBUtton_x, std_y, std_width, std_hight))
         self.ExitButton.setText("Exit")
 
-        self.ExitButton.clicked.connect(lambda: self.GW.setCurrentIndex(destination_exit))
+        self.ExitButton.clicked.connect(lambda: self.showWidget(self.Mainwig))
 
         # Changeleft - for navigation from widget to destination_Left
 
@@ -824,7 +837,7 @@ class Ui_GUI(QWidget,QObject):
 
         ########### END of bottomNavigation(self,widget,destination_Left,destination_Right,destination_exit) ###########
 
-    ####################################--Classes for simplyfied GUI design--##########################################
+    ####################################--Classes for simplyfied GUI design--###########################################
 
     class BottleLine():
         def __init__(self, Master, widget, Bottle, total_x,total_y):
