@@ -11,7 +11,7 @@
 from PyQt5 import QtWidgets
 
 from StyleFunctions import ApplyStyleSheets
-from classes.class_GUI import Ui_GUI
+from classes.class_GUI import UiGui
 
 if __name__ == "__main__":
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     screen = app.primaryScreen()
     rect = screen.availableGeometry()
 
-    ui = Ui_GUI(rect.width(),rect.height(),StackedWidget)
+    ui = UiGui(rect.width(), rect.height(), StackedWidget)
     ui.setupUi(StackedWidget)
 
     #StackedWidget.showFullScreen() #Comment line 28 or 29 in for full or part screen

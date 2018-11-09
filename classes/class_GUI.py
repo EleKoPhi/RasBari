@@ -7,8 +7,7 @@ from classes.class_eMailGuard import *
 from classes.class_myThread import *
 
 
-class Ui_GUI(QWidget,QObject):
-
+class UiGui(QWidget, QObject):
     RasBari = Bar()
     EmailOrder = eMailGuard()
 
@@ -22,40 +21,40 @@ class Ui_GUI(QWidget,QObject):
 
     live_drink = 0
 
-    def __init__(self,width,height,GlobalWidged):
+    def __init__(self, width, height, global_widget):
         QObject.__init__(self)
+        self.MailTimer = QtCore.QTimer()
         self.calculateGUI(width, height)
         self.threadpool = QThreadPool()
-        self.GW = GlobalWidged
+        self.GW = global_widget
 
+    def setupUi(self, stacked_widget):
 
-    def setupUi(self,StackedWidget):
-
-        StackedWidget.setObjectName("StackedWidget")
+        stacked_widget.setObjectName("stacked_widget")
 
         ################################### ---> START GUI SETUP <--- #################################################
 
-        StackedWidget.setObjectName("GUI")
-        StackedWidget.resize(self.GUI_Width, self.GUI_Height)
-        StackedWidget.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
+        stacked_widget.setObjectName("GUI")
+        stacked_widget.resize(self.GUI_Width, self.GUI_Height)
+        stacked_widget.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
 
         ################################### ---> BUILD WIDGETS HER <--- ###############################################
 
-        self.main_Widget(StackedWidget)
-        self.bottle_Widget(StackedWidget)
-        self.ingredient_Widget(StackedWidget)
-        self.newDrink_Widget(StackedWidget)
-        self.drinks_menue_widget(StackedWidget)
-        self.included_Drinks_widget(StackedWidget)
+        self.main_Widget(stacked_widget)
+        self.bottle_Widget(stacked_widget)
+        self.ingredient_Widget(stacked_widget)
+        self.newDrink_Widget(stacked_widget)
+        self.drinks_menue_widget(stacked_widget)
+        self.included_Drinks_widget(stacked_widget)
 
         ################################### ---> END GUI OBJECTS <--- #################################################
 
-        QtCore.QMetaObject.connectSlotsByName(StackedWidget)
+        QtCore.QMetaObject.connectSlotsByName(stacked_widget)
 
         ############################### ---> START CONNECTION [CodeSignals]<--- #######################################
 
         self.RasBari.missingIngred.connect(self.showIngred_widget)
-        self.RasBari.drinkunknown.connect(lambda:self.showmsgbox)
+        self.RasBari.drinkunknown.connect(lambda: self.showmsgbox)
         self.RasBari.changedValSig.connect(self.upDateStatusBar)
         self.RasBari.changedAmountSig.connect(self.upDateTxt)
         self.RasBari.changedStatus.connect(self.UpdateStausTxt)
@@ -64,27 +63,25 @@ class Ui_GUI(QWidget,QObject):
 
         ################################### ---> START TIMER <--- #####################################################
 
-        self.MailTimer = QtCore.QTimer()
         self.MailTimer.setSingleShot(False)
-        if getEmailGuardStat() & self.EmailOrder.status:self.MailTimer.start(3000)
-        self.MailTimer.timeout.connect(lambda :self.check4order())
+        if getEmailGuardStat() & self.EmailOrder.status: self.MailTimer.start(3000)
+        self.MailTimer.timeout.connect(lambda: self.check4order())
 
         ################################### ---> END TIMER <--- #######################################################
 
-        MainWidgetIndex = StackedWidget.indexOf(self.Mainwig)
-        StackedWidget.setCurrentIndex(MainWidgetIndex)
-        QtCore.QMetaObject.connectSlotsByName(StackedWidget)
+        main_widget_index = stacked_widget.indexOf(self.Mainwig)
+        stacked_widget.setCurrentIndex(main_widget_index)
+        QtCore.QMetaObject.connectSlotsByName(stacked_widget)
 
         ################################### ---> END setUp_Ui <--- ####################################################
 
-
-    def main_Widget(self, StackedWidget):
+    def main_Widget(self, stacked_widget):
 
         # Build of new widget
 
         self.Mainwig = QtWidgets.QWidget()
         self.Mainwig.setObjectName("Mainwig")
-        StackedWidget.addWidget(self.Mainwig)
+        stacked_widget.addWidget(self.Mainwig)
 
         # std. values
 
@@ -96,7 +93,7 @@ class Ui_GUI(QWidget,QObject):
 
         # Headline - Contains Software title
 
-        self.buildHeader(self.Mainwig, StackedWidget)
+        self.buildHeader(self.Mainwig, stacked_widget)
 
         self.buildButtonGrid()
 
@@ -240,8 +237,7 @@ class Ui_GUI(QWidget,QObject):
 
         self.updateGUI.connect(lambda: updateWidget())
 
-
-        ################################### END of main_Widget(self, StackedWidget) ####################################
+        ################################### END of main_Widget(self, stacked_widget) ####################################
 
     def buildButtonGrid(self):
 
@@ -325,14 +321,14 @@ class Ui_GUI(QWidget,QObject):
 
         for i in range(len(self.Bottle_pages)):
 
-            PageLeft = self.Bottle_pages[i - 1]
+            page_left = self.Bottle_pages[i - 1]
 
             try:
-                PageRight = self.Bottle_pages[i + 1]
+                page_right = self.Bottle_pages[i + 1]
             except:
-                PageRight = self.Bottle_pages[0]
+                page_right = self.Bottle_pages[0]
 
-            self.bottomNavigation(self.Bottle_pages[i], PageLeft, PageRight, MainWidgetIndex)
+            self.bottomNavigation(self.Bottle_pages[i], page_left, page_right, MainWidgetIndex)
 
         # Build for every bottle one line thats shows - NAME - LEVEL + REST_Button + CLEAR_Button
 
@@ -345,21 +341,21 @@ class Ui_GUI(QWidget,QObject):
                 page += 1
                 j = 0
 
-            Line_y = Topspace + j * (self.setUpButtonHeight + self.space_Gen * 1.7)
+            line_y = Topspace + j * (self.setUpButtonHeight + self.space_Gen * 1.7)
 
-            Lines.extend([self.BottleLine(self, self.Bottle_pages[page], self.RasBari.Bottles[i], 0, Line_y)])
+            Lines.extend([self.BottleLine(self, self.Bottle_pages[page], self.RasBari.Bottles[i], 0, line_y)])
 
             j += 1
 
         ############################ END of bottle_Widget(self, widgetA, widgetB, StackedWidget) #######################
 
-    def ingredient_Widget(self, StackedWidget):
+    def ingredient_Widget(self, stacked_widget):
 
         # Build of new widget
 
         self.ingredWidg = QtWidgets.QWidget()
         self.ingredWidg.setObjectName("Missing_Ingred")
-        StackedWidget.addWidget(self.ingredWidg)
+        stacked_widget.addWidget(self.ingredWidg)
 
         # Std. values
 
@@ -368,13 +364,13 @@ class Ui_GUI(QWidget,QObject):
 
         # Headline - Contains Software title
 
-        self.buildHeader(self.ingredWidg, StackedWidget)
+        self.buildHeader(self.ingredWidg, stacked_widget)
 
         # YESBut - Button for navigation to the bottle widget
 
         YESBut_x = self.setUp_getin
         YESBut_y = self.GUI_Height / 2 - std_hight / 2
-        FstBottleWidgetIndex = StackedWidget.indexOf(self.Bottle_pages[0])
+        FstBottleWidgetIndex = stacked_widget.indexOf(self.Bottle_pages[0])
 
         self.YESBut = QtWidgets.QPushButton(self.ingredWidg)
         self.YESBut.setGeometry(QtCore.QRect(YESBut_x, YESBut_y, std_width, std_hight))
@@ -386,7 +382,7 @@ class Ui_GUI(QWidget,QObject):
 
         NOBut_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
         NOBut_y = YESBut_y
-        MainWidgetIndex = StackedWidget.indexOf(self.Mainwig)
+        MainWidgetIndex = stacked_widget.indexOf(self.Mainwig)
 
         self.NOBut = QtWidgets.QPushButton(self.ingredWidg)
         self.NOBut.setGeometry(QtCore.QRect(NOBut_x, NOBut_y, std_width, std_hight))
@@ -405,19 +401,19 @@ class Ui_GUI(QWidget,QObject):
         self.Message.setGeometry(QtCore.QRect(Message_x, Message_y, std_width, Message_hight))
         self.Message.setText(Message_content)
 
-        ############################ END of ingredient_Widget(self, widget, StackedWidget) #############################
+        ############################ END of ingredient_Widget(self, widget, stacked_widget) #############################
 
     def newDrink_Widget(self, StackedWidget):
 
         def Amount_Slider(i):
-            Amount[i].setText(str(Slider[i].value()))
+            amount[i].setText(str(slider[i].value()))
 
             sum = 0
 
-            for i in range(len(Slider)):
-                sum = sum + Slider[i].value()
+            for i in range(len(slider)):
+                sum = sum + slider[i].value()
 
-            message = "Amount: %d/100" % sum
+            message = "amount: %d/100" % sum
             add = ""
 
             if sum < 100:
@@ -427,15 +423,14 @@ class Ui_GUI(QWidget,QObject):
 
             self.Stat.setText(message + add)
 
-
         def newMaxima(callingSlider):
             sum = 0
 
-            for i in range(len(Slider)):
-                sum = sum + Slider[i].value()
+            for i in range(len(slider)):
+                sum = sum + slider[i].value()
 
             if sum >= 100:
-                Slider[callingSlider].setSliderPosition(Slider[callingSlider].value() - (sum - 100))
+                slider[callingSlider].setSliderPosition(slider[callingSlider].value() - (sum - 100))
 
         # Build of new widget
 
@@ -457,7 +452,6 @@ class Ui_GUI(QWidget,QObject):
 
         ExitButton_x = (self.GUI_Width / 2 - self.setUpButtonWith / 2)
 
-
         self.ExitButton = QtWidgets.QPushButton(self.NewDrinkwig)
         self.ExitButton.setGeometry(QtCore.QRect(ExitButton_x, std_Y, std_Width, std_Hight))
         self.ExitButton.setText("Exit")
@@ -470,7 +464,7 @@ class Ui_GUI(QWidget,QObject):
         self.Save.setGeometry(QtCore.QRect(self.setUp_getin, std_Y, std_Width, std_Hight))
         self.Save.setText("Save Drink")
 
-        self.Save.clicked.connect(lambda: self.saveNewDrink(Slider, self.RasBari.Bottles))
+        self.Save.clicked.connect(lambda: self.saveNewDrink(slider, self.RasBari.Bottles))
 
         # StatTxt - shows mixture status
 
@@ -492,38 +486,37 @@ class Ui_GUI(QWidget,QObject):
         self.BottleGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.BottleGrid.setObjectName("BottleGrid")
 
-        Slider = []
-        Name = []
-        Amount = []
+        slider = []
+        name = []
+        amount = []
 
-        Font = QtGui.QFont()
-        Font.setPointSize(8)  # TODO split the displayed bottles to more widgets if len(Bottles)>5
+        font = QtGui.QFont()
+        font.setPointSize(8)  # TODO split the displayed bottles to more widgets if len(Bottles)>5
 
         for i in range(len(self.RasBari.Bottles)):
+            slider.extend([QtWidgets.QSlider(Qt.Horizontal)])
+            slider[i].setMaximum(100)
+            slider[i].setMinimum(0)
+            slider[i].setMinimumSize(20, 20)
 
-            Slider.extend([QtWidgets.QSlider(Qt.Horizontal)])
-            Slider[i].setMaximum(100)
-            Slider[i].setMinimum(0)
-            Slider[i].setMinimumSize(20, 20)
+            name.extend([QtWidgets.QTextBrowser()])
+            name[i].setFont(font)
+            name[i].setText(self.RasBari.Bottles[i].getname())
 
-            Name.extend([QtWidgets.QTextBrowser()])
-            Name[i].setFont(Font)
-            Name[i].setText(self.RasBari.Bottles[i].getname())
+            amount.extend([QtWidgets.QTextBrowser()])
+            amount[i].setFont(font)
+            amount[i].setText("0")
 
-            Amount.extend([QtWidgets.QTextBrowser()])
-            Amount[i].setFont(Font)
-            Amount[i].setText("0")
+            # TODO try to change die size of name and amount
 
-            #TODO try to change die size of Name and Amount
+            self.BottleGrid.addWidget(slider[i], i, 0, 1, 1)
+            self.BottleGrid.addWidget(name[i], i, 1, 1, 1)
+            self.BottleGrid.addWidget(amount[i], i, 2, 1, 1)
 
-            self.BottleGrid.addWidget(Slider[i], i, 0, 1, 1)
-            self.BottleGrid.addWidget(Name[i], i, 1, 1, 1)
-            self.BottleGrid.addWidget(Amount[i], i, 2, 1, 1)
+            slider[i].valueChanged.connect(partial(Amount_Slider, i))
+            slider[i].valueChanged.connect(partial(newMaxima, i))
 
-            Slider[i].valueChanged.connect(partial(Amount_Slider, i))
-            Slider[i].valueChanged.connect(partial(newMaxima, i))
-
-            self.updateGUI.connect(lambda: self.resetSlder(Slider))
+            self.updateGUI.connect(lambda: self.resetSlder(slider))
 
         ############################ END of newDrink_Widget(self, StackedWidget) #######################################
 
@@ -561,7 +554,7 @@ class Ui_GUI(QWidget,QObject):
             self.showWidget(self.Mainwig)
 
         else:
-            print("Drink not completed")  #TODO change the reset button to an textbrowser that indictes status
+            print("Drink not completed")  # TODO change the reset button to an textbrowser that indictes status
 
     def resetSlder(self, Slider):
         for i in range(len(Slider)):
@@ -680,7 +673,7 @@ class Ui_GUI(QWidget,QObject):
 
         self.DrinkTxt.setText(self.RasBari.DrinkList[self.live_drink].getIngredientString())
 
-    def Button_Thread_Handler(self,Auswahl):
+    def Button_Thread_Handler(self, Auswahl):
 
         self.RasBari.changeErrorFlag(False)
 
@@ -688,7 +681,7 @@ class Ui_GUI(QWidget,QObject):
 
             if self.RasBari.DrinkList[Auswahl] != False:
 
-                thread = myThread(lambda:self.RasBari.mixIt(Auswahl))
+                thread = myThread(lambda: self.RasBari.mixIt(Auswahl))
                 progressbar = myThread(self.upDateStatusBar)
 
                 self.threadpool.start(thread)
@@ -710,16 +703,16 @@ class Ui_GUI(QWidget,QObject):
 
     def upDateTxt(self):
 
-            self.amount_LCD.display(self.RasBari.getAmount())
-            GlasString = "Glass volume: " + str(self.RasBari.getAmount()) + " ml"
-            self.DigitText.setText(GlasString)
+        self.amount_LCD.display(self.RasBari.getAmount())
+        GlasString = "Glass volume: " + str(self.RasBari.getAmount()) + " ml"
+        self.DigitText.setText(GlasString)
 
     def UpdateStausTxt(self):
 
-            if self.RasBari.getProductionFlag() == False:
-                self.StatTxt.setText("Status: Wait for input...")
-            else:
-                self.StatTxt.setText("Status: Busy")
+        if self.RasBari.getProductionFlag() == False:
+            self.StatTxt.setText("Status: Wait for input...")
+        else:
+            self.StatTxt.setText("Status: Busy")
 
     def check4order(self):
 
@@ -731,9 +724,9 @@ class Ui_GUI(QWidget,QObject):
         Find = 99
         Order = self.EmailOrder.getLastMessageTitel()
 
-        print("Check whats ordered..."+Order)
+        print("Check whats ordered..." + Order)
 
-        if ((Order != None) & (self.RasBari.getProductionFlag()!=True)):
+        if ((Order != None) & (self.RasBari.getProductionFlag() != True)):
 
             for i in range(len(self.RasBari.DrinkList)):
                 if self.RasBari.DrinkList[i] != False:
@@ -746,7 +739,7 @@ class Ui_GUI(QWidget,QObject):
             Replytxt = self.EmailOrder.orderexecuted + "\n\nYour order: " + self.RasBari.DrinkList[Find].getName()
 
             threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, Replytxt,
-                                         "Automatic reply from RasBari"))
+                                                                       "Automatic reply from RasBari"))
             self.threadpool.start(threadMail)
 
             self.Button_Thread_Handler(Find)
@@ -754,14 +747,16 @@ class Ui_GUI(QWidget,QObject):
         else:
             print("Order received but cant offer - Sorry")
 
-            if self.RasBari.getProductionFlag()==True:
-                threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, self.EmailOrder.orderallreadrunning,
-                                             "Automatic reply from RasBari"))
+            if self.RasBari.getProductionFlag() == True:
+                threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress,
+                                                                           self.EmailOrder.orderallreadrunning,
+                                                                           "Automatic reply from RasBari"))
                 self.threadpool.start(threadMail)
 
             else:
-                threadMail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, self.EmailOrder.unknownorder,
-                                             "Automatic reply from RasBari"))
+                threadMail = myThread(
+                    lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, self.EmailOrder.unknownorder,
+                                                         "Automatic reply from RasBari"))
                 self.threadpool.start(threadMail)
 
             print(self.EmailOrder.lastSenderAdress)
@@ -777,10 +772,10 @@ class Ui_GUI(QWidget,QObject):
         print("show bottle widget")
         self.showBottlewidget.emit()
 
-    def calculateGUI(self,width,height):
+    def calculateGUI(self, width, height):
 
-        self.GUI_Width = width*1.048*0.58 #TODO CHANGE THIS !!!
-        self.GUI_Height = height*0.5479
+        self.GUI_Width = width * 1.048 * 0.58  # TODO CHANGE THIS !!!
+        self.GUI_Height = height * 0.5479
 
         self.SpaceBwOj = self.GUI_Height / 100
         self.space = self.SpaceBwOj
@@ -796,20 +791,20 @@ class Ui_GUI(QWidget,QObject):
         self.setUpButtonPos = self.GUI_Height * 0.84
         self.setUpTxTPos = self.GUI_Height * 0.83 - self.setUpTxTHeight
 
-    def setmyHtmlTitel(self,TitelObj,StackedWidget):
+    def setmyHtmlTitel(self, TitelObj, StackedWidget):
 
         _translate = QtCore.QCoreApplication.translate
         StackedWidget.setWindowTitle(_translate("GUI", "Rasbari"))
         TitelObj.setHtml(_translate("GUI", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-                                              "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                              "<html><head><meta name=\"qrichtext\" content=\"1\""
-                                              " /><style type=\"text/css\">\n"
-                                              "p, li { white-space: pre-wrap; }\n"
-                                              "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; "
-                                              "font-weight:400; font-style:normal;\">\n"
-                                              "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px;"
-                                              " margin-left:0px; margin-right:0px; -qt-block-indent:0;"
-                                              " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
+                                           "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                           "<html><head><meta name=\"qrichtext\" content=\"1\""
+                                           " /><style type=\"text/css\">\n"
+                                           "p, li { white-space: pre-wrap; }\n"
+                                           "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; "
+                                           "font-weight:400; font-style:normal;\">\n"
+                                           "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px;"
+                                           " margin-left:0px; margin-right:0px; -qt-block-indent:0;"
+                                           " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
                                            "\">RasBari V3.0</span></p></body></html>"))
 
     def showBottlePage(self, Page):
@@ -865,11 +860,11 @@ class Ui_GUI(QWidget,QObject):
     ####################################--Classes for simplyfied GUI design--###########################################
 
     class BottleLine():
-        def __init__(self, Master, widget, Bottle, total_x,total_y):
+        def __init__(self, Master, widget, Bottle, total_x, total_y):
             self.wg = widget
             self.Bottle_in = Bottle
-            self.rev_x=total_x+10
-            self.rev_y=total_y
+            self.rev_x = total_x + 10
+            self.rev_y = total_y
             self.MAINGUI = Master
 
             self.buildline()
@@ -877,59 +872,66 @@ class Ui_GUI(QWidget,QObject):
         def buildline(self):
 
             self.BottleNameDsp = QtWidgets.QTextBrowser(self.wg)
-            self.BottleNameDsp.setGeometry(QtCore.QRect(self.rev_x, self.rev_y,self.MAINGUI.GUI_Width*0.145, self.MAINGUI.setUpButtonHeight))
+            self.BottleNameDsp.setGeometry(
+                QtCore.QRect(self.rev_x, self.rev_y, self.MAINGUI.GUI_Width * 0.145, self.MAINGUI.setUpButtonHeight))
             self.BottleNameDsp.setObjectName("Bottle Name")
             self.BottleNameDsp.setText(self.Bottle_in.getname())
 
-            xLevel = self.rev_x+self.MAINGUI.GUI_Width*0.145+self.MAINGUI.space_Gen
+            xLevel = self.rev_x + self.MAINGUI.GUI_Width * 0.145 + self.MAINGUI.space_Gen
 
             self.level = QtWidgets.QProgressBar(self.wg)
-            self.level.setGeometry(QtCore.QRect(xLevel, self.rev_y,self.MAINGUI.GUI_Width*0.3, self.MAINGUI.setUpButtonHeight))
-            self.level.setProperty("value", (int(self.Bottle_in.getRest())/(int(self.Bottle_in.getbottlesize())))*100)
+            self.level.setGeometry(
+                QtCore.QRect(xLevel, self.rev_y, self.MAINGUI.GUI_Width * 0.3, self.MAINGUI.setUpButtonHeight))
+            self.level.setProperty("value",
+                                   (int(self.Bottle_in.getRest()) / (int(self.Bottle_in.getbottlesize()))) * 100)
 
-            xClear = xLevel + self.MAINGUI.space_Gen + self.MAINGUI.GUI_Width*0.3
+            xClear = xLevel + self.MAINGUI.space_Gen + self.MAINGUI.GUI_Width * 0.3
 
             self.ClearButton = QtWidgets.QPushButton(self.wg)
-            self.ClearButton.setGeometry(QtCore.QRect(xClear, self.rev_y, self.MAINGUI.setUpButtonWith,self.MAINGUI.setUpButtonHeight))
+            self.ClearButton.setGeometry(
+                QtCore.QRect(xClear, self.rev_y, self.MAINGUI.setUpButtonWith, self.MAINGUI.setUpButtonHeight))
             self.ClearButton.setText("Output")
 
             xResetbutton = xClear + self.MAINGUI.space_Gen + self.MAINGUI.setUpButtonWith
 
             self.Resetbutton = QtWidgets.QPushButton(self.wg)
-            self.Resetbutton.setGeometry(QtCore.QRect(xResetbutton, self.rev_y, self.MAINGUI.setUpButtonWith, self.MAINGUI.setUpButtonHeight))
+            self.Resetbutton.setGeometry(
+                QtCore.QRect(xResetbutton, self.rev_y, self.MAINGUI.setUpButtonWith, self.MAINGUI.setUpButtonHeight))
             self.Resetbutton.setText("RESET")
 
-            self.Resetbutton.clicked.connect(lambda:self.placeNewBottle())
-            self.ClearButton.clicked.connect(lambda:self.emptyBottle())
+            self.Resetbutton.clicked.connect(lambda: self.placeNewBottle())
+            self.ClearButton.clicked.connect(lambda: self.emptyBottle())
 
         def placeNewBottle(self):
 
             print("Reset Bottle")
 
-            for i in range(len(Ui_GUI.RasBari.Bottles)):
+            for i in range(len(UiGui.RasBari.Bottles)):
 
-                if self.Bottle_in.getname()==Ui_GUI.RasBari.Bottles[i].getname():
-                    Ui_GUI.RasBari.Bottles[i].putAmount(Ui_GUI.RasBari.Bottles[i].getbottlesize())
-                    print(Ui_GUI.RasBari.Bottles[i].getlevel())
-                    self.Bottle_in=Ui_GUI.RasBari.Bottles[i]
+                if self.Bottle_in.getname() == UiGui.RasBari.Bottles[i].getname():
+                    UiGui.RasBari.Bottles[i].putAmount(UiGui.RasBari.Bottles[i].getbottlesize())
+                    print(UiGui.RasBari.Bottles[i].getlevel())
+                    self.Bottle_in = UiGui.RasBari.Bottles[i]
                     break
 
-            self.level.setProperty("value", (int(self.Bottle_in.getlevel())/(int(self.Bottle_in.getbottlesize())))*100)
+            self.level.setProperty("value",
+                                   (int(self.Bottle_in.getlevel()) / (int(self.Bottle_in.getbottlesize()))) * 100)
 
         def emptyBottle(self):
 
             print("empty Bottle")
 
             self.Bottle_in.getliqout()
-            self.level.setProperty("value",(int(self.Bottle_in.getlevel()) / (int(self.Bottle_in.getbottlesize()))) * 100)
+            self.level.setProperty("value",
+                                   (int(self.Bottle_in.getlevel()) / (int(self.Bottle_in.getbottlesize()))) * 100)
 
         def updateStatusBar(self):
 
-            for i in range(len(Ui_GUI.RasBari.Bottles)):
-                if self.Bottle_in.getname()==Ui_GUI.RasBari.Bottles[i].getname():
+            for i in range(len(UiGui.RasBari.Bottles)):
+                if self.Bottle_in.getname() == UiGui.RasBari.Bottles[i].getname():
 
-                    self.Bottle_in = Ui_GUI.RasBari.Bottles[i]
-                    value = int((int(Ui_GUI.RasBari.Bottles[i].getlevel())/int(self.Bottle_in.getbottlesize()))*100)
-                    if value < 0:value=0
-                    self.level.setProperty("value",value)
+                    self.Bottle_in = UiGui.RasBari.Bottles[i]
+                    value = int((int(UiGui.RasBari.Bottles[i].getlevel()) / int(self.Bottle_in.getbottlesize())) * 100)
+                    if value < 0: value = 0
+                    self.level.setProperty("value", value)
                     break
