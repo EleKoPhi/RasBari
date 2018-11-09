@@ -412,6 +412,22 @@ class Ui_GUI(QWidget,QObject):
         def Amount_Slider(i):
             Amount[i].setText(str(Slider[i].value()))
 
+            sum = 0
+
+            for i in range(len(Slider)):
+                sum = sum + Slider[i].value()
+
+            message = "Amount: %d/100" % sum
+            add = ""
+
+            if sum < 100:
+                add = "\nplease add %d%% more" % (100 - sum)
+            if sum == 100:
+                add = "\nPress save to add your drink!"
+
+            self.Stat.setText(message + add)
+
+
         def newMaxima(callingSlider):
             sum = 0
 
@@ -456,13 +472,13 @@ class Ui_GUI(QWidget,QObject):
 
         self.Save.clicked.connect(lambda: self.saveNewDrink(Slider, self.RasBari.Bottles))
 
-        # Reset - Button to reset the current choose
+        # StatTxt - shows mixture status
 
-        Reset_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
+        Stat_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
 
-        self.Reset = QtWidgets.QPushButton(self.NewDrinkwig)
-        self.Reset.setGeometry(QtCore.QRect(Reset_x, std_Y, std_Width, std_Hight))
-        self.Reset.setText("Reset")
+        self.Stat = QtWidgets.QTextBrowser(self.NewDrinkwig)
+        self.Stat.setGeometry(QtCore.QRect(Stat_x, std_Y, std_Width, std_Hight))
+        self.Stat.setText("Make your drink!")
 
         gridWidth = self.GUI_Width
         gridHight = self.GUI_Height * 0.7
@@ -507,6 +523,8 @@ class Ui_GUI(QWidget,QObject):
             Slider[i].valueChanged.connect(partial(Amount_Slider, i))
             Slider[i].valueChanged.connect(partial(newMaxima, i))
 
+            self.updateGUI.connect(lambda: self.resetSlder(Slider))
+
         ############################ END of newDrink_Widget(self, StackedWidget) #######################################
 
     def saveNewDrink(self, Slider, Bottles):
@@ -520,7 +538,14 @@ class Ui_GUI(QWidget,QObject):
 
             self.Ingredients = []
 
-            NewDrinkName = "Newdrink_" + str(len(self.RasBari.DrinkList))
+            NewDrinkName = ""
+
+            for i in range(len(Slider)):
+                if Slider[i].value() != 0:
+                    name = Bottles[i].getname()
+                    name = name[:3]
+                    name = name + str(Slider[i].value())
+                    NewDrinkName = NewDrinkName + name
 
             self.Ingredients.extend([("name", NewDrinkName)])
 
@@ -533,6 +558,7 @@ class Ui_GUI(QWidget,QObject):
             self.RasBari.DrinkList.extend([NewDrink])
 
             self.resetSlder(Slider)
+            self.showWidget(self.Mainwig)
 
         else:
             print("Drink not completed")  #TODO change the reset button to an textbrowser that indictes status
@@ -669,7 +695,6 @@ class Ui_GUI(QWidget,QObject):
                 self.threadpool.start(progressbar)
 
             else:
-                # TODO implement the drinkunknown widget her
                 print("Drink unknown")
                 self.RasBari.changeProductionFlag(False)
 
@@ -785,7 +810,7 @@ class Ui_GUI(QWidget,QObject):
                                               "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px;"
                                               " margin-left:0px; margin-right:0px; -qt-block-indent:0;"
                                               " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
-                                              "\">RasBari V2.0</span></p></body></html>"))
+                                           "\">RasBari V3.0</span></p></body></html>"))
 
     def showBottlePage(self, Page):
 
@@ -908,9 +933,3 @@ class Ui_GUI(QWidget,QObject):
                     if value < 0:value=0
                     self.level.setProperty("value",value)
                     break
-
-
-
-
-
-
