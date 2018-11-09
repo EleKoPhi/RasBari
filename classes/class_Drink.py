@@ -6,24 +6,30 @@ class Drink(object):
     Ingredients = []
     alive = False
 
-    def __init__(self, NumberOfDrink):
+    def __init__(self, Input):
 
-        allIngredients = getAllIngredients(NumberOfDrink)
+        try:
 
-        if allIngredients != False:
+            allIngredients = getAllIngredients(Input)
 
-            if proofIngredients(NumberOfDrink):
+            if allIngredients != False:
 
-                self.Ingredients = allIngredients
+                if proofIngredients(Input):
 
-                self.alive = True
+                    self.Ingredients = allIngredients
 
-            else:
-                print('Drink over 100%')
+                    self.alive = True
+
+                else:
+                    print('Drink over 100%')
 
 
-        elif allIngredients == False:
-            print('Drink unknown')
+            elif allIngredients == False:
+                print('Drink unknown')
+
+        except:
+            self.Ingredients = Input
+            self.alive = True
 
     def WhatsIn(self):
 
@@ -52,12 +58,3 @@ class Drink(object):
             string = string + self.Ingredients[i][0] + ":" + self.Ingredients[i][1] + "\n"
 
         return string
-
-    def SetUpNew(self, Amount, Bottles, Name):
-
-        del self.Ingredients
-
-        self.Ingredients.extend([("Name", Name)])
-
-        for i in range(len(Amount)):
-            self.Ingredients.extend([(Bottles[i].getname(), str(Amount[i].value()))])

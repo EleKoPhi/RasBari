@@ -1,4 +1,3 @@
-from copy import deepcopy
 from functools import partial
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -14,10 +13,13 @@ class Ui_GUI(QWidget,QObject):
     EmailOrder = eMailGuard()
 
     Bottle_pages = []
+    GridButton = []
+
 
     showBottlewidget = pyqtSignal()
     showDrinkwidget = pyqtSignal()
     updateGUI = pyqtSignal()
+    clear = pyqtSignal()
 
     live_drink = 0
 
@@ -93,49 +95,11 @@ class Ui_GUI(QWidget,QObject):
         std_Hight_txt = self.setUpTxTHeight
         std_Width = self.setUpButtonWith
 
-        GridButton = []
-
         # Headline - Contains Software title
 
         self.buildHeader(self.Mainwig, StackedWidget)
 
-        # gridWidget contains all buttons, that start a mixture
-
-        gridWidget_x = 0
-        gridWidget_y = self.setUpButtonHeight + self.space_Gen
-        gridWidth = self.GUI_Width
-        gridHight = self.GUI_Height * 0.55
-
-        self.gridLayoutWidget = QtWidgets.QWidget(self.Mainwig)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(gridWidget_x, gridWidget_y, gridWidth, gridHight))
-        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
-
-        self.ButtonGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
-        self.ButtonGrid.setObjectName("AuswahlGrid")
-
-        numberOfRows = -(-len(self.RasBari.DrinkList) // 4)
-        gridButtonHight = gridHight / numberOfRows * 0.9
-        gridButtonWidth = gridWidth / 4 * 0.8
-
-        column = 0
-        line = 0
-
-        # include the buttons in the ButtonGrid
-
-        for i in range(len(self.RasBari.DrinkList)):
-
-            GridButton.extend([QtWidgets.QPushButton(self.gridLayoutWidget)])
-            GridButton[i].setMinimumSize(QtCore.QSize(gridButtonWidth, gridButtonHight))
-            GridButton[i].setObjectName("Button_" + str(i))
-            GridButton[i].setText(self.RasBari.DrinkList[i].getName())
-            GridButton[i].clicked.connect(partial(self.Button_Thread_Handler, i))
-            self.ButtonGrid.addWidget(GridButton[i], line, column)
-
-            column = column + 1
-
-            if column == 4:
-                column = 0
-                line = line + 1
+        self.buildButtonGrid()
 
         # Progessbar that shows the progress of the mixture
 
@@ -256,7 +220,71 @@ class Ui_GUI(QWidget,QObject):
 
         self.Drinks.clicked.connect(lambda: self.showDrinkwidget.emit())
 
+        def updateWidget():
+            print("Update main_Widget")
+
+            self.GridLayout = self.Mainwig.findChild(QtWidgets.QWidget, "gridLayoutWidget")
+            self.ButtonGrid = self.Mainwig.findChild(QtWidgets.QGridLayout, "AuswahlGrid")
+
+            try:
+                self.GridLayout.deleteLater()
+                self.ButtonGrid.deleteLater()
+
+                for i in range(len(self.GridButton)):
+                    Button = self.Mainwig.findChild(QtWidgets.QPushButton, "Button_" + str(i))
+                    Button.deleteLater()
+
+            except:
+                self.buildButtonGrid()
+
+        # self.updateGUI.connect(self.gridLayoutWidget.deleteLater)
+        self.updateGUI.connect(lambda: updateWidget())
+
+
         ################################### END of main_Widget(self, StackedWidget) ####################################
+
+    def buildButtonGrid(self):
+
+        # gridWidget contains all buttons, that start a mixture
+
+        gridWidget_x = 0
+        gridWidget_y = self.setUpButtonHeight + self.space_Gen
+        gridWidth = self.GUI_Width
+        gridHight = self.GUI_Height * 0.55
+
+        self.gridLayoutWidget = QtWidgets.QWidget(self.Mainwig)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(gridWidget_x, gridWidget_y, gridWidth, gridHight))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+
+        self.ButtonGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.ButtonGrid.setObjectName("AuswahlGrid")
+
+        numberOfRows = -(-len(self.RasBari.DrinkList) // 4)
+        gridButtonHight = gridHight / numberOfRows * 0.9
+        gridButtonWidth = gridWidth / 4 * 0.8
+
+        column = 0
+        line = 0
+
+        # include the buttons in the ButtonGrid
+
+        i = 0
+
+        for i in range(len(self.RasBari.DrinkList)):
+
+            self.GridButton.extend([QtWidgets.QPushButton(self.gridLayoutWidget)])
+            """self.GridButton[i].setMinimumSize(QtCore.QSize(gridButtonWidth, gridButtonHight))
+            self.GridButton[i].setObjectName("Button_" + str(i))
+            self.GridButton[i].setText(self.RasBari.DrinkList[i].getName())
+            self.GridButton[i].clicked.connect(partial(self.Button_Thread_Handler, i))
+            self.ButtonGrid.addWidget(self.GridButton[i], line, column)"""
+
+            column = column + 1
+
+            if column == 4:
+                column = 0
+                line = line + 1
+
 
     def bottle_Widget(self, StackedWidget):
 
@@ -411,14 +439,13 @@ class Ui_GUI(QWidget,QObject):
         # ExitButton - Button to navigate from the first drink widget back to the main widget
 
         ExitButton_x = (self.GUI_Width / 2 - self.setUpButtonWith / 2)
-        MainWidgetIndex = StackedWidget.indexOf(self.Mainwig)
+
 
         self.ExitButton = QtWidgets.QPushButton(self.NewDrinkwig)
         self.ExitButton.setGeometry(QtCore.QRect(ExitButton_x, std_Y, std_Width, std_Hight))
         self.ExitButton.setText("Exit")
 
-        self.ExitButton.clicked.connect(lambda: StackedWidget.setCurrentIndex(MainWidgetIndex))
-
+        self.ExitButton.clicked.connect(lambda: self.showWidget(self.Mainwig))
 
         # Save - Button to Save the current drink setup as a new drink
 
@@ -479,12 +506,27 @@ class Ui_GUI(QWidget,QObject):
 
         ############################ END of newDrink_Widget(self, StackedWidget) #######################################
 
-    def saveNewDrink(self, Slider, Bottles):  # TODO clear all that a bit
+    def saveNewDrink(self, Slider, Bottles):
 
-        self.DemoDrink = deepcopy(self.RasBari.DrinkList[0])
-        self.DemoDrink.SetUpNew(Slider, Bottles, "MyFirstRealDynamicShit")
-        self.RasBari.DrinkList.extend([self.DemoDrink])
-        print(self.RasBari.DrinkList[-1].getIngredientString())
+        self.Ingredients = []
+
+        NewDrinkName = "Newdrink_" + str(len(self.RasBari.DrinkList))
+
+        self.Ingredients.extend([("name", NewDrinkName)])
+
+        for i in range(len(Slider)):
+            Ingred = [Bottles[i].getname(), str(Slider[i].value())]
+            self.Ingredients.extend([Ingred])
+
+        NewDrink = Drink(self.Ingredients)
+
+        self.RasBari.DrinkList.extend([NewDrink])
+
+        self.resetSlder(Slider)
+
+    def resetSlder(self, Slider):
+        for i in range(len(Slider)):
+            Slider[i].setSliderPosition(0)
 
     def drinks_menue_widget(self, StackedWidget):
 
@@ -780,7 +822,7 @@ class Ui_GUI(QWidget,QObject):
 
         self.Changeright.clicked.connect(lambda: self.showBottlePage(destination_Right))
 
-    ########### END of bottomNavigation(self,widget,destination_Left,destination_Right,destination_exit) ###############
+        ########### END of bottomNavigation(self,widget,destination_Left,destination_Right,destination_exit) ###########
 
     ####################################--Classes for simplyfied GUI design--##########################################
 
