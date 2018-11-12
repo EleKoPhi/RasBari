@@ -8,6 +8,7 @@ from classes.class_myThread import *
 
 
 class UiGui(QWidget, QObject):
+
     RasBari = Bar()
     EmailOrder = eMailGuard()
 
@@ -15,8 +16,6 @@ class UiGui(QWidget, QObject):
     NewDrink_pages = []
     GridButton = []
 
-    showBottlewidget = pyqtSignal()
-    showDrinkwidget = pyqtSignal()
     updateGUI = pyqtSignal()
     clear = pyqtSignal()
 
@@ -54,7 +53,7 @@ class UiGui(QWidget, QObject):
 
         ############################### ---> START CONNECTION [CodeSignals]<--- #######################################
 
-        self.RasBari.missingIngred.connect(self.showIngred_widget)
+        self.RasBari.missingIngred.connect(lambda: self.showWidget(self.ingredWidg, 1))
         self.RasBari.drinkunknown.connect(lambda: self.showmsgbox)
         self.RasBari.changedValSig.connect(self.upDateStatusBar)
         self.RasBari.changedAmountSig.connect(self.upDateTxt)
@@ -94,7 +93,7 @@ class UiGui(QWidget, QObject):
 
         # Headline - Contains Software title
 
-        self.buildHeader(self.Mainwig, stacked_widget)
+        self.header(self.Mainwig, stacked_widget)
 
         self.buildButtonGrid()
 
@@ -204,7 +203,7 @@ class UiGui(QWidget, QObject):
         self.Bottles.setGeometry(QtCore.QRect(Bottles_x, std_y, Bottles_width, std_Hight))
         self.Bottles.setText("Bottles")
 
-        self.Bottles.clicked.connect(lambda: self.showBottlewidget.emit())
+        self.Bottles.clicked.connect(lambda: self.showWidget(self.Bottle_pages[0], 1))
 
         # Drinks - Button for navigation from main widget to driks widget
 
@@ -215,7 +214,7 @@ class UiGui(QWidget, QObject):
         self.Drinks.setGeometry(QtCore.QRect(Drinks_x, std_y, Drinks_width, std_Hight))
         self.Drinks.setText("Drinks")
 
-        self.Drinks.clicked.connect(lambda: self.showDrinkwidget.emit())
+        self.Drinks.clicked.connect(lambda: self.showWidget(self.drinks_menue_widget, 1))
 
         def updateWidget():
 
@@ -296,11 +295,9 @@ class UiGui(QWidget, QObject):
 
         Lines = []
         Topspace = self.GUI_Height * 0.16
-        MainWidgetIndex = StackedWidget.indexOf(self.Mainwig)
 
         # Signals for showing the fist bottle widget & updating all statusbar's
 
-        self.showBottlewidget.connect(lambda: self.showBottlePage(self.Bottle_pages[0]))
         self.updateGUI.connect(updateWidget)
 
         # Calculate the necessary number of bottle_Widgets
@@ -316,7 +313,7 @@ class UiGui(QWidget, QObject):
             self.Bottle_pages.extend([QtWidgets.QWidget()])
             self.Bottle_pages[i].setObjectName("Bottlepage" + str(i))
             StackedWidget.addWidget(self.Bottle_pages[i])
-            self.buildHeader(self.Bottle_pages[i], StackedWidget)
+            self.header(self.Bottle_pages[i], StackedWidget)
 
         # Build the bottomNavigation for every bottle_Widget
 
@@ -329,7 +326,7 @@ class UiGui(QWidget, QObject):
             except:
                 page_right = self.Bottle_pages[0]
 
-            self.bottomNavigation(self.Bottle_pages[i], page_left, page_right, MainWidgetIndex)
+            self.bottomNavigation(self.Bottle_pages[i], page_left, page_right, self.Mainwig)
 
         # Build for every bottle one line thats shows - NAME - LEVEL + REST_Button + CLEAR_Button
 
@@ -365,7 +362,7 @@ class UiGui(QWidget, QObject):
 
         # Headline - Contains Software title
 
-        self.buildHeader(self.ingredWidg, stacked_widget)
+        self.header(self.ingredWidg, stacked_widget)
 
         # YESBut - Button for navigation to the bottle widget
 
@@ -470,7 +467,7 @@ class UiGui(QWidget, QObject):
             self.NewDrink_pages.extend([QtWidgets.QWidget()])
             self.NewDrink_pages[i].setObjectName("NewDrink_page" + str(i))
             StackedWidget.addWidget(self.NewDrink_pages[i])
-            self.buildHeader(self.NewDrink_pages[i], StackedWidget)
+            self.header(self.NewDrink_pages[i], StackedWidget)
             self.NewDrink_wig_bottom(slider, self.NewDrink_pages[i])
 
         for i in range(len(self.NewDrink_pages)):
@@ -605,7 +602,6 @@ class UiGui(QWidget, QObject):
 
     def drinks_menue_widget(self, StackedWidget):
 
-        self.showDrinkwidget.connect(lambda: self.showWidget(self.drinks_menue_widget, 1))
 
         # Build of new widget
 
@@ -623,7 +619,7 @@ class UiGui(QWidget, QObject):
 
         # Headline - Contains Software title
 
-        self.buildHeader(self.drinks_menue_widget, StackedWidget)
+        self.header(self.drinks_menue_widget, StackedWidget)
 
         # NewDrink pushbutton to navigate to the newdrink widget
 
@@ -667,7 +663,7 @@ class UiGui(QWidget, QObject):
 
         # Headline - Contains Software title
 
-        self.buildHeader(self.included_Drinks_widget, StackedWidget)
+        self.header(self.included_Drinks_widget, StackedWidget)
 
         DrinkTxt_width = self.setUpButtonWith * 1.8
         DrinkTxt_height = self.setUpButtonWith * 1.2
@@ -721,7 +717,7 @@ class UiGui(QWidget, QObject):
         self.NewDrink.setGeometry(QtCore.QRect(NewDrink_x, std_y, std_Width, std_Hight))
         self.NewDrink.setText("Set up a new drink")
 
-        self.NewDrink.clicked.connect(lambda: self.showBottlePage(self.NewDrink_pages[0]))
+        self.NewDrink.clicked.connect(lambda: self.showWidget(self.NewDrink_pages[0], 1))
 
     def changeDrinkTxt(self, direction):
         if direction == 1:
@@ -822,16 +818,6 @@ class UiGui(QWidget, QObject):
             print(self.EmailOrder.lastSenderAdress)
             print("Mail sended")
 
-    def showIngred_widget(self):
-
-        Ingred_Wig_Index = self.GW.indexOf(self.ingredWidg)
-        self.GW.setCurrentIndex(Ingred_Wig_Index)
-
-    def resetwindow(self):
-
-        print("show bottle widget")
-        self.showBottlewidget.emit()
-
     def calculateGUI(self, width, height):
 
         self.GUI_Width = width * 1.048 * 0.58  # TODO CHANGE THIS !!!
@@ -867,16 +853,11 @@ class UiGui(QWidget, QObject):
                                            " text-indent:0px;\"><span style=\" font-size:24pt; font-weight:600;"
                                            "\">RasBari - V4.0</span></p></body></html>"))
 
-    def showBottlePage(self, Page):
-
-        self.updateGUI.emit()
-        self.GW.setCurrentIndex(self.GW.indexOf(Page))
-
     def showWidget(self, widget, refresh):
         if (refresh): self.updateGUI.emit()
         self.GW.setCurrentIndex(self.GW.indexOf(widget))
 
-    def buildHeader(self, widget, StackedWidget):
+    def header(self, widget, StackedWidget):
         self.Titel = QtWidgets.QTextBrowser(widget)
         self.Titel.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
         self.setmyHtmlTitel(self.Titel, StackedWidget)
@@ -897,7 +878,7 @@ class UiGui(QWidget, QObject):
         self.ExitButton.setGeometry(QtCore.QRect(ExitBUtton_x, std_y, std_width, std_hight))
         self.ExitButton.setText("Exit")
 
-        self.ExitButton.clicked.connect(lambda: self.showWidget(self.Mainwig, 1))
+        self.ExitButton.clicked.connect(lambda: self.showWidget(destination_exit, 1))
 
         # Changeleft - for navigation from widget to destination_Left
 
@@ -905,7 +886,7 @@ class UiGui(QWidget, QObject):
         self.Changeleft.setGeometry(QtCore.QRect(Changeleft_x, std_y, std_width, std_hight))
         self.Changeleft.setText("<- Change page")
 
-        self.Changeleft.clicked.connect(lambda: self.showBottlePage(destination_Left))
+        self.Changeleft.clicked.connect(lambda: self.showWidget(destination_Left, 1))
 
         # Changeright - for navigation from widget to destination_right
 
@@ -913,7 +894,7 @@ class UiGui(QWidget, QObject):
         self.Changeright.setGeometry(QtCore.QRect(Changeright_x, std_y, std_width, std_hight))
         self.Changeright.setText("Change page ->")
 
-        self.Changeright.clicked.connect(lambda: self.showBottlePage(destination_Right))
+        self.Changeright.clicked.connect(lambda: self.showWidget(destination_Right, 1))
 
         ########### END of bottomNavigation(self,widget,destination_Left,destination_Right,destination_exit) ###########
 
