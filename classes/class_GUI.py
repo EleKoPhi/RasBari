@@ -421,6 +421,9 @@ class UiGui(QWidget, QObject):
                 add = "\nplease add %d%% more" % (100 - sum)
             if sum == 100:
                 add = "\nPress save to add your drink!"
+            if sum == 0:
+                message = ""
+                add = "Make your drink!"
 
             for i in range(len(stats)):
                 stats[i].setText(message + add)
@@ -439,16 +442,15 @@ class UiGui(QWidget, QObject):
         amount = []
         stats = []
 
-
         std_Hight = self.setUpButtonHeight
         std_Width = self.setUpButtonWith
         std_Y = self.setUpButtonPos
         Topspace = self.GUI_Height * 0.16
         possible_spcae = self.setUpButtonWith * 1.8
 
-        slider_width = std_Width * 0.9
-        name_width = std_Width * 0.4
-        amount_width = std_Width * 0.4
+        slider_width = std_Width * 0.8
+        name_width = std_Width * 0.6
+        amount_width = std_Width * 0.3
 
         page = 0
         j = 0
@@ -655,9 +657,7 @@ class UiGui(QWidget, QObject):
 
         std_Hight = self.setUpButtonHeight
         std_Width = self.setUpButtonWith
-        std_Width_menue = self.GUI_Width / 2 - self.setUp_getin * 1.5
-        std_Y_menue = self.GUI_Height / 2 - std_Hight / 2
-        std_Y = self.setUpButtonPos
+        std_y = self.setUpButtonPos
 
         # Build of new widget
 
@@ -682,7 +682,7 @@ class UiGui(QWidget, QObject):
         ExitButton_x = (self.GUI_Width / 2 - self.setUpButtonWith / 2)
 
         self.ExitButton = QtWidgets.QPushButton(self.included_Drinks_widget)
-        self.ExitButton.setGeometry(QtCore.QRect(ExitButton_x, std_Y, std_Width, std_Hight))
+        self.ExitButton.setGeometry(QtCore.QRect(ExitButton_x, std_y, std_Width, std_Hight))
         self.ExitButton.setText("Exit")
 
         self.ExitButton.clicked.connect(lambda: self.showWidget(self.Mainwig, 1))
@@ -703,6 +703,25 @@ class UiGui(QWidget, QObject):
         self.Next_right.setObjectName("change_right")
         self.Next_right.setText("->")
         self.Next_right.clicked.connect(lambda: self.changeDrinkTxt(1))
+
+        NewDrink_x = self.setUp_getin
+        Delete_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
+
+        # delete - for navigation from widget to destination_Left
+
+        self.delete = QtWidgets.QPushButton(self.included_Drinks_widget)
+        self.delete.setGeometry(QtCore.QRect(Delete_x, std_y, std_Width, std_Hight))
+        self.delete.setText("Delete current drink")
+
+        self.delete.clicked.connect(lambda: print("delete...not now"))  # TODO include the delete function for drinks
+
+        # NewDrink - for navigation from widget to NewDrink_page[0]
+
+        self.NewDrink = QtWidgets.QPushButton(self.included_Drinks_widget)
+        self.NewDrink.setGeometry(QtCore.QRect(NewDrink_x, std_y, std_Width, std_Hight))
+        self.NewDrink.setText("Set up a new drink")
+
+        self.NewDrink.clicked.connect(lambda: self.showBottlePage(self.NewDrink_pages[0]))
 
     def changeDrinkTxt(self, direction):
         if direction == 1:
@@ -845,8 +864,8 @@ class UiGui(QWidget, QObject):
                                            "font-weight:400; font-style:normal;\">\n"
                                            "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px;"
                                            " margin-left:0px; margin-right:0px; -qt-block-indent:0;"
-                                           " text-indent:0px;\"><span style=\" font-size:19pt; font-weight:600;"
-                                           "\">RasBari V3.0</span></p></body></html>"))
+                                           " text-indent:0px;\"><span style=\" font-size:24pt; font-weight:600;"
+                                           "\">RasBari - V4.0</span></p></body></html>"))
 
     def showBottlePage(self, Page):
 

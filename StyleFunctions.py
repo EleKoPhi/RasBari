@@ -14,7 +14,7 @@ QSlider::handle:horizontal {
 QSlider::groove:horizontal {
     border: 0px solid #999999;
    
-    height: 20px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    height: 45px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
     margin: 0px 0;
 
