@@ -29,7 +29,7 @@ bottlesize = 700
 [Fluessigkeit5]
 id = 5
 name = Cointreau
-menge = 561
+menge = 700
 position = 40
 bottlesize = 700
 
@@ -57,7 +57,7 @@ bottlesize = 100
 [Fluessigkeit9]
 id = 9
 name = Grenadine
-menge = 230
+menge = 500
 position = 80
 bottlesize = 500
 
