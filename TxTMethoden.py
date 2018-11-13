@@ -1,4 +1,5 @@
 import configparser
+
 from Speicherorte import IniDatei, BarHard, Email
 
 Mischungen = configparser.ConfigParser()
@@ -39,14 +40,10 @@ def getAllIngredients(NumberOfDrink):
 def objectCanBeBuild (NumberOfDrink):
     return Mischungen.has_section(NumberOfDrink)
 
-def getGuiWidth():
-    return BarIni.get("GUI_Size","x")
 
-def getGuiHight():
-    return BarIni.get("GUI_Size","y")
-
-def getEmailGuardStat():
-    return bool(BarIni.get("Mailorder","stat"))
+def getFlag(FlagName):
+    flag = BarIni.get("Flags", str(FlagName))
+    return int(flag)
 
 def getMailAdress():
     return EmailTxt.get("Gmail","AD")
@@ -73,6 +70,3 @@ def changeAmount(BottleNr,newamount):
     BarIni.set("Fluessigkeit"+str(BottleNr),"menge",str(newamount))
     with open(BarHard, 'w') as configfile:
         BarIni.write(configfile)
-
-
-

@@ -64,7 +64,7 @@ class UiGui(QWidget, QObject):
         ################################### ---> START TIMER <--- #####################################################
 
         self.MailTimer.setSingleShot(False)
-        if getEmailGuardStat() & self.EmailOrder.status: self.MailTimer.start(3000)
+        if getFlag("Mailorder") & self.EmailOrder.status: self.MailTimer.start(3000)
         self.MailTimer.timeout.connect(lambda: self.check4order())
 
         ################################### ---> END TIMER <--- #######################################################
@@ -168,9 +168,10 @@ class UiGui(QWidget, QObject):
 
         DigitText_x = self.setUp_getin
 
-        self.DigitText = QtWidgets.QTextBrowser(self.Mainwig)
+        self.DigitText = QtWidgets.QLabel(self.Mainwig)
         self.DigitText.setGeometry(QtCore.QRect(DigitText_x, std_txt_y, std_Width, std_Hight_txt))
         self.DigitText.setObjectName("Glasvolume")
+        self.stdLabelSetUp(self.DigitText)
 
         GlasString = "Glass volume: " + str(self.RasBari.getAmount()) + " ml"
 
@@ -180,19 +181,21 @@ class UiGui(QWidget, QObject):
 
         StatTxt_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
 
-        self.StatTxt = QtWidgets.QTextBrowser(self.Mainwig)
+        self.StatTxt = QtWidgets.QLabel(self.Mainwig)
         self.StatTxt.setGeometry(QtCore.QRect(StatTxt_x, std_txt_y, std_Width, std_Hight_txt))
         self.StatTxt.setObjectName("Status-text-box")
         self.StatTxt.setText("Status: Wait for input...")
+        self.stdLabelSetUp(self.StatTxt)
 
         # TxtBox_middle - Textbox in the center bottom of the main GUI
 
         TxtBox_middle_x = self.GUI_Width / 2 - self.setUpButtonWith / 2
 
-        self.TxtBox_middle = QtWidgets.QTextBrowser(self.Mainwig)
+        self.TxtBox_middle = QtWidgets.QLabel(self.Mainwig)
         self.TxtBox_middle.setGeometry(QtCore.QRect(TxtBox_middle_x, std_txt_y, std_Width, std_Hight_txt))
         self.TxtBox_middle.setObjectName("Middle_Txt_Box")
         self.TxtBox_middle.setText("Welcome")
+        self.stdLabelSetUp(self.TxtBox_middle)
 
         # Bottles - Button for navigation from main widget to bottles widgt
 
@@ -243,45 +246,47 @@ class UiGui(QWidget, QObject):
 
         # gridWidget contains all buttons, that start a mixture
 
-        gridWidget_x = 0
-        gridWidget_y = self.setUpButtonHeight + self.space_Gen
-        gridWidth = self.GUI_Width
-        gridHight = self.GUI_Height * 0.55
+        if (len(self.RasBari.DrinkList) != 0):
 
-        self.gridLayoutWidget = QtWidgets.QWidget(self.Mainwig)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(gridWidget_x, gridWidget_y, gridWidth, gridHight))
-        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+            gridWidget_x = 0
+            gridWidget_y = self.setUpButtonHeight + self.space_Gen
+            gridWidth = self.GUI_Width
+            gridHight = self.GUI_Height * 0.55
 
-        self.ButtonGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
-        self.ButtonGrid.setObjectName("AuswahlGrid")
+            self.gridLayoutWidget = QtWidgets.QWidget(self.Mainwig)
+            self.gridLayoutWidget.setGeometry(QtCore.QRect(gridWidget_x, gridWidget_y, gridWidth, gridHight))
+            self.gridLayoutWidget.setObjectName("gridLayoutWidget")
 
-        numberOfRows = -(-len(self.RasBari.DrinkList) // 4)
-        gridButtonHight = gridHight / numberOfRows * 0.9
-        gridButtonWidth = gridWidth / 4 * 0.8
+            self.ButtonGrid = QtWidgets.QGridLayout(self.gridLayoutWidget)
+            self.ButtonGrid.setObjectName("AuswahlGrid")
 
-        column = 0
-        line = 0
+            numberOfRows = -(-len(self.RasBari.DrinkList) // 4)
+            gridButtonHight = gridHight / numberOfRows * 0.9
+            gridButtonWidth = gridWidth / 4 * 0.8
 
-        # include the buttons in the ButtonGrid
+            column = 0
+            line = 0
 
-        i = 0
+            # include the buttons in the ButtonGrid
 
-        self.GridButton.clear()
+            i = 0
 
-        for i in range(len(self.RasBari.DrinkList)):
+            self.GridButton.clear()
 
-            self.GridButton.extend([QtWidgets.QPushButton(self.gridLayoutWidget)])
-            self.GridButton[i].setMinimumSize(QtCore.QSize(gridButtonWidth, gridButtonHight))
-            self.GridButton[i].setObjectName("Button_" + str(i))
-            self.GridButton[i].setText(self.RasBari.DrinkList[i].getName())
-            self.GridButton[i].clicked.connect(partial(self.Button_Thread_Handler, i))
-            self.ButtonGrid.addWidget(self.GridButton[i], line, column)
+            for i in range(len(self.RasBari.DrinkList)):
 
-            column = column + 1
+                self.GridButton.extend([QtWidgets.QPushButton(self.gridLayoutWidget)])
+                self.GridButton[i].setMinimumSize(QtCore.QSize(gridButtonWidth, gridButtonHight))
+                self.GridButton[i].setObjectName("Button_" + str(i))
+                self.GridButton[i].setText(self.RasBari.DrinkList[i].getName())
+                self.GridButton[i].clicked.connect(partial(self.Button_Thread_Handler, i))
+                self.ButtonGrid.addWidget(self.GridButton[i], line, column)
 
-            if column == 4:
-                column = 0
-                line = line + 1
+                column = column + 1
+
+                if column == 4:
+                    column = 0
+                    line = line + 1
 
     def bottle_Widget(self, StackedWidget):
 
@@ -445,9 +450,10 @@ class UiGui(QWidget, QObject):
         Topspace = self.GUI_Height * 0.16
         possible_spcae = self.setUpButtonWith * 1.8
 
-        slider_width = std_Width * 0.8
-        name_width = std_Width * 0.6
-        amount_width = std_Width * 0.3
+        slider_width = std_Width * 0.83
+        amount_width = std_Hight
+        name_width = slider_width - amount_width
+
 
         page = 0
         j = 0
@@ -477,9 +483,10 @@ class UiGui(QWidget, QObject):
             except:
                 self.newDrinkNavigation(self.NewDrink_pages[i], self.NewDrink_pages[i - 1], self.NewDrink_pages[0])
 
-            self.s = QtWidgets.QTextBrowser(self.NewDrink_pages[i])
+            self.s = QtWidgets.QLabel(self.NewDrink_pages[i])
             self.s.setGeometry(QtCore.QRect(Stat_x, std_Y, std_Width, std_Hight))
             self.s.setText("Make your drink!")
+            self.stdLabelSetUp(self.s)
             stats.extend([self.s])
 
         for i in range(len(self.RasBari.Bottles)):
@@ -496,15 +503,17 @@ class UiGui(QWidget, QObject):
             slider[i].setMinimum(0)
             slider[i].setGeometry(QtCore.QRect(slider_x, line_y, slider_width, std_Hight))
 
-            self.n = QtWidgets.QTextBrowser(self.NewDrink_pages[page])
+            self.n = QtWidgets.QLabel(self.NewDrink_pages[page])
             name.extend([self.n])
             name[i].setText(self.RasBari.Bottles[i].getname())
             name[i].setGeometry(QtCore.QRect(name_x, line_y, name_width, std_Hight))
+            self.stdLabelSetUp(name[i])
 
-            self.a = QtWidgets.QTextBrowser(self.NewDrink_pages[page])
+            self.a = QtWidgets.QLabel(self.NewDrink_pages[page])
             amount.extend([self.a])
             amount[i].setText("0")
             amount[i].setGeometry(QtCore.QRect(amount_x, line_y, amount_width, std_Hight))
+            self.stdLabelSetUp(amount[i])
 
             slider[i].valueChanged.connect(partial(Amount_Slider, i))
             slider[i].valueChanged.connect(partial(newMaxima, i))
@@ -651,6 +660,17 @@ class UiGui(QWidget, QObject):
 
     def included_Drinks_widget(self, StackedWidget):
 
+        def delete_drink(drink):
+
+            try:
+                self.RasBari.DrinkList.pop(drink)
+                self.live_drink = self.live_drink - 1
+                if (self.live_drink < 0): self.live_drink = len(self.RasBari.DrinkList) - 1
+                self.DrinkTxt.setText(self.RasBari.DrinkList[self.live_drink].getIngredientString())
+            except:
+                self.DrinkTxt.setText("No more drinks in the system...")
+
+
         std_Hight = self.setUpButtonHeight
         std_Width = self.setUpButtonWith
         std_y = self.setUpButtonPos
@@ -670,10 +690,11 @@ class UiGui(QWidget, QObject):
         DrinkTxt_x = self.GUI_Width / 2 - DrinkTxt_width / 2
         DrinkTxt_y = self.GUI_Height / 2 - DrinkTxt_height / 2
 
-        self.DrinkTxt = QtWidgets.QTextBrowser(self.included_Drinks_widget)
+        self.DrinkTxt = QtWidgets.QLabel(self.included_Drinks_widget)
         self.DrinkTxt.setGeometry(QtCore.QRect(DrinkTxt_x, DrinkTxt_y, DrinkTxt_width, DrinkTxt_height))
         self.DrinkTxt.setObjectName("Middle_Txt_Box")
         self.DrinkTxt.setText(self.RasBari.DrinkList[self.live_drink].getIngredientString())
+        self.stdLabelSetUp(self.DrinkTxt)
 
         ExitButton_x = (self.GUI_Width / 2 - self.setUpButtonWith / 2)
 
@@ -709,7 +730,7 @@ class UiGui(QWidget, QObject):
         self.delete.setGeometry(QtCore.QRect(Delete_x, std_y, std_Width, std_Hight))
         self.delete.setText("Delete current drink")
 
-        self.delete.clicked.connect(lambda: print("delete...not now"))  # TODO include the delete function for drinks
+        self.delete.clicked.connect(lambda: delete_drink(self.live_drink))
 
         # NewDrink - for navigation from widget to NewDrink_page[0]
 
@@ -719,6 +740,16 @@ class UiGui(QWidget, QObject):
 
         self.NewDrink.clicked.connect(lambda: self.showWidget(self.NewDrink_pages[0], 1))
 
+        def updateWidget():
+            if (len(self.RasBari.DrinkList) != 0): self.live_drink = 0
+
+            try:
+                self.DrinkTxt.setText(self.RasBari.DrinkList[self.live_drink].getIngredientString())
+            except:
+                self.DrinkTxt.setText("No more drinks in the system...")
+
+        self.updateGUI.connect(lambda: updateWidget())
+
     def changeDrinkTxt(self, direction):
         if direction == 1:
             self.live_drink = self.live_drink + 1
@@ -727,7 +758,10 @@ class UiGui(QWidget, QObject):
             self.live_drink = self.live_drink - 1
             if self.live_drink < 0: self.live_drink = len(self.RasBari.DrinkList) - 1
 
-        self.DrinkTxt.setText(self.RasBari.DrinkList[self.live_drink].getIngredientString())
+        try:
+            self.DrinkTxt.setText(self.RasBari.DrinkList[self.live_drink].getIngredientString())
+        except:
+            self.DrinkTxt.setText("No more drinks in the system...")
 
     def Button_Thread_Handler(self, Auswahl):
 
@@ -837,30 +871,25 @@ class UiGui(QWidget, QObject):
         self.setUpButtonPos = self.GUI_Height * 0.84
         self.setUpTxTPos = self.GUI_Height * 0.83 - self.setUpTxTHeight
 
-    def setmyHtmlTitel(self, TitelObj, StackedWidget):
-
-        _translate = QtCore.QCoreApplication.translate
-        StackedWidget.setWindowTitle(_translate("GUI", "Rasbari"))
-        TitelObj.setHtml(_translate("GUI", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-                                           "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                           "<html><head><meta name=\"qrichtext\" content=\"1\""
-                                           " /><style type=\"text/css\">\n"
-                                           "p, li { white-space: pre-wrap; }\n"
-                                           "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; "
-                                           "font-weight:400; font-style:normal;\">\n"
-                                           "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px;"
-                                           " margin-left:0px; margin-right:0px; -qt-block-indent:0;"
-                                           " text-indent:0px;\"><span style=\" font-size:24pt; font-weight:600;"
-                                           "\">RasBari - V4.0</span></p></body></html>"))
-
     def showWidget(self, widget, refresh):
         if (refresh): self.updateGUI.emit()
         self.GW.setCurrentIndex(self.GW.indexOf(widget))
 
     def header(self, widget, StackedWidget):
-        self.Titel = QtWidgets.QTextBrowser(widget)
+
+        TitelFont = QtGui.QFont()
+        TitelFont.setPointSize(26)
+        TitelFont.setBold(True)
+        TitelFont.setItalic(False)
+        TitelFont.setWeight(75)
+
+        self.Titel = QtWidgets.QLabel(widget)
         self.Titel.setGeometry(QtCore.QRect(0, self.space_Gen, self.GUI_Width, self.GUI_Height * 0.1))
-        self.setmyHtmlTitel(self.Titel, StackedWidget)
+        self.Titel.setFont(TitelFont)
+        self.Titel.setText("Rasbari V5")
+
+        self.stdLabelSetUp(self.Titel)
+
 
     def bottomNavigation(self, widget, destination_Left, destination_Right, destination_exit):
 
@@ -898,6 +927,12 @@ class UiGui(QWidget, QObject):
 
         ########### END of bottomNavigation(self,widget,destination_Left,destination_Right,destination_exit) ###########
 
+    def stdLabelSetUp(self, Label):
+        Label.setAlignment(Qt.AlignCenter)
+        Label.setFrameShape(6)
+        Label.setStyleSheet("background-color: white")
+
+
     ####################################--Classes for simplyfied GUI design--###########################################
 
     class BottleLine():
@@ -912,11 +947,13 @@ class UiGui(QWidget, QObject):
 
         def buildline(self):
 
-            self.BottleNameDsp = QtWidgets.QTextBrowser(self.wg)
+            self.BottleNameDsp = QtWidgets.QLabel(self.wg)
             self.BottleNameDsp.setGeometry(
                 QtCore.QRect(self.rev_x, self.rev_y, self.MAINGUI.GUI_Width * 0.145, self.MAINGUI.setUpButtonHeight))
             self.BottleNameDsp.setObjectName("Bottle Name")
             self.BottleNameDsp.setText(self.Bottle_in.getname())
+            self.stdLabelSetUp(self.BottleNameDsp)
+
 
             xLevel = self.rev_x + self.MAINGUI.GUI_Width * 0.145 + self.MAINGUI.space_Gen
 
@@ -976,3 +1013,8 @@ class UiGui(QWidget, QObject):
                     if value < 0: value = 0
                     self.level.setProperty("value", value)
                     break
+
+        def stdLabelSetUp(self, Label):
+            Label.setAlignment(Qt.AlignCenter)
+            Label.setFrameShape(6)
+            Label.setStyleSheet("background-color: white")

@@ -4,13 +4,14 @@
 #
 # Name: Philipp Mochti
 #
-# V1.0
+# V4.0
 #
 #
 
 from PyQt5 import QtWidgets
 
 from StyleFunctions import ApplyStyleSheets
+from TxTMethoden import getFlag
 from classes.class_GUI import UiGui
 
 if __name__ == "__main__":
@@ -27,7 +28,9 @@ if __name__ == "__main__":
     ui = UiGui(rect.width(), rect.height(), StackedWidget)
     ui.setupUi(StackedWidget)
 
-    #StackedWidget.showFullScreen() #Comment line 28 or 29 in for full or part screen
-    StackedWidget.show()
+    if (getFlag("Fullscreen")):
+        StackedWidget.showFullScreen()
+    else:
+        StackedWidget.show()
 
     sys.exit(app.exec_())

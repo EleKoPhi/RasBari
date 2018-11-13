@@ -1,7 +1,5 @@
 StyleSheet = """
 
-
-
 QSlider::handle:horizontal {
     background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);
     border: 1px solid #5c5c5c;
@@ -34,10 +32,7 @@ QSlider::sub-page:horizontal {
     background: grey;
 }
 
-
-
 """
-
 
 def ApplyStyleSheets(App):
     App.setStyleSheet(StyleSheet)
