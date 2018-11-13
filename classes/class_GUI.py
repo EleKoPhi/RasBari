@@ -385,13 +385,12 @@ class UiGui(QWidget, QObject):
 
         NOBut_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
         NOBut_y = YESBut_y
-        MainWidgetIndex = stacked_widget.indexOf(self.Mainwig)
 
         self.NOBut = QtWidgets.QPushButton(self.ingredWidg)
         self.NOBut.setGeometry(QtCore.QRect(NOBut_x, NOBut_y, std_width, std_hight))
         self.NOBut.setText("No")
 
-        self.NOBut.clicked.connect(lambda: self.GW.setCurrentIndex(MainWidgetIndex))
+        self.NOBut.clicked.connect(lambda: self.showWidget(self.Mainwig))
 
         # Message - Textbrowser that shows the message for missing ingredients
 

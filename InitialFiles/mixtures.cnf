@@ -1,5 +1,5 @@
 [Drink1]
-Name=Gin Tonic1
+Name=Gin Tonic
 Gin=30
 Whisky=0
 Rum=0
@@ -12,7 +12,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink2]
-Name=TestDrinkAll
+Name=Test_drink
 Gin=10
 Whisky=10
 Rum=10
@@ -25,7 +25,7 @@ Grenadine=10
 Zuckersirup=10
 
 [Drink3]
-Name=Gin Tonic3
+Name=Wodka Bull
 Gin=30
 Whisky=0
 Rum=0
@@ -38,7 +38,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink4]
-Name=Gin Tonic4
+Name=Swimming pool
 Gin=30
 Whisky=0
 Rum=0
@@ -51,7 +51,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink5]
-Name=Gin Tonic5
+Name=Cubalibre
 Gin=30
 Whisky=0
 Rum=0
@@ -64,7 +64,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink6]
-Name=Gin Tonic6
+Name=MaiThai
 Gin=30
 Whisky=0
 Rum=0
@@ -77,7 +77,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink7]
-Name=Gin Tonic7
+Name=Rezo classic
 Gin=30
 Whisky=0
 Rum=0
@@ -90,7 +90,7 @@ Genadinesirup=0
 Zuckersirup=0
 
 [Drink8]
-Name=Gin Tonic8
+Name=Zombi
 Gin=30
 Whisky=0
 Rum=0
