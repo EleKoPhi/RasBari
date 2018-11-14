@@ -33,7 +33,7 @@ def getDrinkName(NumberOfDrink):
 
 def getAllIngredients(NumberOfDrink):
     if Mischungen.has_section(NumberOfDrink):
-        return Mischungen.items(NumberOfDrink)
+        return [list(elements) for elements in Mischungen.items(NumberOfDrink)]
 
     return False
 

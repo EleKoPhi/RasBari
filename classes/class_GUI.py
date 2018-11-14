@@ -15,11 +15,13 @@ class UiGui(QWidget, QObject):
     Bottle_pages = []
     NewDrink_pages = []
     GridButton = []
+    help_pages = []
 
     updateGUI = pyqtSignal()
     clear = pyqtSignal()
 
     live_drink = 0
+    flag = 0
 
     def __init__(self, width, height, global_widget):
         QObject.__init__(self)
@@ -37,6 +39,7 @@ class UiGui(QWidget, QObject):
         stacked_widget.setObjectName("GUI")
         stacked_widget.resize(self.GUI_Width, self.GUI_Height)
         stacked_widget.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
+        stacked_widget.setMinimumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
 
         ################################### ---> BUILD WIDGETS HER <--- ###############################################
 
@@ -93,7 +96,7 @@ class UiGui(QWidget, QObject):
 
         # Headline - Contains Software title
 
-        self.header(self.Mainwig, stacked_widget)
+        self.header(self.Mainwig)
 
         self.buildButtonGrid()
 
@@ -318,7 +321,7 @@ class UiGui(QWidget, QObject):
             self.Bottle_pages.extend([QtWidgets.QWidget()])
             self.Bottle_pages[i].setObjectName("Bottlepage" + str(i))
             StackedWidget.addWidget(self.Bottle_pages[i])
-            self.header(self.Bottle_pages[i], StackedWidget)
+            self.header(self.Bottle_pages[i])
 
         # Build the bottomNavigation for every bottle_Widget
 
@@ -367,7 +370,7 @@ class UiGui(QWidget, QObject):
 
         # Headline - Contains Software title
 
-        self.header(self.ingredWidg, stacked_widget)
+        self.header(self.ingredWidg)
 
         # YESBut - Button for navigation to the bottle widget
 
@@ -390,7 +393,7 @@ class UiGui(QWidget, QObject):
         self.NOBut.setGeometry(QtCore.QRect(NOBut_x, NOBut_y, std_width, std_hight))
         self.NOBut.setText("No")
 
-        self.NOBut.clicked.connect(lambda: self.showWidget(self.Mainwig))
+        self.NOBut.clicked.connect(lambda: self.showWidget(self.Mainwig, 1))
 
         # Message - Textbrowser that shows the message for missing ingredients
 
@@ -472,7 +475,7 @@ class UiGui(QWidget, QObject):
             self.NewDrink_pages.extend([QtWidgets.QWidget()])
             self.NewDrink_pages[i].setObjectName("NewDrink_page" + str(i))
             StackedWidget.addWidget(self.NewDrink_pages[i])
-            self.header(self.NewDrink_pages[i], StackedWidget)
+            self.header(self.NewDrink_pages[i])
             self.NewDrink_wig_bottom(slider, self.NewDrink_pages[i])
 
         for i in range(len(self.NewDrink_pages)):
@@ -627,7 +630,7 @@ class UiGui(QWidget, QObject):
 
         # Headline - Contains Software title
 
-        self.header(self.drinks_menue_widget, StackedWidget)
+        self.header(self.drinks_menue_widget)
 
         # NewDrink pushbutton to navigate to the newdrink widget
 
@@ -682,7 +685,7 @@ class UiGui(QWidget, QObject):
 
         # Headline - Contains Software title
 
-        self.header(self.included_Drinks_widget, StackedWidget)
+        self.header(self.included_Drinks_widget)
 
         DrinkTxt_width = self.setUpButtonWith * 1.8
         DrinkTxt_height = self.setUpButtonWith * 1.2
@@ -725,9 +728,19 @@ class UiGui(QWidget, QObject):
 
         # delete - for navigation from widget to destination_Left
 
+        delete_width = std_Width / 2 - self.space / 2
+
         self.delete = QtWidgets.QPushButton(self.included_Drinks_widget)
-        self.delete.setGeometry(QtCore.QRect(Delete_x, std_y, std_Width, std_Hight))
-        self.delete.setText("Delete current drink")
+        self.delete.setGeometry(QtCore.QRect(Delete_x, std_y, delete_width, std_Hight))
+        self.delete.setText("Delete")
+
+        change_x = Delete_x + delete_width + self.space
+
+        self.change = QtWidgets.QPushButton(self.included_Drinks_widget)
+        self.change.setGeometry(QtCore.QRect(change_x, std_y, delete_width, std_Hight))
+        self.change.setText("Change")
+
+        self.change.clicked.connect(lambda: self.tuneDrink(StackedWidget, self.live_drink))
 
         self.delete.clicked.connect(lambda: delete_drink(self.live_drink))
 
@@ -748,6 +761,165 @@ class UiGui(QWidget, QObject):
                 self.DrinkTxt.setText("No more drinks in the system...")
 
         self.updateGUI.connect(lambda: updateWidget())
+
+    def tuneDrink(self, StackedWidget, DrinkNr):
+
+        def Amount_Slider(i):
+            amount[i].setText(str(slider[i].value()))
+
+            sum = 0
+
+            for i in range(len(slider)):
+                sum = sum + slider[i].value()
+
+        def newMaxima(callingSlider, nrOfincred):  # TODO clear that and fix the rounding bug
+            sum = 0
+            overshot = 0
+            count = 0
+
+            for i in range(len(slider)):
+                sum = sum + slider[i].value()
+
+            overshot = sum - 100
+
+            if (overshot > 0):
+
+                for i in range(len(slider)):
+                    if (slider[i].value() != 0): count = count + 1
+
+                overshot = int(overshot / (count - 1))
+                if (overshot < 1): overshot = 1
+
+                for i in range(len(slider)):
+                    if (i == callingSlider): continue
+                    if (slider[i].value() != 0): slider[i].setSliderPosition(slider[i].value() - overshot)
+
+        std_Hight = self.setUpButtonHeight
+        std_Width = self.setUpButtonWith
+        std_y = self.setUpButtonPos
+
+        space_width = self.setUpButtonWith * 1.8
+        space_heigt = self.setUpButtonWith * 1.2
+        space_x = self.GUI_Width / 2 - space_width / 2
+        Topspace = self.GUI_Height * 0.16
+
+        slider_width = std_Width * 0.83
+        amount_width = std_Hight
+        name_width = slider_width - amount_width
+
+        space_bt_elements = (space_width - slider_width - name_width - amount_width) / 2
+        slider_x = (self.GUI_Width / 2) - (slider_width + name_width + amount_width + 2 * space_bt_elements) / 2
+        name_x = slider_x + space_bt_elements + slider_width
+        amount_x = name_x + space_bt_elements + name_width
+
+        ExitBUtton_x = self.GUI_Width / 2 - self.setUpButtonWith / 2
+        Changeleft_x = self.setUp_getin
+        Changeright_x = self.GUI_Width - self.setUp_getin - self.setUpButtonWith
+
+        slider = []
+        name = []
+        amount = []
+
+        j = 1
+        page = 0
+
+        nrOfincred = 0
+
+        for i in range(1, len(self.RasBari.DrinkList[DrinkNr].Ingredients)):
+            if (self.RasBari.DrinkList[DrinkNr].Ingredients[i][1] != "0"):
+                nrOfincred = nrOfincred + 1
+
+        nrOfWidgets = int(len(self.RasBari.DrinkList) / 4)
+
+        if (nrOfincred < 4): nrOfWidgets = nrOfWidgets - 1
+        if (nrOfincred > 4): nrOfWidgets = nrOfWidgets + 1
+
+        for i in range(nrOfWidgets):
+            self.helpWig = QtWidgets.QWidget()
+            self.helpWig.setObjectName("helpWig" + str(i))
+            self.help_pages.extend([self.helpWig])
+
+            self.header(self.helpWig)
+
+            self.Name = QtWidgets.QLabel(self.helpWig)
+            self.Name.setGeometry(QtCore.QRect(space_x, Topspace, space_width, std_Hight))
+            self.Name.setObjectName("Drink_Name")
+            self.Name.setText(self.RasBari.DrinkList[DrinkNr].Ingredients[0][1])
+            self.stdLabelSetUp(self.Name)
+            StackedWidget.addWidget(self.helpWig)
+
+        name_list = []
+
+        for l in range(1, len(self.RasBari.DrinkList[DrinkNr].Ingredients)):
+            if (self.RasBari.DrinkList[DrinkNr].Ingredients[l][1] != "0"):
+                name_list.extend([self.RasBari.DrinkList[DrinkNr].Ingredients[l]])
+
+        for i in range(nrOfincred):
+
+            if ((i % 4 == 0) & (i != 0)):
+                page = page + 1
+                j = 1
+
+            line_y = Topspace + j * (std_Hight + self.space_Gen * 1.7)
+
+            self.s = QtWidgets.QSlider(Qt.Horizontal, self.help_pages[page])
+            slider.extend([self.s])
+            slider[i].setMaximum(100)
+            slider[i].setMinimum(0)
+            slider[i].setSliderPosition(int(name_list[i][1]))
+            slider[i].setGeometry(QtCore.QRect(slider_x, line_y, slider_width, std_Hight))
+
+            self.n = QtWidgets.QLabel(self.help_pages[page])
+            name.extend([self.n])
+            name[i].setText(name_list[i][0])
+            name[i].setGeometry(QtCore.QRect(name_x, line_y, name_width, std_Hight))
+            self.stdLabelSetUp(name[i])
+
+            self.a = QtWidgets.QLabel(self.help_pages[page])
+            amount.extend([self.a])
+            amount[i].setText(name_list[i][1])
+            amount[i].setGeometry(QtCore.QRect(amount_x, line_y, amount_width, std_Hight))
+            self.stdLabelSetUp(amount[i])
+
+            self.ExitButton = QtWidgets.QPushButton(self.help_pages[page])
+            self.ExitButton.setGeometry(QtCore.QRect(ExitBUtton_x, std_y, std_Width, std_Hight))
+            self.ExitButton.setText("Exit")
+
+            self.ExitButton.clicked.connect(lambda: self.showWidget(self.Mainwig, 1))
+
+            self.Back = QtWidgets.QPushButton(self.help_pages[page])
+            self.Back.setGeometry(QtCore.QRect(Changeleft_x, std_y, std_Width, std_Hight))
+            self.Back.setText("Back")
+
+            self.Back.clicked.connect(lambda: self.showWidget(self.included_Drinks_widget, 1))
+
+            self.Apply = QtWidgets.QPushButton(self.help_pages[page])
+            self.Apply.setGeometry(QtCore.QRect(Changeright_x, std_y, std_Width, std_Hight))
+            self.Apply.setText("Apply changes")
+
+            self.Apply.clicked.connect(lambda: print("settings"))
+
+            slider[i].valueChanged.connect(partial(Amount_Slider, i))
+            slider[i].sliderReleased.connect(partial(newMaxima, i, nrOfincred))
+
+            j = j + 1
+
+        if (nrOfincred > 4):
+
+            for i in range(len(self.help_pages)):
+                try:
+                    self.newDrinkNavigation(self.help_pages[i], self.help_pages[i - 1], self.help_pages[i + 1])
+
+                except:
+                    self.newDrinkNavigation(self.help_pages[i], self.help_pages[i - 1], self.help_pages[0])
+
+        def updateWidget():
+            self.help_pages.clear()
+
+        self.updateGUI.connect(lambda: updateWidget())
+
+        self.showWidget(self.help_pages[0], 1)
+
 
     def changeDrinkTxt(self, direction):
         if direction == 1:
@@ -874,7 +1046,7 @@ class UiGui(QWidget, QObject):
         if (refresh): self.updateGUI.emit()
         self.GW.setCurrentIndex(self.GW.indexOf(widget))
 
-    def header(self, widget, StackedWidget):
+    def header(self, widget):
 
         TitelFont = QtGui.QFont()
         TitelFont.setPointSize(26)
@@ -888,7 +1060,6 @@ class UiGui(QWidget, QObject):
         self.Titel.setText("Rasbari V5")
 
         self.stdLabelSetUp(self.Titel)
-
 
     def bottomNavigation(self, widget, destination_Left, destination_Right, destination_exit):
 
