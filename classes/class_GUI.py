@@ -764,29 +764,39 @@ class UiGui(QWidget, QObject):
 
     def tuneDrink(self, StackedWidget, DrinkNr):
 
+        def changevalue(callingSlider):
+            amount[callingSlider].setText(str(slider[callingSlider].value()))
+
         def newMaxima(callingSlider, nrOfincred):  # TODO clear that and fix the rounding bug
             sum = 0
-            j = 0
-
-            amount[callingSlider].setText(str(slider[callingSlider].value()))
+            j = callingSlider
 
             for i in range(len(slider)):
                 sum = sum + slider[i].value()
 
-            self.flag = self.flag + 1
-            if (self.flag == len(slider)): self.flag = 0
+            sum = sum - 100
 
-            if (sum > 100):
-                for i in range(len(slider)):
-                    if ((slider[i].value() == 0) or (i == callingSlider)): continue
-                    slider[i].setSliderPosition(slider[i].value() - 1)
-                    break
+            print(sum)
 
-            if (sum < 100):
-                for i in range(len(slider)):
-                    if (i == callingSlider): continue
-                    slider[self.flag].setSliderPosition(slider[self.flag].value() + 1)
-                    break
+            if (sum > 0):
+                while (True):
+                    if (j != callingSlider) and (slider[j].value() != 0):
+                        slider[j].setSliderPosition(slider[j].value() - 1)
+                        sum = sum - 1
+                        j = j + 1
+                    else:
+                        j = j + 1
+
+                    if j > (len(slider) - 1): j = 0
+
+                    if (sum == 0): break
+
+
+
+
+
+
+
 
 
 
@@ -906,7 +916,8 @@ class UiGui(QWidget, QObject):
 
             self.Apply.clicked.connect(lambda: print("settings"))
 
-            slider[i].valueChanged.connect(partial(newMaxima, i, nrOfincred))
+            slider[i].sliderReleased.connect(partial(newMaxima, i, nrOfincred))
+            slider[i].valueChanged.connect(partial(changevalue, i))
 
             j = j + 1
 
