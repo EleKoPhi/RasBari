@@ -764,35 +764,42 @@ class UiGui(QWidget, QObject):
 
     def tuneDrink(self, StackedWidget, DrinkNr):
 
-        def Amount_Slider(i):
-            amount[i].setText(str(slider[i].value()))
-
-            sum = 0
-
-            for i in range(len(slider)):
-                sum = sum + slider[i].value()
-
         def newMaxima(callingSlider, nrOfincred):  # TODO clear that and fix the rounding bug
             sum = 0
-            overshot = 0
-            count = 0
+            j = 0
+
+            amount[callingSlider].setText(str(slider[callingSlider].value()))
 
             for i in range(len(slider)):
                 sum = sum + slider[i].value()
 
-            overshot = sum - 100
+            self.flag = self.flag + 1
+            if (self.flag == len(slider)): self.flag = 0
 
-            if (overshot > 0):
-
+            if (sum > 100):
                 for i in range(len(slider)):
-                    if (slider[i].value() != 0): count = count + 1
+                    if ((slider[i].value() == 0) or (i == callingSlider)): continue
+                    slider[i].setSliderPosition(slider[i].value() - 1)
+                    break
 
-                overshot = int(overshot / (count - 1))
-                if (overshot < 1): overshot = 1
-
+            if (sum < 100):
                 for i in range(len(slider)):
                     if (i == callingSlider): continue
-                    if (slider[i].value() != 0): slider[i].setSliderPosition(slider[i].value() - overshot)
+                    slider[self.flag].setSliderPosition(slider[self.flag].value() + 1)
+                    break
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         std_Hight = self.setUpButtonHeight
         std_Width = self.setUpButtonWith
@@ -899,8 +906,7 @@ class UiGui(QWidget, QObject):
 
             self.Apply.clicked.connect(lambda: print("settings"))
 
-            slider[i].valueChanged.connect(partial(Amount_Slider, i))
-            slider[i].sliderReleased.connect(partial(newMaxima, i, nrOfincred))
+            slider[i].valueChanged.connect(partial(newMaxima, i, nrOfincred))
 
             j = j + 1
 
