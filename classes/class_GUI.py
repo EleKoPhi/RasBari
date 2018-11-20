@@ -767,7 +767,7 @@ class UiGui(QWidget, QObject):
         def changevalue(callingSlider):
             amount[callingSlider].setText(str(slider[callingSlider].value()))
 
-        def newMaxima(callingSlider, nrOfincred):  # TODO clear that and fix the rounding bug
+        def newMaxima(callingSlider):
             sum = 0
             j = callingSlider
 
@@ -775,8 +775,6 @@ class UiGui(QWidget, QObject):
                 sum = sum + slider[i].value()
 
             sum = sum - 100
-
-            print(sum)
 
             if (sum > 0):
                 while (True):
@@ -791,24 +789,18 @@ class UiGui(QWidget, QObject):
 
                     if (sum == 0): break
 
+            if (sum < 0):
+                while (True):
+                    if j != callingSlider:
+                        slider[j].setSliderPosition(slider[j].value() + 1)
+                        sum = sum + 1
+                        j = j + 1
+                    else:
+                        j = j + 1
 
+                    if j > (len(slider) - 1): j = 0
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    if (sum == 0): break
 
 
         std_Hight = self.setUpButtonHeight
@@ -916,7 +908,7 @@ class UiGui(QWidget, QObject):
 
             self.Apply.clicked.connect(lambda: print("settings"))
 
-            slider[i].sliderReleased.connect(partial(newMaxima, i, nrOfincred))
+            slider[i].sliderReleased.connect(partial(newMaxima, i))
             slider[i].valueChanged.connect(partial(changevalue, i))
 
             j = j + 1
