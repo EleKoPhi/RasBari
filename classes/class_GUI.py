@@ -71,7 +71,7 @@ class UiGui(QWidget, QObject):
 
         ################################### ---> END TIMER <--- #######################################################
 
-        main_widget_index = stacked_widget.indexOf(self.Mainwig)
+        main_widget_index = stacked_widget.indexOf(self.main_widget)
         stacked_widget.setCurrentIndex(main_widget_index)
         QtCore.QMetaObject.connectSlotsByName(stacked_widget)
 
@@ -81,21 +81,21 @@ class UiGui(QWidget, QObject):
 
         # Build of new widget
 
-        self.Mainwig = QtWidgets.QWidget()
-        self.Mainwig.setObjectName("Mainwig")
-        stacked_widget.addWidget(self.Mainwig)
+        self.main_widget = QtWidgets.QWidget()
+        self.main_widget.setObjectName("Mainwig")
+        stacked_widget.addWidget(self.main_widget)
 
         # std. values
 
         std_y = self.bottom_button_y
         std_txt_y = self.bottom_txt_y
-        std_Hight = self.button_height
-        std_Hight_txt = self.txt_height
-        std_Width = self.button_width
+        std_hight = self.button_height
+        std_hight_txt = self.txt_height
+        std_width = self.button_width
 
         # Headline - Contains Software title
 
-        self.header(self.Mainwig)
+        self.header(self.main_widget)
 
         self.button_grid()
 
@@ -106,7 +106,7 @@ class UiGui(QWidget, QObject):
         Progress_width = self.GUI_Width - 2 * self.bottom_button_getin
         Progress_hight = self.GUI_Height * 0.08
 
-        self.Progress = QtWidgets.QProgressBar(self.Mainwig)
+        self.Progress = QtWidgets.QProgressBar(self.main_widget)
         self.Progress.setGeometry(QtCore.QRect(Progress_x, Progress_y, Progress_width, Progress_hight))
         self.Progress.setProperty("value", 0)
         self.Progress.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
@@ -117,25 +117,25 @@ class UiGui(QWidget, QObject):
         AddAmount_x = self.bottom_button_getin + self.button_width - self.button_height
         SubtracAmount_x = self.bottom_button_getin
 
-        self.AddAmount = QtWidgets.QPushButton(self.Mainwig)
-        self.AddAmount.setGeometry(QtCore.QRect(AddAmount_x, std_y, std_Hight, std_Hight))
+        self.AddAmount = QtWidgets.QPushButton(self.main_widget)
+        self.AddAmount.setGeometry(QtCore.QRect(AddAmount_x, std_y, std_hight, std_hight))
         self.AddAmount.setText("+")
 
         self.AddAmount.clicked.connect(lambda: self.RasBari.change_volume(+10))
 
-        self.SubtractAmount = QtWidgets.QPushButton(self.Mainwig)
-        self.SubtractAmount.setGeometry(QtCore.QRect(SubtracAmount_x, std_y, std_Hight, std_Hight))
+        self.SubtractAmount = QtWidgets.QPushButton(self.main_widget)
+        self.SubtractAmount.setGeometry(QtCore.QRect(SubtracAmount_x, std_y, std_hight, std_hight))
         self.SubtractAmount.setText("-")
 
         self.SubtractAmount.clicked.connect(lambda: self.RasBari.change_volume(-10))
 
         # LCD Display that shows the drink size
 
-        amount_LCD_Width = std_Width - 2 * std_Hight - 2 * self.button_space
-        amount_LCD_x = self.bottom_button_getin + (std_Width / 2) - (amount_LCD_Width / 2)
+        amount_LCD_Width = std_width - 2 * std_hight - 2 * self.button_space
+        amount_LCD_x = self.bottom_button_getin + (std_width / 2) - (amount_LCD_Width / 2)
 
-        self.amount_LCD = QtWidgets.QLCDNumber(self.Mainwig)
-        self.amount_LCD.setGeometry(QtCore.QRect(amount_LCD_x, std_y, amount_LCD_Width, std_Hight))
+        self.amount_LCD = QtWidgets.QLCDNumber(self.main_widget)
+        self.amount_LCD.setGeometry(QtCore.QRect(amount_LCD_x, std_y, amount_LCD_Width, std_hight))
         self.amount_LCD.setAutoFillBackground(False)
         self.amount_LCD.setFrameShape(QtWidgets.QFrame.Panel)
         self.amount_LCD.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -157,8 +157,8 @@ class UiGui(QWidget, QObject):
         stopFont.setItalic(False)
         stopFont.setWeight(75)
 
-        self.Exit = QtWidgets.QPushButton(self.Mainwig)
-        self.Exit.setGeometry(QtCore.QRect(Exit_x, std_y, std_Width, std_Hight))
+        self.Exit = QtWidgets.QPushButton(self.main_widget)
+        self.Exit.setGeometry(QtCore.QRect(Exit_x, std_y, std_width, std_hight))
         self.Exit.setObjectName("Exit")
         self.Exit.setFont(stopFont)
         self.Exit.setText("STOP")
@@ -170,8 +170,8 @@ class UiGui(QWidget, QObject):
 
         DigitText_x = self.bottom_button_getin
 
-        self.DigitText = QtWidgets.QLabel(self.Mainwig)
-        self.DigitText.setGeometry(QtCore.QRect(DigitText_x, std_txt_y, std_Width, std_Hight_txt))
+        self.DigitText = QtWidgets.QLabel(self.main_widget)
+        self.DigitText.setGeometry(QtCore.QRect(DigitText_x, std_txt_y, std_width, std_hight_txt))
         self.DigitText.setObjectName("Glasvolume")
         self.stdLabelSetUp(self.DigitText)
 
@@ -183,8 +183,8 @@ class UiGui(QWidget, QObject):
 
         StatTxt_x = self.GUI_Width - self.bottom_button_getin - self.button_width
 
-        self.StatTxt = QtWidgets.QLabel(self.Mainwig)
-        self.StatTxt.setGeometry(QtCore.QRect(StatTxt_x, std_txt_y, std_Width, std_Hight_txt))
+        self.StatTxt = QtWidgets.QLabel(self.main_widget)
+        self.StatTxt.setGeometry(QtCore.QRect(StatTxt_x, std_txt_y, std_width, std_hight_txt))
         self.StatTxt.setObjectName("Status-text-box")
         self.StatTxt.setText("Status: Wait for input...")
         self.stdLabelSetUp(self.StatTxt)
@@ -193,8 +193,8 @@ class UiGui(QWidget, QObject):
 
         TxtBox_middle_x = self.GUI_Width / 2 - self.button_width / 2
 
-        self.TxtBox_middle = QtWidgets.QLabel(self.Mainwig)
-        self.TxtBox_middle.setGeometry(QtCore.QRect(TxtBox_middle_x, std_txt_y, std_Width, std_Hight_txt))
+        self.TxtBox_middle = QtWidgets.QLabel(self.main_widget)
+        self.TxtBox_middle.setGeometry(QtCore.QRect(TxtBox_middle_x, std_txt_y, std_width, std_hight_txt))
         self.TxtBox_middle.setObjectName("Middle_Txt_Box")
         self.TxtBox_middle.setText("Welcome")
         self.stdLabelSetUp(self.TxtBox_middle)
@@ -204,8 +204,8 @@ class UiGui(QWidget, QObject):
         Bottles_x = (self.GUI_Width / 2 - self.button_width / 2)
         Bottles_width = self.button_width / 2 - self.button_space / 2
 
-        self.Bottles = QtWidgets.QPushButton(self.Mainwig)
-        self.Bottles.setGeometry(QtCore.QRect(Bottles_x, std_y, Bottles_width, std_Hight))
+        self.Bottles = QtWidgets.QPushButton(self.main_widget)
+        self.Bottles.setGeometry(QtCore.QRect(Bottles_x, std_y, Bottles_width, std_hight))
         self.Bottles.setText("Bottles")
 
         self.Bottles.clicked.connect(lambda: self.show_widget(self.Bottle_pages[0], 1))
@@ -215,23 +215,23 @@ class UiGui(QWidget, QObject):
         Drinks_x = (self.GUI_Width / 2 - self.button_width / 2) + Bottles_width + self.button_space
         Drinks_width = Bottles_width
 
-        self.Drinks = QtWidgets.QPushButton(self.Mainwig)
-        self.Drinks.setGeometry(QtCore.QRect(Drinks_x, std_y, Drinks_width, std_Hight))
+        self.Drinks = QtWidgets.QPushButton(self.main_widget)
+        self.Drinks.setGeometry(QtCore.QRect(Drinks_x, std_y, Drinks_width, std_hight))
         self.Drinks.setText("Drinks")
 
         self.Drinks.clicked.connect(lambda: self.show_widget(self.drinks_menue_widget, 1))
 
         def updateWidget():
 
-            self.GridLayout = self.Mainwig.findChild(QtWidgets.QWidget, "gridLayoutWidget")
-            self.ButtonGrid = self.Mainwig.findChild(QtWidgets.QGridLayout, "AuswahlGrid")
+            self.GridLayout = self.main_widget.findChild(QtWidgets.QWidget, "gridLayoutWidget")
+            self.ButtonGrid = self.main_widget.findChild(QtWidgets.QGridLayout, "AuswahlGrid")
 
             try:
                 self.GridLayout.deleteLater()
                 self.ButtonGrid.deleteLater()
 
                 for i in range(len(self.grid_button_list)):
-                    Button = self.Mainwig.findChild(QtWidgets.QPushButton, "Button_" + str(i))
+                    Button = self.main_widget.findChild(QtWidgets.QPushButton, "Button_" + str(i))
                     Button.disconect()
                     Button.deleteLater()
 
@@ -288,7 +288,7 @@ class UiGui(QWidget, QObject):
             except:
                 page_right = self.Bottle_pages[0]
 
-            self.bottomNavigation(self.Bottle_pages[i], page_left, page_right, self.Mainwig, button_txt)
+            self.bottomNavigation(self.Bottle_pages[i], page_left, page_right, self.main_widget, button_txt)
 
         # Build for every bottle one line that's shows - NAME - LEVEL + REST_Button + CLEAR_Button
 
@@ -347,7 +347,7 @@ class UiGui(QWidget, QObject):
         self.NOBut.setGeometry(QtCore.QRect(NOBut_x, NOBut_y, std_width, std_hight))
         self.NOBut.setText("No")
 
-        self.NOBut.clicked.connect(lambda: self.show_widget(self.Mainwig, 1))
+        self.NOBut.clicked.connect(lambda: self.show_widget(self.main_widget, 1))
 
         # Message - Textbrowser that shows the message for missing ingredients
 
@@ -511,7 +511,7 @@ class UiGui(QWidget, QObject):
 
             self.RasBari.DrinkList.extend([new_drink])
             self.reset_slider_list(slider_list)
-            self.show_widget(self.Mainwig, 1)
+            self.show_widget(self.main_widget, 1)
 
         else:
             print("Drink not completed")  # TODO change the reset button to an textbrowser that indictes status
@@ -569,7 +569,7 @@ class UiGui(QWidget, QObject):
         self.exit_button.setGeometry(QtCore.QRect(exit_button_x, std_y, std_width, std_height))
         self.exit_button.setText("Exit")
 
-        self.exit_button.clicked.connect(lambda: self.show_widget(self.Mainwig, 1))
+        self.exit_button.clicked.connect(lambda: self.show_widget(self.main_widget, 1))
 
     def included_Drinks_widget(self, stacked_widget):
 
@@ -612,7 +612,7 @@ class UiGui(QWidget, QObject):
         self.exit_button = QtWidgets.QPushButton(self.included_Drinks_widget)
         self.exit_button.setGeometry(QtCore.QRect(exit_button_x, std_y, std_width, std_height))
         self.exit_button.setText("Exit")
-        self.exit_button.clicked.connect(lambda: self.show_widget(self.Mainwig, 1))
+        self.exit_button.clicked.connect(lambda: self.show_widget(self.main_widget, 1))
 
         next_button_size = self.button_height * 1.5
         next_button_y = self.GUI_Height / 2 - next_button_size / 2
@@ -797,7 +797,7 @@ class UiGui(QWidget, QObject):
             self.exit_button = QtWidgets.QPushButton(self.help_pages[page])
             self.exit_button.setGeometry(QtCore.QRect(exit_button_x, std_y, std_width, std_height))
             self.exit_button.setText("Exit")
-            self.exit_button.clicked.connect(lambda: self.show_widget(self.Mainwig, 1))
+            self.exit_button.clicked.connect(lambda: self.show_widget(self.main_widget, 1))
 
             self.Back = QtWidgets.QPushButton(self.help_pages[page])
             self.Back.setGeometry(QtCore.QRect(change_left_x, std_y, std_width, std_height))
@@ -1034,7 +1034,7 @@ class UiGui(QWidget, QObject):
         self.exit_button = QtWidgets.QPushButton(widget)
         self.exit_button.setGeometry(QtCore.QRect(exit_button_x, std_y, std_width, std_height))
         self.exit_button.setText("Exit")
-        self.exit_button.clicked.connect(lambda: self.show_widget(self.Mainwig, 1))
+        self.exit_button.clicked.connect(lambda: self.show_widget(self.main_widget, 1))
 
         # Save - Button to Save the current drink setup as a new drink
 
@@ -1054,7 +1054,7 @@ class UiGui(QWidget, QObject):
             grid_width = self.GUI_Width
             grid_height = self.GUI_Height * 0.55
 
-            self.grid_layout_widget = QtWidgets.QWidget(self.Mainwig)
+            self.grid_layout_widget = QtWidgets.QWidget(self.main_widget)
             self.grid_layout_widget.setGeometry(QtCore.QRect(grid_widget_x, grid_widget_y, grid_width, grid_height))
             self.grid_layout_widget.setObjectName("gridLayoutWidget")
 
