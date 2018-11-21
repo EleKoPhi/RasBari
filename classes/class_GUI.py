@@ -906,7 +906,7 @@ class UiGui(QWidget, QObject):
             self.Apply.setGeometry(QtCore.QRect(Changeright_x, std_y, std_Width, std_Hight))
             self.Apply.setText("Apply changes")
 
-            self.Apply.clicked.connect(lambda: print("settings"))
+            self.Apply.clicked.connect(lambda: print("settings"))  # TODO include the apply function her
 
             slider[i].sliderReleased.connect(partial(newMaxima, i))
             slider[i].valueChanged.connect(partial(changevalue, i))
