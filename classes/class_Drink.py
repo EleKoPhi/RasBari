@@ -3,9 +3,6 @@ from TxTMethoden import *
 
 class Drink(object):
 
-    Ingredients = []
-    alive = False
-
     def __init__(self, Input):
 
         try:
@@ -16,8 +13,8 @@ class Drink(object):
 
                 if proofIngredients(Input):
 
-                    self.Ingredients = allIngredients
 
+                    self.Ingredients = allIngredients
                     self.alive = True
 
                 else:
@@ -58,3 +55,10 @@ class Drink(object):
             string = string + self.Ingredients[i][0] + ":" + self.Ingredients[i][1] + "\n"
 
         return string
+
+    def setNewIngredients(self, new_ingredients):
+
+        self.Ingredients[1:(len(self.Ingredients))] = []
+
+        for i in range(len(new_ingredients)):
+            self.Ingredients.extend([new_ingredients[i]])

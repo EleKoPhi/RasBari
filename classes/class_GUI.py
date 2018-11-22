@@ -661,7 +661,9 @@ class UiGui(QWidget, QObject):
         self.newdrink_button.clicked.connect(lambda: self.show_widget(self.NewDrink_pages[0], 1))
 
         def updateWidget():
-            if (len(self.RasBari.DrinkList) != 0): self.live_drink = 0
+            if (len(self.RasBari.DrinkList) != 0 & self.flag == 1): self.live_drink = 0
+
+            self.flag == 1
 
             try:
                 self.drink_txt_label.setText(self.RasBari.DrinkList[self.live_drink].getIngredientString())
@@ -673,6 +675,12 @@ class UiGui(QWidget, QObject):
     def tuneDrink(self, stacked_widget, drink_nr):
 
         def change_value(calling_slider):
+
+            if slider[calling_slider].value() > (100 - len(slider) + 1):
+                slider[calling_slider].setSliderPosition(100 - len(slider) + 1)
+
+            if slider[calling_slider].value() < 1:
+                slider[calling_slider].setSliderPosition(1)
             amount[calling_slider].setText(str(slider[calling_slider].value()))
 
         def new_maximum(calling_slider):
@@ -686,7 +694,7 @@ class UiGui(QWidget, QObject):
 
             if ingred_sum > 0:
                 while True:
-                    if (start_slider != calling_slider) and (slider[start_slider].value() != 0):
+                    if (start_slider != calling_slider) and (slider[start_slider].value() != 1):
                         slider[start_slider].setSliderPosition(slider[start_slider].value() - 1)
                         ingred_sum = ingred_sum - 1
                         start_slider = start_slider + 1
@@ -736,6 +744,7 @@ class UiGui(QWidget, QObject):
         amount = []
         name_list = []
 
+
         j = 1
         page = 0
         nr_ingredients = 0
@@ -767,6 +776,7 @@ class UiGui(QWidget, QObject):
             if self.RasBari.DrinkList[drink_nr].Ingredients[l][1] != "0":
                 name_list.extend([self.RasBari.DrinkList[drink_nr].Ingredients[l]])
 
+
         for i in range(nr_ingredients):
 
             if (0 == i % 4) & (i != 0):
@@ -778,7 +788,7 @@ class UiGui(QWidget, QObject):
             self.help_slider = QtWidgets.QSlider(Qt.Horizontal, self.help_pages[page])
             slider.extend([self.help_slider])
             slider[i].setMaximum(100)
-            slider[i].setMinimum(0)
+            slider[i].setMinimum(1)
             slider[i].setSliderPosition(int(name_list[i][1]))
             slider[i].setGeometry(QtCore.QRect(slider_x, line_y, slider_width, std_height))
 
@@ -807,7 +817,7 @@ class UiGui(QWidget, QObject):
             self.Apply = QtWidgets.QPushButton(self.help_pages[page])
             self.Apply.setGeometry(QtCore.QRect(change_right_x, std_y, std_width, std_height))
             self.Apply.setText("Apply changes")
-            self.Apply.clicked.connect(lambda: print("settings"))  # TODO include the apply function her
+            self.Apply.clicked.connect(lambda: self.apply_drink_tune(drink_nr, slider, name))
 
             slider[i].sliderReleased.connect(partial(new_maximum, i))
             slider[i].valueChanged.connect(partial(change_value, i))
@@ -827,8 +837,19 @@ class UiGui(QWidget, QObject):
             self.help_pages.clear()
 
         self.updateGUI.connect(lambda: updateWidget())
+        self.show_widget(self.help_pages[0], 0)
 
-        self.show_widget(self.help_pages[0], 1)
+    def apply_drink_tune(self, drink_nr, slider, name):
+
+        new_ingredients = []
+
+        for i in range(len(slider)):
+            new_ingredients.extend([[name[i].text(), str(slider[i].value())]])
+
+        self.RasBari.DrinkList[drink_nr].setNewIngredients(new_ingredients)
+
+        self.flag = 0
+        self.show_widget(self.included_Drinks_widget, 1)
 
     def change_live_drink(self, direction):
         if direction == 1:
@@ -972,7 +993,7 @@ class UiGui(QWidget, QObject):
         self.title = QtWidgets.QLabel(widget)
         self.title.setGeometry(QtCore.QRect(0, self.top_space, self.GUI_Width, self.GUI_Height * 0.1))
         self.title.setFont(title_font)
-        self.title.setText("Rasbari V5")
+        self.title.setText("Rasbari V6")
         self.stdLabelSetUp(self.title)
 
     def bottomNavigation(self, widget, destination_left, destination_right, destination_middle, button_txt):
