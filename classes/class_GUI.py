@@ -5,7 +5,8 @@ from PyQt5 import QtWidgets
 from classes.class_Bar import *
 from classes.class_eMailGuard import *
 from classes.class_myThread import *
-from drink_menue_widget import *
+from drink_menue import *
+from main_menue import *
 
 
 class UiGui(QWidget, QObject):
@@ -35,7 +36,8 @@ class UiGui(QWidget, QObject):
         self.setupUi(self.GW)
         self.program = self
 
-        self.Testwig1 = drink_menue(self.GW, self.program, self.GUI_layout)
+        self.drink_menue_widget = drink_menue(self.GW, self.program, self.GUI_layout)
+        self.main_menue_widget = main_widget(self.GW, self.program, self.GUI_layout)
 
 
     def setupUi(self, stacked_widget):
@@ -217,7 +219,7 @@ class UiGui(QWidget, QObject):
         self.Bottles.setGeometry(QtCore.QRect(Bottles_x, std_y, Bottles_width, std_hight))
         self.Bottles.setText("Bottles")
 
-        self.Bottles.clicked.connect(lambda: self.show_widget(self.Testwig1.widget, 1))
+        self.Bottles.clicked.connect(lambda: self.show_widget(self.main_menue_widget.widget, 1))
 
         # Drinks - Button for navigation from main widget to driks widget
 
