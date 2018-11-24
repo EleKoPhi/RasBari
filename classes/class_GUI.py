@@ -1,6 +1,6 @@
 from functools import partial
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 
 from classes.class_Bar import *
 from classes.class_eMailGuard import *
@@ -25,13 +25,18 @@ class UiGui(QWidget, QObject):
 
     def __init__(self, width, height, global_widget):
         QObject.__init__(self)
+        self.included_Drinks_widget = QtWidgets.QWidget()
+        self.GW = global_widget
+
+        self.drinks_menue_widget = QtWidgets.QWidget()
         self.MailTimer = QtCore.QTimer()
         self.threadpool = QThreadPool()
-        self.GW = global_widget
         self.GUI_layout = self.calculateGUI(width, height)
         self.setupUi(self.GW)
+        self.program = self
 
-        drink_menue_widget = drink_menue(self.GW, self.GUI_layout)
+        self.Testwig1 = drink_menue(self.GW, self.program, self.GUI_layout)
+
 
     def setupUi(self, stacked_widget):
 
@@ -50,8 +55,8 @@ class UiGui(QWidget, QObject):
         self.bottle_Widget(stacked_widget)
         self.ingredient_Widget(stacked_widget)
         self.newdrink_widget(stacked_widget)
-        self.drinks_menue_widget(stacked_widget)
-        self.included_Drinks_widget(stacked_widget)
+        # self.drinks_menue_widget(stacked_widget)
+        self.included_Drinks_widget1(stacked_widget)
 
         ################################### ---> END GUI OBJECTS <--- #################################################
 
@@ -212,7 +217,7 @@ class UiGui(QWidget, QObject):
         self.Bottles.setGeometry(QtCore.QRect(Bottles_x, std_y, Bottles_width, std_hight))
         self.Bottles.setText("Bottles")
 
-        self.Bottles.clicked.connect(lambda: self.show_widget(self.Bottle_pages[0], 1))
+        self.Bottles.clicked.connect(lambda: self.show_widget(self.Testwig1.widget, 1))
 
         # Drinks - Button for navigation from main widget to driks widget
 
@@ -530,7 +535,6 @@ class UiGui(QWidget, QObject):
 
         # Build of new widget
 
-        self.drinks_menue_widget = QtWidgets.QWidget()
         self.drinks_menue_widget.setObjectName("Drink_menue")
         stacked_widget.addWidget(self.drinks_menue_widget)
 
@@ -575,7 +579,7 @@ class UiGui(QWidget, QObject):
 
         self.exit_button.clicked.connect(lambda: self.show_widget(self.main_widget, 1))
 
-    def included_Drinks_widget(self, stacked_widget):
+    def included_Drinks_widget1(self, stacked_widget):
 
         def delete_drink(drink):
             try:
@@ -592,7 +596,6 @@ class UiGui(QWidget, QObject):
 
         # Build of new widget
 
-        self.included_Drinks_widget = QtWidgets.QWidget()
         self.included_Drinks_widget.setObjectName("Drinks")
         stacked_widget.addWidget(self.included_Drinks_widget)
 
@@ -972,6 +975,24 @@ class UiGui(QWidget, QObject):
 
     def calculateGUI(self, width, height):
 
+        class lo():
+            def __init__(self):
+                self.GUI_Width = width * 1.048 * 0.58  # TODO CHANGE THIS !!!
+                self.GUI_Height = height * 0.5479
+
+                self.button_space = self.GUI_Height / 100
+                self.top_space = self.GUI_Height / 50
+                self.bottom_button_getin = self.GUI_Width * 0.05
+
+                self.button_width = self.GUI_Width / 4
+                self.button_height = self.GUI_Height * 0.1
+                self.txt_height = self.GUI_Height * 0.06
+
+                self.bottom_button_y = self.GUI_Height * 0.84
+                self.bottom_txt_y = self.GUI_Height * 0.83 - self.txt_height
+
+        Gui_layout = lo()
+
         self.GUI_Width = width * 1.048 * 0.58  # TODO CHANGE THIS !!!
         self.GUI_Height = height * 0.5479
 
@@ -986,19 +1007,7 @@ class UiGui(QWidget, QObject):
         self.bottom_button_y = self.GUI_Height * 0.84
         self.bottom_txt_y = self.GUI_Height * 0.83 - self.txt_height
 
-        GUI_layout = {
-            "GUI_Width": self.GUI_Width,
-            "GUI_Height": self.GUI_Height,
-            "button_space": self.button_space,
-            "top_space": self.top_space,
-            "bottom_button_getin": self.bottom_button_getin,
-            "button_width": self.button_width,
-            "button_height": self.button_height,
-            "txt_height": self.txt_height,
-            "bottom_button_y": self.bottom_button_y,
-            "bottom_txt_y": self.bottom_txt_y
-        }
-        return GUI_layout
+        return Gui_layout
 
     def header(self, widget):
 
