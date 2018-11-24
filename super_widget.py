@@ -16,7 +16,6 @@ class my_widget(QWidget, QObject):
 
         self.widget = QtWidgets.QWidget()  # The base for the new widget
         self.stacked_widget.addWidget(self.widget)  # Add the base widget to the stack of all widgets
-
         self.header()
 
     def header(self):
