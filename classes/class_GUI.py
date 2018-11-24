@@ -4,27 +4,27 @@ from classes.class_Bar import *
 from classes.class_eMailGuard import *
 from drink_menue import *
 from main_menue import *
+from bottle_display import *
 
 
 class UiGui(QWidget, QObject):
-    RasBari = Bar()
+
+    #RasBari = Bar()
     EmailOrder = eMailGuard()
+    threadpool = QThreadPool()
 
-    Bottle_pages = []
     NewDrink_pages = []
-    grid_button_list = []
     help_pages = []
-
+    Bottle_pages = []
     updateGUI = pyqtSignal()
     clear = pyqtSignal()
 
     live_drink = 0
     flag = 0
 
-    threadpool = QThreadPool()
-
     def __init__(self, width, height, global_widget):
         QObject.__init__(self)
+        self.RasBari = Bar()
         self.included_Drinks_widget = QtWidgets.QWidget()
         self.GW = global_widget
 
@@ -36,6 +36,7 @@ class UiGui(QWidget, QObject):
 
         self.drink_menue_widget = drink_menue(self.GW, self.program, self.GUI_layout)
         self.main_menue_widget = main_widget(self.GW, self.program, self.GUI_layout, self.RasBari)
+        self.bottle_display_widget = bottle_display(self.GW, self.program, self.GUI_layout, self.RasBari)
 
         self.setupUi(self.GW)
 
@@ -52,12 +53,12 @@ class UiGui(QWidget, QObject):
 
         ################################### ---> BUILD WIDGETS HER <--- ###############################################
 
-        self.main_widget(stacked_widget)
-        self.bottle_Widget(stacked_widget)
-        self.ingredient_Widget(stacked_widget)
-        self.newdrink_widget(stacked_widget)
+        #self.main_widget(stacked_widget)
+        #self.bottle_Widget(stacked_widget)
+        #self.ingredient_Widget(stacked_widget)
+        #self.newdrink_widget(stacked_widget)
         # self.drinks_menue_widget(stacked_widget)
-        self.included_Drinks_widget1(stacked_widget)
+        #self.included_Drinks_widget1(stacked_widget)
 
         ################################### ---> END GUI OBJECTS <--- #################################################
 
@@ -81,7 +82,7 @@ class UiGui(QWidget, QObject):
 
         ################################### ---> END TIMER <--- #######################################################
 
-        self.show_widget(self.main_menue_widget.widget,1)
+        self.show_widget(self.bottle_display_widget.widget,1)
         QtCore.QMetaObject.connectSlotsByName(stacked_widget)
 
         ################################### ---> END setUp_Ui <--- ####################################################
@@ -94,7 +95,7 @@ class UiGui(QWidget, QObject):
         self.main_widget.setObjectName("Mainwig")
         stacked_widget.addWidget(self.main_widget)
 
-    def bottle_Widget(self, stacked_widget):
+    """def bottle_Widget(self, stacked_widget):
 
         # Function to update bottle_Widget (progressbar)
 
@@ -157,7 +158,32 @@ class UiGui(QWidget, QObject):
 
             j += 1
 
-        ############################ END of bottle_Widget(self, widgetA, widgetB, StackedWidget) #######################
+        ############################ END of bottle_Widget(self, widgetA, widgetB, StackedWidget) #######################"""
+
+    def bottomNavigation(self, widget, destination_left, destination_right, destination_middle, button_txt):
+
+        std_width = self.button_width
+        std_height = self.button_height
+
+        middle_x = self.GUI_Width / 2 - self.button_width / 2
+        left_x = self.bottom_button_getin
+        right_x = self.GUI_Width - self.bottom_button_getin - self.button_width
+        std_y = self.bottom_button_y
+
+        self.middleButton = QtWidgets.QPushButton(widget)
+        self.middleButton.setGeometry(QtCore.QRect(middle_x, std_y, std_width, std_height))
+        self.middleButton.setText(button_txt[1])
+        self.middleButton.clicked.connect(lambda: self.show_widget(destination_middle, 1))
+
+        self.leftButton = QtWidgets.QPushButton(widget)
+        self.leftButton.setGeometry(QtCore.QRect(left_x, std_y, std_width, std_height))
+        self.leftButton.setText(button_txt[0])
+        self.leftButton.clicked.connect(lambda: self.show_widget(destination_left, 1))
+
+        self.rightButton = QtWidgets.QPushButton(widget)
+        self.rightButton.setGeometry(QtCore.QRect(right_x, std_y, std_width, std_height))
+        self.rightButton.setText(button_txt[2])
+        self.rightButton.clicked.connect(lambda: self.show_widget(destination_right, 1))
 
     def ingredient_Widget(self, stacked_widget):
 
@@ -864,31 +890,6 @@ class UiGui(QWidget, QObject):
         self.title.setText("Rasbari V6")
         self.stdLabelSetUp(self.title)
 
-    def bottomNavigation(self, widget, destination_left, destination_right, destination_middle, button_txt):
-
-        std_width = self.button_width
-        std_height = self.button_height
-
-        middle_x = self.GUI_Width / 2 - self.button_width / 2
-        left_x = self.bottom_button_getin
-        right_x = self.GUI_Width - self.bottom_button_getin - self.button_width
-        std_y = self.bottom_button_y
-
-        self.middleButton = QtWidgets.QPushButton(widget)
-        self.middleButton.setGeometry(QtCore.QRect(middle_x, std_y, std_width, std_height))
-        self.middleButton.setText(button_txt[1])
-        self.middleButton.clicked.connect(lambda: self.show_widget(destination_middle, 1))
-
-        self.leftButton = QtWidgets.QPushButton(widget)
-        self.leftButton.setGeometry(QtCore.QRect(left_x, std_y, std_width, std_height))
-        self.leftButton.setText(button_txt[0])
-        self.leftButton.clicked.connect(lambda: self.show_widget(destination_left, 1))
-
-        self.rightButton = QtWidgets.QPushButton(widget)
-        self.rightButton.setGeometry(QtCore.QRect(right_x, std_y, std_width, std_height))
-        self.rightButton.setText(button_txt[2])
-        self.rightButton.clicked.connect(lambda: self.show_widget(destination_right, 1))
-
     def side_navigation(self, widget, destination_left, destination_right):
 
         possible_spcae = self.button_width * 1.8
@@ -985,7 +986,7 @@ class UiGui(QWidget, QObject):
 
     ####################################--Classes for simplyfied GUI design--###########################################
 
-    class BottleLine():
+    """class BottleLine():
         def __init__(self, Master, widget, Bottle, total_x, total_y):
             self.wg = widget
             self.Bottle_in = Bottle
@@ -1066,4 +1067,4 @@ class UiGui(QWidget, QObject):
         def stdLabelSetUp(self, Label):
             Label.setAlignment(Qt.AlignCenter)
             Label.setFrameShape(6)
-            Label.setStyleSheet("background-color: white")
+            Label.setStyleSheet("background-color: white")"""
