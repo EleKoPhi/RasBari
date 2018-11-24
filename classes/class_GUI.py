@@ -4,12 +4,6 @@ from classes.class_Bar import *
 from classes.class_eMailGuard import *
 from drink_menue import *
 from main_menue import *
-from PyQt5 import QtWidgets
-
-from classes.class_Bar import *
-from classes.class_eMailGuard import *
-from drink_menue import *
-from main_menue import *
 
 
 class UiGui(QWidget, QObject):
