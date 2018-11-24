@@ -5,9 +5,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from classes.class_Bar import *
 from classes.class_eMailGuard import *
 from classes.class_myThread import *
-
-
-# testtesttest
+from drink_menue_widget import *
 
 
 class UiGui(QWidget, QObject):
@@ -28,9 +26,12 @@ class UiGui(QWidget, QObject):
     def __init__(self, width, height, global_widget):
         QObject.__init__(self)
         self.MailTimer = QtCore.QTimer()
-        self.calculateGUI(width, height)
         self.threadpool = QThreadPool()
         self.GW = global_widget
+        self.GUI_layout = self.calculateGUI(width, height)
+        self.setupUi(self.GW)
+
+        drink_menue_widget = drink_menue(self.GW, self.GUI_layout)
 
     def setupUi(self, stacked_widget):
 
@@ -984,6 +985,20 @@ class UiGui(QWidget, QObject):
 
         self.bottom_button_y = self.GUI_Height * 0.84
         self.bottom_txt_y = self.GUI_Height * 0.83 - self.txt_height
+
+        GUI_layout = {
+            "GUI_Width": self.GUI_Width,
+            "GUI_Height": self.GUI_Height,
+            "button_space": self.button_space,
+            "top_space": self.top_space,
+            "bottom_button_getin": self.bottom_button_getin,
+            "button_width": self.button_width,
+            "button_height": self.button_height,
+            "txt_height": self.txt_height,
+            "bottom_button_y": self.bottom_button_y,
+            "bottom_txt_y": self.bottom_txt_y
+        }
+        return GUI_layout
 
     def header(self, widget):
 

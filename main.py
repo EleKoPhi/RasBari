@@ -26,7 +26,6 @@ if __name__ == "__main__":
     rect = screen.availableGeometry()
 
     ui = UiGui(rect.width(), rect.height(), StackedWidget)
-    ui.setupUi(StackedWidget)
 
     if (getFlag("Fullscreen")):
         StackedWidget.showFullScreen()
