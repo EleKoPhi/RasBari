@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-
+from functools import partial
 from classes.class_Bar import *
 from classes.class_eMailGuard import *
 from drink_menue import *
@@ -32,12 +32,12 @@ class UiGui(QWidget, QObject):
         self.MailTimer = QtCore.QTimer()
         self.threadpool = QThreadPool()
         self.GUI_layout = self.calculateGUI(width, height)
-        self.setupUi(self.GW)
         self.program = self
 
         self.drink_menue_widget = drink_menue(self.GW, self.program, self.GUI_layout)
         self.main_menue_widget = main_widget(self.GW, self.program, self.GUI_layout, self.RasBari)
 
+        self.setupUi(self.GW)
 
     def setupUi(self, stacked_widget):
 
@@ -81,8 +81,7 @@ class UiGui(QWidget, QObject):
 
         ################################### ---> END TIMER <--- #######################################################
 
-        main_widget_index = stacked_widget.indexOf(self.main_widget)
-        stacked_widget.setCurrentIndex(main_widget_index)
+        self.show_widget(self.main_menue_widget.widget,1)
         QtCore.QMetaObject.connectSlotsByName(stacked_widget)
 
         ################################### ---> END setUp_Ui <--- ####################################################
@@ -94,165 +93,6 @@ class UiGui(QWidget, QObject):
         self.main_widget = QtWidgets.QWidget()
         self.main_widget.setObjectName("Mainwig")
         stacked_widget.addWidget(self.main_widget)
-
-        # std. values
-
-        std_y = self.bottom_button_y
-        std_txt_y = self.bottom_txt_y
-        std_hight = self.button_height
-        std_hight_txt = self.txt_height
-        std_width = self.button_width
-
-        # Headline - Contains Software title
-
-        self.header(self.main_widget)
-
-        self.button_grid()
-
-        # Progessbar that shows the progress of the mixture
-
-        """Progress_x = self.bottom_button_getin
-        Progress_y = self.bottom_txt_y * 0.87
-        Progress_width = self.GUI_Width - 2 * self.bottom_button_getin
-        Progress_hight = self.GUI_Height * 0.08
-
-        self.Progress = QtWidgets.QProgressBar(self.main_widget)
-        self.Progress.setGeometry(QtCore.QRect(Progress_x, Progress_y, Progress_width, Progress_hight))
-        self.Progress.setProperty("value", 0)
-        self.Progress.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
-        self.Progress.setObjectName("Progress")"""
-
-        # AddAmount & SubtactAmount - Pushbutton to change the drink size
-
-        AddAmount_x = self.bottom_button_getin + self.button_width - self.button_height
-        SubtracAmount_x = self.bottom_button_getin
-
-        self.AddAmount = QtWidgets.QPushButton(self.main_widget)
-        self.AddAmount.setGeometry(QtCore.QRect(AddAmount_x, std_y, std_hight, std_hight))
-        self.AddAmount.setText("+")
-
-        self.AddAmount.clicked.connect(lambda: self.RasBari.change_volume(+10))
-
-        self.SubtractAmount = QtWidgets.QPushButton(self.main_widget)
-        self.SubtractAmount.setGeometry(QtCore.QRect(SubtracAmount_x, std_y, std_hight, std_hight))
-        self.SubtractAmount.setText("-")
-
-        self.SubtractAmount.clicked.connect(lambda: self.RasBari.change_volume(-10))
-
-        # LCD Display that shows the drink size
-
-        amount_LCD_Width = std_width - 2 * std_hight - 2 * self.button_space
-        amount_LCD_x = self.bottom_button_getin + (std_width / 2) - (amount_LCD_Width / 2)
-
-        self.amount_LCD = QtWidgets.QLCDNumber(self.main_widget)
-        self.amount_LCD.setGeometry(QtCore.QRect(amount_LCD_x, std_y, amount_LCD_Width, std_hight))
-        self.amount_LCD.setAutoFillBackground(False)
-        self.amount_LCD.setFrameShape(QtWidgets.QFrame.Panel)
-        self.amount_LCD.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.amount_LCD.setLineWidth(2)
-        self.amount_LCD.setMidLineWidth(1)
-        self.amount_LCD.setSmallDecimalPoint(True)
-        self.amount_LCD.setDigitCount(3)
-        self.amount_LCD.setSegmentStyle(QtWidgets.QLCDNumber.Filled)
-        self.amount_LCD.setProperty("intValue", self.RasBari.getAmount())
-        self.amount_LCD.setObjectName("amount_LCD")
-
-        # Exit - Pushbutton to stop the production thread
-
-        Exit_x = self.GUI_Width - self.bottom_button_getin - self.button_width
-
-        stopFont = QtGui.QFont()
-        stopFont.setPointSize(26)
-        stopFont.setBold(True)
-        stopFont.setItalic(False)
-        stopFont.setWeight(75)
-
-        self.Exit = QtWidgets.QPushButton(self.main_widget)
-        self.Exit.setGeometry(QtCore.QRect(Exit_x, std_y, std_width, std_hight))
-        self.Exit.setObjectName("Exit")
-        self.Exit.setFont(stopFont)
-        self.Exit.setText("STOP")
-        self.Exit.setStyleSheet("background-color: red")
-
-        self.Exit.clicked.connect(lambda: self.RasBari.errorFunction())
-
-        # DigitText - Textbox that shows the dink size
-
-        DigitText_x = self.bottom_button_getin
-
-        self.DigitText = QtWidgets.QLabel(self.main_widget)
-        self.DigitText.setGeometry(QtCore.QRect(DigitText_x, std_txt_y, std_width, std_hight_txt))
-        self.DigitText.setObjectName("Glasvolume")
-        self.stdLabelSetUp(self.DigitText)
-
-        GlasString = "Glass volume: " + str(self.RasBari.getAmount()) + " ml"
-
-        self.DigitText.setText(GlasString)
-
-        # StatTxt - Textbox in the bottom right corner - shows system status
-
-        StatTxt_x = self.GUI_Width - self.bottom_button_getin - self.button_width
-
-        self.StatTxt = QtWidgets.QLabel(self.main_widget)
-        self.StatTxt.setGeometry(QtCore.QRect(StatTxt_x, std_txt_y, std_width, std_hight_txt))
-        self.StatTxt.setObjectName("Status-text-box")
-        self.StatTxt.setText("Status: Wait for input...")
-        self.stdLabelSetUp(self.StatTxt)
-
-        # TxtBox_middle - Textbox in the center bottom of the main GUI
-
-        TxtBox_middle_x = self.GUI_Width / 2 - self.button_width / 2
-
-        self.TxtBox_middle = QtWidgets.QLabel(self.main_widget)
-        self.TxtBox_middle.setGeometry(QtCore.QRect(TxtBox_middle_x, std_txt_y, std_width, std_hight_txt))
-        self.TxtBox_middle.setObjectName("Middle_Txt_Box")
-        self.TxtBox_middle.setText("Welcome")
-        self.stdLabelSetUp(self.TxtBox_middle)
-
-        # Bottles - Button for navigation from main widget to bottles widgt
-
-        Bottles_x = (self.GUI_Width / 2 - self.button_width / 2)
-        Bottles_width = self.button_width / 2 - self.button_space / 2
-
-        self.Bottles = QtWidgets.QPushButton(self.main_widget)
-        self.Bottles.setGeometry(QtCore.QRect(Bottles_x, std_y, Bottles_width, std_hight))
-        self.Bottles.setText("Bottles")
-
-        self.Bottles.clicked.connect(lambda: self.show_widget(self.main_menue_widget.widget, 1))
-
-        # Drinks - Button for navigation from main widget to driks widget
-
-        Drinks_x = (self.GUI_Width / 2 - self.button_width / 2) + Bottles_width + self.button_space
-        Drinks_width = Bottles_width
-
-        self.Drinks = QtWidgets.QPushButton(self.main_widget)
-        self.Drinks.setGeometry(QtCore.QRect(Drinks_x, std_y, Drinks_width, std_hight))
-        self.Drinks.setText("Drinks")
-
-        self.Drinks.clicked.connect(lambda: self.show_widget(self.drinks_menue_widget, 1))
-
-        def updateWidget():
-
-            self.GridLayout = self.main_widget.findChild(QtWidgets.QWidget, "gridLayoutWidget")
-            self.ButtonGrid = self.main_widget.findChild(QtWidgets.QGridLayout, "AuswahlGrid")
-
-            try:
-                self.GridLayout.deleteLater()
-                self.ButtonGrid.deleteLater()
-
-                for i in range(len(self.grid_button_list)):
-                    Button = self.main_widget.findChild(QtWidgets.QPushButton, "Button_" + str(i))
-                    Button.disconect()
-                    Button.deleteLater()
-
-                self.button_grid()
-
-            except:
-                self.button_grid()
-
-        self.updateGUI.connect(lambda: updateWidget())
-
-        ################################### END of main_Widget(self, stacked_widget) ####################################
 
     def bottle_Widget(self, stacked_widget):
 
