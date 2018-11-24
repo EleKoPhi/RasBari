@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+
+from classes.class_myThread import *
 
 
 class my_widget(QWidget, QObject):
@@ -9,12 +10,12 @@ class my_widget(QWidget, QObject):
     def __init__(self, main_widget, program, GUI_layout):
         super().__init__()
 
-        self.main_widget = main_widget  # Main widget, where all othe widgets are stacked on
+        self.stacked_widget = main_widget  # Main widget, where all othe widgets are stacked on
         self.program = program  # The "running" program
         self.layout = GUI_layout  # All values for the layout (class lo())
 
         self.widget = QtWidgets.QWidget()  # The base for the new widget
-        self.main_widget.addWidget(self.widget)  # Add the base widget to the stack of all widgets
+        self.stacked_widget.addWidget(self.widget)  # Add the base widget to the stack of all widgets
         self.title = QtWidgets.QLabel(self.widget)  # Add a title to the new widget
 
         self.setup_gui_elements()  # layout the new added gui elements
@@ -46,4 +47,4 @@ class my_widget(QWidget, QObject):
 
     def show_widget(self, widget, refresh):
         if refresh: self.updateGUI.emit()
-        self.main_widget.setCurrentIndex(self.main_widget.indexOf(widget))
+        self.stacked_widget.setCurrentIndex(self.stacked_widget.indexOf(widget))

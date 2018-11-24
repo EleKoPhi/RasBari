@@ -1,10 +1,13 @@
-from functools import partial
-
 from PyQt5 import QtWidgets
 
 from classes.class_Bar import *
 from classes.class_eMailGuard import *
-from classes.class_myThread import *
+from drink_menue import *
+from main_menue import *
+from PyQt5 import QtWidgets
+
+from classes.class_Bar import *
+from classes.class_eMailGuard import *
 from drink_menue import *
 from main_menue import *
 
@@ -24,6 +27,8 @@ class UiGui(QWidget, QObject):
     live_drink = 0
     flag = 0
 
+    threadpool = QThreadPool()
+
     def __init__(self, width, height, global_widget):
         QObject.__init__(self)
         self.included_Drinks_widget = QtWidgets.QWidget()
@@ -37,7 +42,7 @@ class UiGui(QWidget, QObject):
         self.program = self
 
         self.drink_menue_widget = drink_menue(self.GW, self.program, self.GUI_layout)
-        self.main_menue_widget = main_widget(self.GW, self.program, self.GUI_layout)
+        self.main_menue_widget = main_widget(self.GW, self.program, self.GUI_layout, self.RasBari)
 
 
     def setupUi(self, stacked_widget):
@@ -68,7 +73,7 @@ class UiGui(QWidget, QObject):
 
         self.RasBari.missingIngred.connect(lambda: self.show_widget(self.ingredWidg, 1))
         self.RasBari.drinkunknown.connect(lambda: self.showmsgbox)
-        self.RasBari.changedValSig.connect(self.update_progressbar)
+        # self.RasBari.changedValSig.connect(self.update_progressbar)
         self.RasBari.changedAmountSig.connect(self.update_glass_txt)
         self.RasBari.changedStatus.connect(self.update_status_txt)
 
@@ -112,7 +117,7 @@ class UiGui(QWidget, QObject):
 
         # Progessbar that shows the progress of the mixture
 
-        Progress_x = self.bottom_button_getin
+        """Progress_x = self.bottom_button_getin
         Progress_y = self.bottom_txt_y * 0.87
         Progress_width = self.GUI_Width - 2 * self.bottom_button_getin
         Progress_hight = self.GUI_Height * 0.08
@@ -121,7 +126,7 @@ class UiGui(QWidget, QObject):
         self.Progress.setGeometry(QtCore.QRect(Progress_x, Progress_y, Progress_width, Progress_hight))
         self.Progress.setProperty("value", 0)
         self.Progress.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
-        self.Progress.setObjectName("Progress")
+        self.Progress.setObjectName("Progress")"""
 
         # AddAmount & SubtactAmount - Pushbutton to change the drink size
 
