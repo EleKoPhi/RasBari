@@ -14,7 +14,7 @@ class ingredients_display(my_widget):
         self.YESBut = QtWidgets.QPushButton(self.widget)
         self.YESBut.setGeometry(QtCore.QRect(YESBut_x, YESBut_y, std_width, std_hight))
         self.YESBut.setText("Yes")
-        self.YESBut.clicked.connect(lambda: self.show_widget(self.program.bottle_display_widget.Bottle_pages[-1].widget,1))
+        self.YESBut.clicked.connect(lambda: self.show_widget(self.program.bottle_display.Bottle_pages[-1].widget,1))
 
         NOBut_x = self.layout.GUI_Width - self.layout.bottom_button_getin - self.layout.button_width
         NOBut_y = YESBut_y
@@ -22,7 +22,7 @@ class ingredients_display(my_widget):
         self.NOBut = QtWidgets.QPushButton(self.widget)
         self.NOBut.setGeometry(QtCore.QRect(NOBut_x, NOBut_y, std_width, std_hight))
         self.NOBut.setText("No")
-        self.NOBut.clicked.connect(lambda: self.show_widget(self.program.main_menue_widget.widget, 1))
+        self.NOBut.clicked.connect(lambda: self.show_widget(self.program.main_menue.widget, 1))
 
         Message_x = self.layout.GUI_Width / 2 - std_width / 2
         Message_y = self.layout.GUI_Height / 2 - std_hight

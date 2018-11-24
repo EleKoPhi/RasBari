@@ -36,7 +36,7 @@ class drink_menue(my_widget):
         self.showdrink_button.setGeometry(QtCore.QRect(show_drink_x, std_y_menue, std_width_menue, std_height))
         self.showdrink_button.setText("Show included drinks!")
 
-        self.showdrink_button.clicked.connect(lambda: self.show_widget(self.included_Drinks_widget, 1))
+        self.showdrink_button.clicked.connect(lambda: self.show_widget(self.included_Drinks.widget, 1))
 
         # ExitButton - Button to navigate back to the main widget
 

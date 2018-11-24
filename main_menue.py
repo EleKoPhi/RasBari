@@ -139,7 +139,7 @@ class main_widget(my_widget):
         self.Drinks = QtWidgets.QPushButton(self.widget)
         self.Drinks.setGeometry(QtCore.QRect(Drinks_x, std_y, Drinks_width, std_hight))
         self.Drinks.setText("Drinks")
-        self.Drinks.clicked.connect(lambda: self.show_widget(self.program.drink_menue_widget.widget, 1))
+        self.Drinks.clicked.connect(lambda: self.show_widget(self.program.drink_menue.widget, 1))
 
         #self.updateGUI.connect(lambda: self.updateWidget())
 

@@ -44,7 +44,7 @@ class bottle_display(my_widget):
             print(page_right)
 
             self.bottomNavigation(self.Bottle_pages[i].widget, page_left.widget, page_right.widget,
-                                  self.program.main_menue_widget.widget, button_txt)
+                                  self.program.main_menue.widget, button_txt)
 
         # Build for every bottle one line that's shows - NAME - LEVEL + REST_Button + CLEAR_Button
 

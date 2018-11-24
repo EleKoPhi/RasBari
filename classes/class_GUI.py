@@ -31,10 +31,10 @@ class UiGui(QWidget, QObject):
 
         self.GUI_layout = self.calculateGUI(width, height)
 
-        self.drink_menue_widget = drink_menue(self.GW, self, self.GUI_layout)
-        self.main_menue_widget = main_widget(self.GW, self, self.GUI_layout, self.RasBari)
-        self.bottle_display_widget = bottle_display(self.GW, self, self.GUI_layout, self.RasBari)
-        self.missing_Ingred_widget = ingredients_display(self.GW, self, self.GUI_layout)
+        self.drink_menue = drink_menue(self.GW, self, self.GUI_layout)
+        self.main_menue = main_widget(self.GW, self, self.GUI_layout, self.RasBari)
+        self.bottle_display = bottle_display(self.GW, self, self.GUI_layout, self.RasBari)
+        self.missing_Ingred = ingredients_display(self.GW, self, self.GUI_layout)
 
         self.setupUi(self.GW)
 
@@ -68,7 +68,7 @@ class UiGui(QWidget, QObject):
 
         ################################### ---> END TIMER <--- #######################################################
 
-        self.show_widget(self.missing_Ingred_widget.widget,1)
+        self.show_widget(self.missing_Ingred.widget,1)
         QtCore.QMetaObject.connectSlotsByName(stacked_widget)
 
         ################################### ---> END setUp_Ui <--- ####################################################
