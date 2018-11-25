@@ -2,14 +2,18 @@ from Widgets.my_widget_class import *
 
 class new_drink_widget_class(my_widget):
 
-    def __init__(self, main_widget, program, GUI_layout,main_bar):
-        super().__init__(main_widget, program, GUI_layout,main_bar)
+    def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar):
+        super().__init__(stacked_widget, ui_gui, ui_layout, master_bar)
 
-        """self.NewDrink_pages = []
+        self.NewDrink_pages = []
+
         self.slider = []
         self.name = []
         self.amount = []
         self.stats = []
+
+        self.page = 0
+        self.j = 0
 
         std_Hight = self.layout.button_height
         std_Width = self.layout.button_width
@@ -21,27 +25,25 @@ class new_drink_widget_class(my_widget):
         amount_width = std_Hight
         name_width = slider_width - amount_width
 
-        self.page = 0
-        self.j = 0
-
-        totalNr_Widgets = int(len(self.bar.DrinkList) / 5)
-
         space_bt_elements = (possible_spcae - slider_width - name_width - amount_width) / 2
         slider_x = (self.layout.GUI_Width / 2) - (slider_width + name_width + amount_width + 2 * space_bt_elements) / 2
         name_x = slider_x + space_bt_elements + slider_width
         amount_x = name_x + space_bt_elements + name_width
         Stat_x = self.layout.GUI_Width - self.layout.bottom_button_getin - self.layout.button_width
 
-        if len(self.bar.DrinkList) % 5 != 0:
-            totalNr_Widgets += 1
+        totalNr_Widgets = int(len(self.bar.Bottles) / 5)
 
         for i in range(totalNr_Widgets):
-            self.NewDrink_pages.extend([my_widget(main_widget, program, GUI_layout,main_bar)])
+            self.NewDrink_pages.extend([my_widget(self.stacked_widget, self.ui_gui, self.layout,self.bar)])
             self.NewDrink_pages[i].setObjectName("NewDrink_page" + str(i))
-            main_widget.addWidget(self.NewDrink_pages[i])
-            self.newdrink_bottom_navigation(self.slider, self.NewDrink_pages[i].widget)
+            self.stacked_widget.addWidget(self.NewDrink_pages[i].widget)
+            self.newdrink_bottom_navigation(self.NewDrink_pages[i].widget)
 
-        for i in range(len(self.NewDrink_pages)-1):
+        self.NewDrink_pages.extend([self])
+        self.newdrink_bottom_navigation(self.NewDrink_pages[-1].widget)
+
+
+        for i in range(len(self.NewDrink_pages)):
             try:
                 self.side_navigation(self.NewDrink_pages[i].widget, self.NewDrink_pages[i - 1].widget, self.NewDrink_pages[i + 1].widget)
 
@@ -53,8 +55,6 @@ class new_drink_widget_class(my_widget):
             self.help_slider.setText("Make your drink!")
             self.stdLabelSetUp(self.help_slider)
             self.stats.extend([self.help_slider])
-
-        #self.help_slider.extend([self])
 
         for i in range(len(self.bar.Bottles)):
 
@@ -85,11 +85,11 @@ class new_drink_widget_class(my_widget):
             self.slider[i].valueChanged.connect(partial(self.Amount_Slider, i))
             self.slider[i].valueChanged.connect(partial(self.newMaxima, i))
 
-            #self.updateGUI.connect(lambda: self.reset_slider_list(slider))
+            self.updateGUI.connect(lambda: self.reset_slider_list(self.slider))
 
             self.j = self.j + 1
 
-        ############################ END of newDrink_Widget(self, StackedWidget) #######################################
+        ############################ END of newDrink_Widget(self, StackedWidget) #######################################"""
 
     def saveNewDrink(self, slider_list, bottles):
 
@@ -161,7 +161,7 @@ class new_drink_widget_class(my_widget):
         if sum >= 100:
             self.slider[callingSlider].setSliderPosition(self.slider[callingSlider].value() - (sum - 100))
 
-    def newdrink_bottom_navigation(self, slider, widget):
+    def newdrink_bottom_navigation(self, widget):
 
         std_height = self.layout.button_height
         std_width = self.layout.button_width
@@ -181,7 +181,7 @@ class new_drink_widget_class(my_widget):
         self.Save = QtWidgets.QPushButton(widget)
         self.Save.setGeometry(QtCore.QRect(self.layout.bottom_button_getin, std_y, std_width, std_height))
         self.Save.setText("Save Drink")
-        #self.Save.clicked.connect(lambda: self.saveNewDrink(slider, self.RasBari.Bottles))
+        #self.Save.clicked.connect(lambda: self.saveNewDrink(slider, self.bar.Bottles))
 
     def saveNewDrink(self, slider_list, bottles):
 
@@ -233,4 +233,4 @@ class new_drink_widget_class(my_widget):
         if not self.RasBari.getProductionFlag():
             self.StatTxt.setText("Status: Wait for input...")
         else:
-            self.StatTxt.setText("Status: Busy")"""
+            self.StatTxt.setText("Status: Busy")

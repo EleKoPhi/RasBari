@@ -1,14 +1,15 @@
 from Widgets.my_widget_class import *
+from Widgets.drink_tune_class import *
 
 
 
 class included_drinks_class(my_widget):
 
-    def __init__(self, main_widget, program, GUI_layout,main_bar):
-        super().__init__(main_widget, program, GUI_layout,main_bar)
+    def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar):
+        super().__init__(stacked_widget, ui_gui, ui_layout, master_bar)
 
         self.live_drink = 0
-        self.flag = 0
+        self.flag = 1
 
         std_height = self.layout.button_height
         std_width = self.layout.button_width
@@ -66,7 +67,7 @@ class included_drinks_class(my_widget):
         self.change.setGeometry(QtCore.QRect(change_x, std_y, delete_width, std_height))
         self.change.setText("Change")
 
-        self.change.clicked.connect(lambda: self.tune_drink(self.live_drink))
+        self.change.clicked.connect(lambda: self.tune_drink())
 
         self.delete.clicked.connect(lambda: self.delete_drink(self.live_drink))
 
@@ -82,9 +83,8 @@ class included_drinks_class(my_widget):
 
 
     def updateWidget(self):
-        if (len(self.bar.DrinkList) != 0 & self.flag == 1): self.live_drink = 0
 
-        self.flag == 1
+        if(self.flag==1):self.live_drink = 0
 
         try:
             self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].getIngredientString())
@@ -113,9 +113,11 @@ class included_drinks_class(my_widget):
         except:
             self.drink_txt_label.setText("No more drinks in the system...")
 
-    def tune_drink(self,live_drink):
+    def tune_drink(self):
 
-        a = 1
+        tuneWidget = drink_tune_class(self.stacked_widget, self.ui_gui, self.layout, self.bar, self.live_drink)
+
+        self.show_widget(tuneWidget.help_pages[0].widget,1)
 
 
 

@@ -20,7 +20,7 @@ class drink_menue_class(my_widget):
             QtCore.QRect(self.layout.bottom_button_getin, std_y_menue, std_width_menue, std_height))
         self.newdrink_button.setText("Let me make a new drink!")
 
-        self.newdrink_button.clicked.connect(lambda: self.show_widget(self.NewDrink_pages[0], 1))
+        self.newdrink_button.clicked.connect(lambda: self.show_widget(self.ui_gui.new_drink_container.NewDrink_pages[0].widget, 1))
 
         # ShowDrink pushbutton to naviate to the widget that shows all included drinks
 
