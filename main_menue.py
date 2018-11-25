@@ -5,7 +5,7 @@ class main_widget(my_widget):
     grid_button_list = []
 
     def __init__(self, main_widget, program, GUI_layout,main_bar):
-        super().__init__(main_widget, program, GUI_layout)
+        super().__init__(main_widget, program, GUI_layout,main_bar)
 
         self.Bar = main_bar
         self.Bar.changedValSig.connect(self.update_progressbar)
@@ -228,5 +228,9 @@ class main_widget(my_widget):
 
         else:
             print("Production already running")
+
+    def exit_thread_handler(self):
+        exit_thread = myThread(self.RasBari.errorFunction)
+        self.threadpool.start(exit_thread)
 
 

@@ -7,11 +7,12 @@ from classes.class_myThread import *
 class my_widget(QWidget, QObject):
     updateGUI = pyqtSignal()
 
-    def __init__(self, main_widget, program, GUI_layout):
+    def __init__(self, main_widget, program, GUI_layout,main_bar):
         super().__init__()
 
         self.stacked_widget = main_widget  # Main widget, where all othe widgets are stacked on
         self.program = program  # The "running" program
+        self.bar = main_bar
         self.layout = GUI_layout  # All values for the layout (class lo())
 
         self.widget = QtWidgets.QWidget()  # The base for the new widget
@@ -69,3 +70,24 @@ class my_widget(QWidget, QObject):
         self.rightButton.setGeometry(QtCore.QRect(right_x, std_y, std_width, std_height))
         self.rightButton.setText(button_txt[2])
         self.rightButton.clicked.connect(lambda: self.show_widget(destination_right, 1))
+
+    def side_navigation(self, widget, destination_left, destination_right):
+
+        possible_spcae = self.layout.button_width * 1.8
+
+        Next_button_size = self.layout.button_height * 1.5
+        Next_button_y = self.layout.GUI_Height / 2 - Next_button_size / 2
+        Next_left_x = (self.layout.GUI_Width / 2 - possible_spcae / 2) / 2 - Next_button_size / 2
+        Next_right_x = self.layout.GUI_Width - Next_left_x - Next_button_size
+
+        self.Next_left = QtWidgets.QPushButton(widget)
+        self.Next_left.setGeometry(QtCore.QRect(Next_left_x, Next_button_y, Next_button_size, Next_button_size))
+        self.Next_left.setObjectName("change_left")
+        self.Next_left.setText("<-")
+        #self.Next_left.clicked.connect(lambda: self.show_widget(destination_left, 0))
+
+        self.Next_right = QtWidgets.QPushButton(widget)
+        self.Next_right.setGeometry(QtCore.QRect(Next_right_x, Next_button_y, Next_button_size, Next_button_size))
+        self.Next_right.setObjectName("change_right")
+        self.Next_right.setText("->")
+        #self.Next_right.clicked.connect(lambda: self.show_widget(destination_right, 0))

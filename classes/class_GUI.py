@@ -7,6 +7,7 @@ from drink_menue import *
 from main_menue import *
 from bottle_display import *
 from ingredients_display import *
+from new_drink_menue import *
 
 
 class UiGui(QWidget, QObject):
@@ -31,10 +32,11 @@ class UiGui(QWidget, QObject):
 
         self.GUI_layout = self.calculateGUI(width, height)
 
-        self.drink_menue = drink_menue(self.GW, self, self.GUI_layout)
+        self.drink_menue = drink_menue(self.GW, self, self.GUI_layout,self.RasBari)
         self.main_menue = main_widget(self.GW, self, self.GUI_layout, self.RasBari)
         self.bottle_display = bottle_display(self.GW, self, self.GUI_layout, self.RasBari)
-        self.missing_Ingred = ingredients_display(self.GW, self, self.GUI_layout)
+        self.missing_Ingred = ingredients_display(self.GW, self, self.GUI_layout,self.RasBari)
+        self.new_drink_page = new_drink_menue(self.GW, self, self.GUI_layout,self.RasBari)
 
         self.setupUi(self.GW)
 
@@ -45,20 +47,20 @@ class UiGui(QWidget, QObject):
         ################################### ---> START GUI SETUP <--- #################################################
 
         stacked_widget.setObjectName("GUI")
-        stacked_widget.resize(self.GUI_Width, self.GUI_Height)
-        stacked_widget.setMaximumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
-        stacked_widget.setMinimumSize(QtCore.QSize(self.GUI_Width, self.GUI_Height))
+        stacked_widget.resize(self.GUI_layout.GUI_Width, self.GUI_layout.GUI_Height)
+        stacked_widget.setMaximumSize(QtCore.QSize(self.GUI_layout.GUI_Width, self.GUI_layout.GUI_Height))
+        stacked_widget.setMinimumSize(QtCore.QSize(self.GUI_layout.GUI_Width, self.GUI_layout.GUI_Height))
 
         QtCore.QMetaObject.connectSlotsByName(stacked_widget)
 
         ############################### ---> START CONNECTION [CodeSignals]<--- #######################################
 
-        self.RasBari.missingIngred.connect(lambda: self.show_widget(self.ingredWidg, 1))
-        self.RasBari.drinkunknown.connect(lambda: self.showmsgbox)
-        self.RasBari.changedAmountSig.connect(self.update_glass_txt)
-        self.RasBari.changedStatus.connect(self.update_status_txt)
+        #self.RasBari.missingIngred.connect(lambda: self.show_widget(self.ingredWidg, 1))
+       # self.RasBari.drinkunknown.connect(lambda: self.showmsgbox)
+       # self.RasBari.changedAmountSig.connect(self.update_glass_txt)
+       # self.RasBari.changedStatus.connect(self.update_status_txt)
 
-        self.EmailOrder.CheckMail.connect(self.exeOrder)
+        #self.EmailOrder.CheckMail.connect(self.exeOrder)
 
         ################################### ---> START TIMER <--- #####################################################
 
@@ -68,171 +70,16 @@ class UiGui(QWidget, QObject):
 
         ################################### ---> END TIMER <--- #######################################################
 
-        self.show_widget(self.missing_Ingred.widget,1)
+        self.show_widget(self.new_drink_page.NewDrink_pages[0].widget,1)
         QtCore.QMetaObject.connectSlotsByName(stacked_widget)
 
         ################################### ---> END setUp_Ui <--- ####################################################
 
-    def newdrink_widget(self, stacked_widget):
+    def show_widget(self, widget, refresh):
+        if refresh: self.updateGUI.emit()
+        self.GW.setCurrentIndex(self.GW.indexOf(widget))
 
-        def Amount_Slider(i):
-            amount[i].setText(str(slider[i].value()))
-
-            sum = 0
-
-            for i in range(len(slider)):
-                sum = sum + slider[i].value()
-
-            message = "amount: %d/100" % sum
-            add = ""
-
-            if sum < 100:
-                add = "\nplease add %d%% more" % (100 - sum)
-            if sum == 100:
-                add = "\nPress save to add your drink!"
-            if sum == 0:
-                message = ""
-                add = "Make your drink!"
-
-            for i in range(len(stats)):
-                stats[i].setText(message + add)
-
-        def newMaxima(callingSlider):
-            sum = 0
-
-            for i in range(len(slider)):
-                sum = sum + slider[i].value()
-
-            if sum >= 100:
-                slider[callingSlider].setSliderPosition(slider[callingSlider].value() - (sum - 100))
-
-        slider = []
-        name = []
-        amount = []
-        stats = []
-
-        std_Hight = self.button_height
-        std_Width = self.button_width
-        std_Y = self.bottom_button_y
-        Topspace = self.GUI_Height * 0.16
-        possible_spcae = self.button_width * 1.8
-
-        slider_width = std_Width * 0.83
-        amount_width = std_Hight
-        name_width = slider_width - amount_width
-
-        page = 0
-        j = 0
-
-        totalNr_Widgets = int(len(self.RasBari.DrinkList) / 5)
-
-        space_bt_elements = (possible_spcae - slider_width - name_width - amount_width) / 2
-        slider_x = (self.GUI_Width / 2) - (slider_width + name_width + amount_width + 2 * space_bt_elements) / 2
-        name_x = slider_x + space_bt_elements + slider_width
-        amount_x = name_x + space_bt_elements + name_width
-        Stat_x = self.GUI_Width - self.bottom_button_getin - self.button_width
-
-        if len(self.RasBari.DrinkList) % 5 != 0:
-            totalNr_Widgets += 1
-
-        for i in range(totalNr_Widgets):
-            self.NewDrink_pages.extend([QtWidgets.QWidget()])
-            self.NewDrink_pages[i].setObjectName("NewDrink_page" + str(i))
-            stacked_widget.addWidget(self.NewDrink_pages[i])
-            self.header(self.NewDrink_pages[i])
-            self.newdrink_bottom_navigation(slider, self.NewDrink_pages[i])
-
-        for i in range(len(self.NewDrink_pages)):
-            try:
-                self.side_navigation(self.NewDrink_pages[i], self.NewDrink_pages[i - 1], self.NewDrink_pages[i + 1])
-
-            except:
-                self.side_navigation(self.NewDrink_pages[i], self.NewDrink_pages[i - 1], self.NewDrink_pages[0])
-
-            self.help_slider = QtWidgets.QLabel(self.NewDrink_pages[i])
-            self.help_slider.setGeometry(QtCore.QRect(Stat_x, std_Y, std_Width, std_Hight))
-            self.help_slider.setText("Make your drink!")
-            self.stdLabelSetUp(self.help_slider)
-            stats.extend([self.help_slider])
-
-        for i in range(len(self.RasBari.Bottles)):
-
-            if ((i % 5 == 0) & (i != 0)):
-                page = page + 1
-                j = 0
-
-            line_y = Topspace + j * (std_Hight + self.top_space * 1.7)
-
-            self.help_slider = QtWidgets.QSlider(Qt.Horizontal, self.NewDrink_pages[page])
-            slider.extend([self.help_slider])
-            slider[i].setMaximum(100)
-            slider[i].setMinimum(0)
-            slider[i].setGeometry(QtCore.QRect(slider_x, line_y, slider_width, std_Hight))
-
-            self.help_name = QtWidgets.QLabel(self.NewDrink_pages[page])
-            name.extend([self.help_name])
-            name[i].setText(self.RasBari.Bottles[i].getname())
-            name[i].setGeometry(QtCore.QRect(name_x, line_y, name_width, std_Hight))
-            self.stdLabelSetUp(name[i])
-
-            self.help_amount = QtWidgets.QLabel(self.NewDrink_pages[page])
-            amount.extend([self.help_amount])
-            amount[i].setText("0")
-            amount[i].setGeometry(QtCore.QRect(amount_x, line_y, amount_width, std_Hight))
-            self.stdLabelSetUp(amount[i])
-
-            slider[i].valueChanged.connect(partial(Amount_Slider, i))
-            slider[i].valueChanged.connect(partial(newMaxima, i))
-
-            self.updateGUI.connect(lambda: self.reset_slider_list(slider))
-
-            j = j + 1
-
-        ############################ END of newDrink_Widget(self, StackedWidget) #######################################
-
-    def saveNewDrink(self, slider_list, bottles):
-
-        amount_sum = 0
-
-        for i in range(len(slider_list)):
-            amount_sum = amount_sum + slider_list[i].value()
-
-        if amount_sum == 100:
-
-            self.Ingredients = []
-
-            new_drink_name = ""
-
-            for i in range(len(slider_list)):
-                if slider_list[i].value() != 0:
-                    name = bottles[i].getname()
-                    name = name[:3]
-                    name = name + str(slider_list[i].value())
-                    new_drink_name = new_drink_name + name
-
-            self.Ingredients.extend([("name", new_drink_name)])
-
-            for i in range(len(slider_list)):
-                Ingred = [bottles[i].getname(), str(slider_list[i].value())]
-                self.Ingredients.extend([Ingred])
-
-            new_drink = Drink(self.Ingredients)
-
-            self.RasBari.DrinkList.extend([new_drink])
-            self.reset_slider_list(slider_list)
-            self.show_widget(self.main_widget, 1)
-
-        else:
-            print("Drink not completed")  # TODO change the reset button to an textbrowser that indictes status
-
-    def reset_slider_list(self, slider_list):
-        for i in range(len(slider_list)):
-            slider_list[i].setSliderPosition(0)
-
-    #### Function for the newdrink_widget end ####
-
-
-    def included_Drinks_widget1(self, stacked_widget):
+    """def included_Drinks_widget1(self, stacked_widget):
 
         def delete_drink(drink):
             try:
@@ -524,55 +371,6 @@ class UiGui(QWidget, QObject):
         except:
             self.drink_txt_label.setText("No more drinks in the system...")
 
-    def production_thread_handler(self, drink_nr):
-
-        self.RasBari.changeErrorFlag(False)
-
-        if not self.RasBari.getProductionFlag():
-
-            if self.RasBari.DrinkList[drink_nr]:
-
-                thread = myThread(lambda: self.RasBari.mixIt(drink_nr))
-                progressbar = myThread(self.update_progressbar)
-                self.threadpool.start(thread)
-                self.threadpool.start(progressbar)
-            else:
-
-                print("Drink unknown")
-                self.RasBari.changeProductionFlag(False)
-
-        else:
-            print("Production already running")
-
-    def exit_thread_handler(self):
-        exit_thread = myThread(self.RasBari.errorFunction)
-        self.threadpool.start(exit_thread)
-
-    def show_widget(self, widget, refresh):
-        if refresh: self.updateGUI.emit()
-        self.GW.setCurrentIndex(self.GW.indexOf(widget))
-
-    #### Functions for updating the GUI start ####
-
-    def update_progressbar(self):
-        self.Progress.setValue(self.RasBari.getProgress())
-
-    def update_glass_txt(self):
-
-        self.amount_LCD.display(self.RasBari.getAmount())
-        glas_string = "Glass volume: " + str(self.RasBari.getAmount()) + " ml"
-        self.DigitText.setText(glas_string)
-
-    def update_status_txt(self):
-
-        if not self.RasBari.getProductionFlag():
-            self.StatTxt.setText("Status: Wait for input...")
-        else:
-            self.StatTxt.setText("Status: Busy")
-
-    #### Functions for updating the GUI end ####
-
-    #### Functions for the email guard start ####
 
     def check4order(self):
 
@@ -620,11 +418,7 @@ class UiGui(QWidget, QObject):
                 self.threadpool.start(thread_mail)
 
             print(self.EmailOrder.lastSenderAdress)
-            print("Mail sent")
-
-    #### Functions for the email guard end ####
-
-    #### Functions for simplified GUI build start ####
+            print("Mail sent")"""
 
     def calculateGUI(self, width, height):
 
@@ -646,63 +440,4 @@ class UiGui(QWidget, QObject):
 
         Gui_layout = lo()
 
-        self.GUI_Width = width * 1.048 * 0.58  # TODO CHANGE THIS !!!
-        self.GUI_Height = height * 0.5479
-
-        self.button_space = self.GUI_Height / 100
-        self.top_space = self.GUI_Height / 50
-        self.bottom_button_getin = self.GUI_Width * 0.05
-
-        self.button_width = self.GUI_Width / 4
-        self.button_height = self.GUI_Height * 0.1
-        self.txt_height = self.GUI_Height * 0.06
-
-        self.bottom_button_y = self.GUI_Height * 0.84
-        self.bottom_txt_y = self.GUI_Height * 0.83 - self.txt_height
-
         return Gui_layout
-
-    def side_navigation(self, widget, destination_left, destination_right):
-
-        possible_spcae = self.button_width * 1.8
-
-        Next_button_size = self.button_height * 1.5
-        Next_button_y = self.GUI_Height / 2 - Next_button_size / 2
-        Next_left_x = (self.GUI_Width / 2 - possible_spcae / 2) / 2 - Next_button_size / 2
-        Next_right_x = self.GUI_Width - Next_left_x - Next_button_size
-
-        self.Next_left = QtWidgets.QPushButton(widget)
-        self.Next_left.setGeometry(QtCore.QRect(Next_left_x, Next_button_y, Next_button_size, Next_button_size))
-        self.Next_left.setObjectName("change_left")
-        self.Next_left.setText("<-")
-        self.Next_left.clicked.connect(lambda: self.show_widget(destination_left, 0))
-
-        self.Next_right = QtWidgets.QPushButton(widget)
-        self.Next_right.setGeometry(QtCore.QRect(Next_right_x, Next_button_y, Next_button_size, Next_button_size))
-        self.Next_right.setObjectName("change_right")
-        self.Next_right.setText("->")
-        self.Next_right.clicked.connect(lambda: self.show_widget(destination_right, 0))
-
-    def newdrink_bottom_navigation(self, slider, widget):
-
-        std_height = self.button_height
-        std_width = self.button_width
-        std_y = self.bottom_button_y
-
-        # ExitButton - Button to navigate from the first drink widget back to the main widget
-
-        exit_button_x = (self.GUI_Width / 2 - self.button_width / 2)
-
-        self.exit_button = QtWidgets.QPushButton(widget)
-        self.exit_button.setGeometry(QtCore.QRect(exit_button_x, std_y, std_width, std_height))
-        self.exit_button.setText("Exit")
-        self.exit_button.clicked.connect(lambda: self.show_widget(self.main_widget, 1))
-
-        # Save - Button to Save the current drink setup as a new drink
-
-        self.Save = QtWidgets.QPushButton(widget)
-        self.Save.setGeometry(QtCore.QRect(self.bottom_button_getin, std_y, std_width, std_height))
-        self.Save.setText("Save Drink")
-        self.Save.clicked.connect(lambda: self.saveNewDrink(slider, self.RasBari.Bottles))
-
-

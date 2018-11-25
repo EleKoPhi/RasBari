@@ -2,8 +2,8 @@ from super_widget import *
 
 class drink_menue(my_widget):
 
-    def __init__(self, main_widget, program, GUI_layout):
-        super().__init__(main_widget, program, GUI_layout)
+    def __init__(self, main_widget, program, GUI_layout,main_bar):
+        super().__init__(main_widget, program, GUI_layout,main_bar)
 
         # Build of new widget
 

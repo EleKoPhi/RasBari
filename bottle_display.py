@@ -7,7 +7,7 @@ class bottle_display(my_widget):
     Bottle_pages = []
 
     def __init__(self, main_widget, program, GUI_layout,main_bar):
-        super().__init__(main_widget, program, GUI_layout)
+        super().__init__(main_widget, program, GUI_layout,main_bar)
 
         self.Bar = main_bar
 
@@ -24,7 +24,7 @@ class bottle_display(my_widget):
             nr_widgets += 1
 
         for i in range(nr_widgets-1):
-            self.Bottle_pages.extend([my_widget(main_widget, program, GUI_layout)])
+            self.Bottle_pages.extend([my_widget(main_widget, program, GUI_layout,main_bar)])
             self.Bottle_pages[i].setObjectName("Bottlepage" + str(i))
             main_widget.addWidget(self.Bottle_pages[i].widget)
 
