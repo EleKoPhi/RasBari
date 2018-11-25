@@ -4,13 +4,13 @@ from functools import partial
 from classes.class_myThread import *
 
 class BottleLine(QWidget, QObject):
-    def __init__(self, program, widget, Bottle, total_x, total_y,layout):
+    def __init__(self, ui_gui, widget, Bottle, total_x, total_y,layout):
         super().__init__()
         self.wg = widget
         self.Bottle_in = Bottle
         self.rev_x = total_x + 10
         self.rev_y = total_y
-        self.main_gui = program
+        self.ui_gui = ui_gui
         self.layout = layout
 
         self.build_line()
@@ -53,12 +53,12 @@ class BottleLine(QWidget, QObject):
 
         print("Reset Bottle")
 
-        for i in range(len(UiGui.RasBari.Bottles)):
+        for i in range(len(self.ui_gui.bar.Bottles)):
 
-            if self.Bottle_in.getname() == UiGui.RasBari.Bottles[i].getname():
-                UiGui.RasBari.Bottles[i].putAmount(UiGui.RasBari.Bottles[i].getbottlesize())
-                print(UiGui.RasBari.Bottles[i].getlevel())
-                self.Bottle_in = UiGui.RasBari.Bottles[i]
+            if self.Bottle_in.getname() == self.ui_gui.bar.Bottles[i].getname():
+                self.ui_gui.bar.Bottles[i].putAmount(self.ui_gui.bar.Bottles[i].getbottlesize())
+                print(self.ui_gui.bar.Bottles[i].getlevel())
+                self.Bottle_in = self.ui_gui.bar.Bottles[i]
                 break
 
         self.level.setProperty("value",

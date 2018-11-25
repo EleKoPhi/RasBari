@@ -228,8 +228,8 @@ class main_widget_class(my_widget):
 
                 thread = myThread(lambda: self.bar.mixIt(drink_nr))
                 progressbar = myThread(self.update_progressbar)
-                self.program.threadpool.start(thread)
-                self.program.threadpool.start(progressbar)
+                self.ui_gui.threadpool.start(thread)
+                self.ui_gui.threadpool.start(progressbar)
             else:
 
                 print("Drink unknown")
