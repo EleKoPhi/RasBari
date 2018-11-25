@@ -222,15 +222,6 @@ class new_drink_widget_class(my_widget):
         for i in range(len(slider_list)):
             slider_list[i].setSliderPosition(0)
 
-    def update_glass_txt(self):
 
-        self.amount_LCD.display(self.RasBari.getAmount())
-        glas_string = "Glass volume: " + str(self.RasBari.getAmount()) + " ml"
-        self.DigitText.setText(glas_string)
 
-    def update_status_txt(self):
 
-        if not self.RasBari.getProductionFlag():
-            self.StatTxt.setText("Status: Wait for input...")
-        else:
-            self.StatTxt.setText("Status: Busy")

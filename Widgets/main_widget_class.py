@@ -143,22 +143,12 @@ class main_widget_class(my_widget):
         self.Drinks.setText("Drinks")
         self.Drinks.clicked.connect(lambda: self.show_widget(self.ui_gui.drink_menue_container.widget, 1))
 
-        #self.updateGUI.connect(lambda: self.updateWidget())  #TODO
+        self.updateGUI.connect(lambda: self.updateWidget())  #TODO
 
     def updateWidget(self):
 
-        self.GridLayout = self.main_widget.findChild(QtWidgets.QWidget, "gridLayoutWidget")
-        self.ButtonGrid = self.main_widget.findChild(QtWidgets.QGridLayout, "AuswahlGrid")
-
         try:
-            self.GridLayout.deleteLater()
-            self.ButtonGrid.deleteLater()
-
-            for i in range(len(self.grid_button_list)):
-                Button = self.main_widget.findChild(QtWidgets.QPushButton, "Button_" + str(i))
-                Button.disconect()
-                Button.deleteLater()
-
+            self.grid_button_list.clear()
             self.button_grid()
 
         except:
@@ -166,6 +156,13 @@ class main_widget_class(my_widget):
 
     def update_progressbar(self):
         self.Progress.setValue(self.bar.getProgress())
+
+    def update_status_txt(self):
+
+        if not self.bar.getProductionFlag():
+            self.StatTxt.setText("Status: Wait for input...")
+        else:
+            self.StatTxt.setText("Status: Busy")
 
     def button_grid(self):
 
@@ -240,7 +237,7 @@ class main_widget_class(my_widget):
             print("Production already running")
 
     def exit_thread_handler(self):
-        exit_thread = myThread(self.RasBari.errorFunction)
+        exit_thread = myThread(self.bar.errorFunction)
         self.threadpool.start(exit_thread)
 
 
