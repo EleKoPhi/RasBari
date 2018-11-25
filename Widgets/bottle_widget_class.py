@@ -1,6 +1,11 @@
 from Widgets.my_widget_class import *
 from classes.bottle_line import *
 
+# Widget where your can see all bottles in the System
+# Displays, bottle name, how much is left
+# Button clear, to output the remaining liquid
+# Button reset, need to be pressed after a new bottle is loaded
+
 class bottle_widget_class(my_widget):
 
     def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar):
