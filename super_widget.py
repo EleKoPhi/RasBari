@@ -84,10 +84,10 @@ class my_widget(QWidget, QObject):
         self.Next_left.setGeometry(QtCore.QRect(Next_left_x, Next_button_y, Next_button_size, Next_button_size))
         self.Next_left.setObjectName("change_left")
         self.Next_left.setText("<-")
-        #self.Next_left.clicked.connect(lambda: self.show_widget(destination_left, 0))
+        self.Next_left.clicked.connect(lambda: self.show_widget(destination_left, 0))
 
         self.Next_right = QtWidgets.QPushButton(widget)
         self.Next_right.setGeometry(QtCore.QRect(Next_right_x, Next_button_y, Next_button_size, Next_button_size))
         self.Next_right.setObjectName("change_right")
         self.Next_right.setText("->")
-        #self.Next_right.clicked.connect(lambda: self.show_widget(destination_right, 0))
+        self.Next_right.clicked.connect(lambda: self.show_widget(destination_right, 0))

@@ -43,10 +43,10 @@ class new_drink_menue(my_widget):
 
         for i in range(len(self.NewDrink_pages)-1):
             try:
-                self.side_navigation(self.NewDrink_pages[i], self.NewDrink_pages[i - 1], self.NewDrink_pages[i + 1])
+                self.side_navigation(self.NewDrink_pages[i].widget, self.NewDrink_pages[i - 1].widget, self.NewDrink_pages[i + 1].widget)
 
             except:
-                self.side_navigation(self.NewDrink_pages[i], self.NewDrink_pages[i - 1], self.NewDrink_pages[0])
+                self.side_navigation(self.NewDrink_pages[i].widget, self.NewDrink_pages[i - 1].widget, self.NewDrink_pages[0].widget)
 
             self.help_slider = QtWidgets.QLabel(self.NewDrink_pages[i].widget)
             self.help_slider.setGeometry(QtCore.QRect(Stat_x, std_Y, std_Width, std_Hight))
