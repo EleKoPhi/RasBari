@@ -34,7 +34,7 @@ class my_widget(QWidget, QObject):
 
         self.title.setGeometry(QtCore.QRect(title_x, title_y, title_width, title_height))
         self.title.setFont(title_font)
-        self.title.setText("Rasbari V7")
+        self.title.setText("Rasbari V8")
         self.stdLabelSetUp(self.title)
 
     def stdLabelSetUp(self, label):
