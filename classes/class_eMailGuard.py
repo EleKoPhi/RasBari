@@ -82,3 +82,53 @@ class eMailGuard(QObject):
 
         text = self.msg.as_string()
         self.server.sendmail(self.login, to, text)
+
+
+    def exeOrder(self):
+
+        find = 99
+        order = self.EmailOrder.getLastMessageTitel()
+
+        print("Check whats ordered..." + order)
+
+        if ((order != None) & (self.RasBari.getProductionFlag() == False)):
+
+            for i in range(len(self.RasBari.DrinkList)):
+                if self.RasBari.DrinkList[i]:
+                    if self.RasBari.DrinkList[i].getName().upper() in order.upper():
+                        find = i
+                        break
+
+        if find != 99:
+
+            reply = self.EmailOrder.orderexecuted + "\n\nYour order: " + self.RasBari.DrinkList[find].getName()
+
+            thread_mail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, reply,
+                                                                        "Automatic reply from RasBari"))
+            self.threadpool.start(thread_mail)
+
+            self.production_thread_handler(find)
+
+        else:
+            print("order received but cant offer - Sorry")
+
+            if self.RasBari.getProductionFlag():
+                thread_mail = myThread(lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress,
+                                                                            self.EmailOrder.orderallreadrunning,
+                                                                            "Automatic reply from RasBari"))
+                self.threadpool.start(thread_mail)
+
+            else:
+                thread_mail = myThread(
+                    lambda: self.EmailOrder.send_mail_to(self.EmailOrder.lastSenderAdress, self.EmailOrder.unknownorder,
+                                                         "Automatic reply from RasBari"))
+                self.threadpool.start(thread_mail)
+
+            print(self.EmailOrder.lastSenderAdress)
+            print("Mail sent")
+
+
+    def check4order(self):
+
+        c4o_thread = myThread(lambda: self.EmailOrder.gotNewOrder())
+        self.threadpool.start(c4o_thread)

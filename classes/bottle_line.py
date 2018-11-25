@@ -5,6 +5,7 @@ from classes.class_myThread import *
 
 class BottleLine(QWidget, QObject):
     def __init__(self, program, widget, Bottle, total_x, total_y,layout):
+        super().__init__()
         self.wg = widget
         self.Bottle_in = Bottle
         self.rev_x = total_x + 10
@@ -81,8 +82,6 @@ class BottleLine(QWidget, QObject):
                 if value < 0: value = 0
                 self.level.setProperty("value", value)
                 break"""
-
-        print("uopdate")
 
     def stdLabelSetUp(self, Label):
         Label.setAlignment(Qt.AlignCenter)
