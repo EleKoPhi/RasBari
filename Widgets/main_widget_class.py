@@ -6,6 +6,7 @@ class main_widget_class(my_widget):
         super().__init__(stacked_widget, ui_gui, ui_layout, master_bar)
 
         self.bar.changedValSig.connect(self.update_progressbar)
+        self.bar.changedStatus.connect(self.update_status_txt)
 
         self.grid_button_list = []
 

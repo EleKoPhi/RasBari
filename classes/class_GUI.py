@@ -30,7 +30,7 @@ class UiGui(QWidget, QObject):
         self.drink_menue_container = drink_menue_class(self.globWig, self, self.GUI_layout, self.RasBari)
         self.included_drinks_container = included_drinks_class(self.globWig, self, self.GUI_layout, self.RasBari)
         self.new_drink_container = new_drink_widget_class(self.globWig, self, self.GUI_layout, self.RasBari)
-        self.mssing_ingreds_container = missing_ingeds_class(self.globWig, self, self.GUI_layout, self.RasBari)
+        self.missing_ingreds_container = missing_ingeds_class(self.globWig, self, self.GUI_layout, self.RasBari)
 
         QtCore.QMetaObject.connectSlotsByName(self.globWig)
 
@@ -40,3 +40,12 @@ class UiGui(QWidget, QObject):
 
         self.globWig.setCurrentIndex(self.globWig.indexOf(self.main_container.widget))
         QtCore.QMetaObject.connectSlotsByName(self.globWig)
+
+        self.connect_system_signals()
+
+    def connect_system_signals(self):
+
+        self.RasBari.missingIngred.connect\
+            (lambda:self.globWig.setCurrentIndex(self.globWig.indexOf(self.missing_ingreds_container.widget)))
+
+        #self.EmailOrder.CheckMail.connect(self.EmailOrder.exeOrder())

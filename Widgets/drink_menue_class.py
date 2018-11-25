@@ -1,11 +1,10 @@
 from Widgets.my_widget_class import *
 
+
 class drink_menue_class(my_widget):
 
     def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar):
         super().__init__(stacked_widget, ui_gui, ui_layout, master_bar)
-
-        #Std. values
 
         std_height = self.layout.button_height
         std_width = self.layout.button_width
@@ -19,7 +18,6 @@ class drink_menue_class(my_widget):
         self.newdrink_button.setGeometry(
             QtCore.QRect(self.layout.bottom_button_getin, std_y_menue, std_width_menue, std_height))
         self.newdrink_button.setText("Let me make a new drink!")
-
         self.newdrink_button.clicked.connect(lambda: self.show_widget(self.ui_gui.new_drink_container.NewDrink_pages[0].widget, 1))
 
         # ShowDrink pushbutton to naviate to the widget that shows all included drinks
