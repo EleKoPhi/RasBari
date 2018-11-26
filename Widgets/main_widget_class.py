@@ -143,12 +143,23 @@ class main_widget_class(my_widget):
         self.Drinks.setText("Drinks")
         self.Drinks.clicked.connect(lambda: self.show_widget(self.ui_gui.drink_menue_container.widget, 1))
 
-        self.updateGUI.connect(lambda: self.updateWidget())  #TODO
+        self.ui_gui.updateGUI_global.connect(lambda: self.updateWidget())
+
 
     def updateWidget(self):
 
+        self.GridLayout = self.widget.findChild(QtWidgets.QWidget, "gridLayoutWidget")
+        self.ButtonGrid = self.widget.findChild(QtWidgets.QGridLayout, "buttongrid")
+
         try:
-            self.grid_button_list.clear()
+            self.GridLayout.deleteLater()
+            self.ButtonGrid.deleteLater()
+
+            for i in range(len(self.grid_button_list)):
+                Button = self.main_widget.findChild(QtWidgets.QPushButton, "Button_" + str(i))
+                Button.disconect()
+                Button.deleteLater()
+
             self.button_grid()
 
         except:

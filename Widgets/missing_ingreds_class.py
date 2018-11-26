@@ -1,5 +1,6 @@
 from Widgets.my_widget_class import *
 
+
 class missing_ingeds_class(my_widget):
 
     def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar):
@@ -22,7 +23,7 @@ class missing_ingeds_class(my_widget):
         self.YESBut = QtWidgets.QPushButton(self.widget)
         self.YESBut.setGeometry(QtCore.QRect(YESBut_x, YESBut_y, std_width, std_hight))
         self.YESBut.setText("Restore bottles")
-        self.YESBut.clicked.connect(lambda: self.show_widget(self.ui_gui.bottle_container.Bottle_pages[0].widget,1))
+        self.YESBut.clicked.connect(lambda: self.show_widget(self.ui_gui.bottle_container.Bottle_pages[0].widget, 1))
 
         self.NOBut = QtWidgets.QPushButton(self.widget)
         self.NOBut.setGeometry(QtCore.QRect(NOBut_x, NOBut_y, std_width, std_hight))

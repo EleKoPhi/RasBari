@@ -11,7 +11,7 @@ class bottle_widget_class(my_widget):
     def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar):
         super().__init__(stacked_widget, ui_gui, ui_layout, master_bar)
 
-        self.updateGUI.connect(self.updateWidget)
+        #self.updateGUI.connect(self.updateWidget)
 
         self.Bottle_pages = []
         self.lines = []

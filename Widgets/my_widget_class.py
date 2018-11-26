@@ -1,10 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import *
 from functools import partial
 from classes.class_myThread import *
 
 
 class my_widget(QWidget, QObject):
+
     updateGUI = pyqtSignal()
 
     def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar):
@@ -43,7 +45,7 @@ class my_widget(QWidget, QObject):
         label.setStyleSheet("background-color: white")
 
     def show_widget(self, widget, refresh):
-        if refresh: self.updateGUI.emit()
+        if refresh:self.ui_gui.updateGUI_global.emit()
         self.stacked_widget.setCurrentIndex(self.stacked_widget.indexOf(widget))
 
     def bottomNavigation(self,widget, destination_left, destination_right, destination_middle, button_txt):

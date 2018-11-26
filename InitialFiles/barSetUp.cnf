@@ -1,28 +1,28 @@
 [Fluessigkeit1]
 id = 1
 name = Gin
-menge = 70
+menge = 40
 position = 0
 bottlesize = 700
 
 [Fluessigkeit2]
 id = 2
 name = Whisky
-menge = 700
+menge = 547
 position = 10
 bottlesize = 700
 
 [Fluessigkeit3]
 id = 3
 name = Rum
-menge = 700
+menge = 595
 position = 20
 bottlesize = 700
 
 [Fluessigkeit4]
 id = 4
 name = Wodka
-menge = 700
+menge = 688
 position = 30
 bottlesize = 700
 

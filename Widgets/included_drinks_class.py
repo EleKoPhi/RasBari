@@ -9,7 +9,7 @@ class included_drinks_class(my_widget):
         super().__init__(stacked_widget, ui_gui, ui_layout, master_bar)
 
         self.live_drink = 0
-        self.flag = 1
+        self.flag = 2
 
         std_height = self.layout.button_height
         std_width = self.layout.button_width
@@ -77,14 +77,15 @@ class included_drinks_class(my_widget):
         self.newdrink_button.setGeometry(QtCore.QRect(new_drink_x, std_y, std_width, std_height))
         self.newdrink_button.setText("Set up a new drink")
 
-        self.newdrink_button.clicked.connect(lambda: self.show_widget(self.ui_gui.new_drink_container.widget, 1))
+        self.newdrink_button.clicked.connect(lambda: self.show_widget(self.ui_gui.new_drink_container.NewDrink_pages[0].widget, 1))
 
-        self.updateGUI.connect(lambda: self.updateWidget())
+        self.ui_gui.updateGUI_global.connect(lambda: self.updateWidget())
 
 
     def updateWidget(self):
 
         if(self.flag==1):self.live_drink = 0
+        #self.flag = 1
 
         try:
             self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].getIngredientString())

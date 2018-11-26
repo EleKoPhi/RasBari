@@ -1,4 +1,5 @@
 from Widgets.my_widget_class import *
+from classes.class_Drink import *
 
 class new_drink_widget_class(my_widget):
 
@@ -91,45 +92,6 @@ class new_drink_widget_class(my_widget):
 
         ############################ END of newDrink_Widget(self, StackedWidget) #######################################"""
 
-    def saveNewDrink(self, slider_list, bottles):
-
-        amount_sum = 0
-
-        for i in range(len(slider_list)):
-            amount_sum = amount_sum + slider_list[i].value()
-
-        if amount_sum == 100:
-
-            self.Ingredients = []
-
-            new_drink_name = ""
-
-            for i in range(len(slider_list)):
-                if slider_list[i].value() != 0:
-                    name = bottles[i].getname()
-                    name = name[:3]
-                    name = name + str(slider_list[i].value())
-                    new_drink_name = new_drink_name + name
-
-            self.Ingredients.extend([("name", new_drink_name)])
-
-            for i in range(len(slider_list)):
-                Ingred = [bottles[i].getname(), str(slider_list[i].value())]
-                self.Ingredients.extend([Ingred])
-
-            new_drink = Drink(self.Ingredients)
-
-            self.RasBari.DrinkList.extend([new_drink])
-            self.reset_slider_list(slider_list)
-            self.show_widget(self.main_widget, 1)
-
-        else:
-            print("Drink not completed")  # TODO change the reset button to an textbrowser that indictes status
-
-    def reset_slider_list(self, slider_list):
-        for i in range(len(slider_list)):
-            slider_list[i].setSliderPosition(0)
-
     def Amount_Slider(self,i):
         self.amount[i].setText(str(self.slider[i].value()))
 
@@ -174,14 +136,14 @@ class new_drink_widget_class(my_widget):
         self.exit_button = QtWidgets.QPushButton(widget)
         self.exit_button.setGeometry(QtCore.QRect(exit_button_x, std_y, std_width, std_height))
         self.exit_button.setText("Exit")
-        #self.exit_button.clicked.connect(lambda: self.show_widget(self.main_widget, 1))
+        self.exit_button.clicked.connect(lambda: self.show_widget(self.ui_gui.main_container.widget, 1))
 
         # Save - Button to Save the current drink setup as a new drink
 
         self.Save = QtWidgets.QPushButton(widget)
         self.Save.setGeometry(QtCore.QRect(self.layout.bottom_button_getin, std_y, std_width, std_height))
         self.Save.setText("Save Drink")
-        #self.Save.clicked.connect(lambda: self.saveNewDrink(slider, self.bar.Bottles))
+        self.Save.clicked.connect(lambda: self.saveNewDrink(self.slider, self.bar.Bottles))
 
     def saveNewDrink(self, slider_list, bottles):
 
@@ -211,9 +173,9 @@ class new_drink_widget_class(my_widget):
 
             new_drink = Drink(self.Ingredients)
 
-            self.RasBari.DrinkList.extend([new_drink])
+            self.bar.DrinkList.extend([new_drink])
             self.reset_slider_list(slider_list)
-            self.show_widget(self.main_widget, 1)
+            self.show_widget(self.ui_gui.main_container.widget, 1)
 
         else:
             print("Drink not completed")

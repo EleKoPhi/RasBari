@@ -6,6 +6,8 @@ from widget_imports import *
 
 class UiGui(QWidget, QObject):
 
+    updateGUI_global = pyqtSignal()
+
     def __init__(self, width, height, global_widget):
         QObject.__init__(self)
 
@@ -15,8 +17,6 @@ class UiGui(QWidget, QObject):
 
         self.globWig = global_widget
         self.MailTimer = QtCore.QTimer()
-
-        self.updateGUI = pyqtSignal()
 
         self.GUI_layout = lo(width, height)
 
