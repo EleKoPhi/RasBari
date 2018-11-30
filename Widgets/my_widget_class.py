@@ -19,10 +19,11 @@ class my_widget(QWidget, QObject):
 
         self.widget = QtWidgets.QWidget()  # The base for the new widget
         self.stacked_widget.addWidget(self.widget)  # Add the base widget to the stack of all widgets
+
+        self.title = QtWidgets.QLabel(self.widget)
         self.header()
 
     def header(self):
-        self.title = QtWidgets.QLabel(self.widget)
         title_font = QtGui.QFont()
         title_font.setPointSize(26)
         title_font.setBold(True)
@@ -36,7 +37,7 @@ class my_widget(QWidget, QObject):
 
         self.title.setGeometry(QtCore.QRect(title_x, title_y, title_width, title_height))
         self.title.setFont(title_font)
-        self.title.setText("Rasbari V8")
+        self.title.setText("Rasbari V9")
         self.stdLabelSetUp(self.title)
 
     def stdLabelSetUp(self, label):
@@ -45,10 +46,10 @@ class my_widget(QWidget, QObject):
         label.setStyleSheet("background-color: white")
 
     def show_widget(self, widget, refresh):
-        if refresh:self.ui_gui.updateGUI_global.emit()
+        if refresh: self.ui_gui.updateGUI_global.emit()
         self.stacked_widget.setCurrentIndex(self.stacked_widget.indexOf(widget))
 
-    def bottomNavigation(self,widget, destination_left, destination_right, destination_middle, button_txt):
+    def bottomNavigation(self, widget, destination_left, destination_right, destination_middle, button_txt):
 
         std_width = self.layout.button_width
         std_height = self.layout.button_height
@@ -75,11 +76,11 @@ class my_widget(QWidget, QObject):
 
     def side_navigation(self, widget, destination_left, destination_right):
 
-        possible_spcae = self.layout.button_width * 1.8
+        possible_space = self.layout.button_width * 1.8
 
         Next_button_size = self.layout.button_height * 1.5
         Next_button_y = self.layout.GUI_Height / 2 - Next_button_size / 2
-        Next_left_x = (self.layout.GUI_Width / 2 - possible_spcae / 2) / 2 - Next_button_size / 2
+        Next_left_x = (self.layout.GUI_Width / 2 - possible_space / 2) / 2 - Next_button_size / 2
         Next_right_x = self.layout.GUI_Width - Next_left_x - Next_button_size
 
         self.Next_left = QtWidgets.QPushButton(widget)

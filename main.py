@@ -4,7 +4,7 @@
 #
 # Name: Philipp Mochti
 #
-# V4.0
+# V9.0
 #
 #
 
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     ui = UiGui(rect.width(), rect.height(), StackedWidget)
 
-    if (getFlag("Fullscreen")):
+    if getFlag("Fullscreen"):
         StackedWidget.showFullScreen()
     else:
         StackedWidget.show()

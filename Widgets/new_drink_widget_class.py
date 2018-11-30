@@ -1,6 +1,7 @@
 from Widgets.my_widget_class import *
 from classes.class_Drink import *
 
+
 class new_drink_widget_class(my_widget):
 
     def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar):
@@ -20,13 +21,13 @@ class new_drink_widget_class(my_widget):
         std_Width = self.layout.button_width
         std_Y = self.layout.bottom_button_y
         Topspace = self.layout.GUI_Height * 0.16
-        possible_spcae = self.layout.button_width * 1.8
+        possible_space = self.layout.button_width * 1.8
 
         slider_width = std_Width * 0.83
         amount_width = std_Hight
         name_width = slider_width - amount_width
 
-        space_bt_elements = (possible_spcae - slider_width - name_width - amount_width) / 2
+        space_bt_elements = (possible_space - slider_width - name_width - amount_width) / 2
         slider_x = (self.layout.GUI_Width / 2) - (slider_width + name_width + amount_width + 2 * space_bt_elements) / 2
         name_x = slider_x + space_bt_elements + slider_width
         amount_x = name_x + space_bt_elements + name_width
@@ -35,7 +36,7 @@ class new_drink_widget_class(my_widget):
         totalNr_Widgets = int(len(self.bar.Bottles) / 5)
 
         for i in range(totalNr_Widgets):
-            self.NewDrink_pages.extend([my_widget(self.stacked_widget, self.ui_gui, self.layout,self.bar)])
+            self.NewDrink_pages.extend([my_widget(self.stacked_widget, self.ui_gui, self.layout, self.bar)])
             self.NewDrink_pages[i].setObjectName("NewDrink_page" + str(i))
             self.stacked_widget.addWidget(self.NewDrink_pages[i].widget)
             self.newdrink_bottom_navigation(self.NewDrink_pages[i].widget)
@@ -43,13 +44,14 @@ class new_drink_widget_class(my_widget):
         self.NewDrink_pages.extend([self])
         self.newdrink_bottom_navigation(self.NewDrink_pages[-1].widget)
 
-
         for i in range(len(self.NewDrink_pages)):
             try:
-                self.side_navigation(self.NewDrink_pages[i].widget, self.NewDrink_pages[i - 1].widget, self.NewDrink_pages[i + 1].widget)
+                self.side_navigation(self.NewDrink_pages[i].widget, self.NewDrink_pages[i - 1].widget,
+                                     self.NewDrink_pages[i + 1].widget)
 
             except:
-                self.side_navigation(self.NewDrink_pages[i].widget, self.NewDrink_pages[i - 1].widget, self.NewDrink_pages[0].widget)
+                self.side_navigation(self.NewDrink_pages[i].widget, self.NewDrink_pages[i - 1].widget,
+                                     self.NewDrink_pages[0].widget)
 
             self.help_slider = QtWidgets.QLabel(self.NewDrink_pages[i].widget)
             self.help_slider.setGeometry(QtCore.QRect(Stat_x, std_Y, std_Width, std_Hight))
@@ -59,7 +61,7 @@ class new_drink_widget_class(my_widget):
 
         for i in range(len(self.bar.Bottles)):
 
-            if ((i % 5 == 0) & (i != 0)):
+            if (i % 5 == 0) & (i != 0):
                 self.page = self.page + 1
                 self.j = 0
 
@@ -84,7 +86,7 @@ class new_drink_widget_class(my_widget):
             self.stdLabelSetUp(self.amount[i])
 
             self.slider[i].valueChanged.connect(partial(self.Amount_Slider, i))
-            self.slider[i].valueChanged.connect(partial(self.newMaxima, i))
+            self.slider[i].valueChanged.connect(partial(self.new_maxima, i))
 
             self.updateGUI.connect(lambda: self.reset_slider_list(self.slider))
 
@@ -92,7 +94,7 @@ class new_drink_widget_class(my_widget):
 
         ############################ END of newDrink_Widget(self, StackedWidget) #######################################"""
 
-    def Amount_Slider(self,i):
+    def Amount_Slider(self, i):
         self.amount[i].setText(str(self.slider[i].value()))
 
         sum = 0
@@ -114,14 +116,14 @@ class new_drink_widget_class(my_widget):
         for i in range(len(self.stats)):
             self.stats[i].setText(message + add)
 
-    def newMaxima(self,callingSlider):
+    def new_maxima(self, calling_slider):
         sum = 0
 
         for i in range(len(self.slider)):
             sum = sum + self.slider[i].value()
 
         if sum >= 100:
-            self.slider[callingSlider].setSliderPosition(self.slider[callingSlider].value() - (sum - 100))
+            self.slider[calling_slider].setSliderPosition(self.slider[calling_slider].value() - (sum - 100))
 
     def newdrink_bottom_navigation(self, widget):
 
@@ -183,7 +185,3 @@ class new_drink_widget_class(my_widget):
     def reset_slider_list(self, slider_list):
         for i in range(len(slider_list)):
             slider_list[i].setSliderPosition(0)
-
-
-
-
