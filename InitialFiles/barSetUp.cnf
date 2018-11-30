@@ -15,7 +15,7 @@ bottlesize = 700
 [Fluessigkeit3]
 id = 3
 name = Rum
-menge = 595
+menge = 475
 position = 20
 bottlesize = 700
 
@@ -43,7 +43,7 @@ bottlesize = 1000
 [Fluessigkeit7]
 id = 7
 name = Cola
-menge = 1000
+menge = 820
 position = 60
 bottlesize = 1000
 

@@ -6,11 +6,11 @@ class drink_tune_class(my_widget):
     def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar, drink_nr):
         super().__init__(stacked_widget, ui_gui, ui_layout, master_bar)
 
+        self.drink_nr = drink_nr
+
         std_height = self.layout.button_height
         std_width = self.layout.button_width
         std_y = self.layout.bottom_button_y
-
-        self.drink_nr = drink_nr
 
         space_width = self.layout.button_width * 1.8
         space_x = self.layout.GUI_Width / 2 - space_width / 2
@@ -20,6 +20,7 @@ class drink_tune_class(my_widget):
         amount_width = std_height
         name_width = slider_width - amount_width
 
+        # space_bt_elements - Space between slider name and amount
         space_bt_elements = (space_width - slider_width - name_width - amount_width) / 2
         slider_x = (self.layout.GUI_Width / 2) - (slider_width + name_width + amount_width + 2 * space_bt_elements) / 2
         name_x = slider_x + space_bt_elements + slider_width
@@ -39,7 +40,6 @@ class drink_tune_class(my_widget):
         self.j = 1
         self.page = 0
         self.nr_ingredients = 0
-        self.flag = 0
 
         for i in range(1, len(self.bar.DrinkList[drink_nr].Ingredients)):
             if self.bar.DrinkList[drink_nr].Ingredients[i][1] != "0":
@@ -118,30 +118,37 @@ class drink_tune_class(my_widget):
 
             for i in range(len(self.help_pages)):
                 try:
-                    self.side_navigation(self.help_pages[i].widget, self.help_pages[i - 1].widget, self.help_pages[i + 1].widget)
+                    self.side_navigation(self.help_pages[i].widget, self.help_pages[i - 1].widget,
+                                         self.help_pages[i + 1].widget)
 
                 except:
-                    self.side_navigation(self.help_pages[i].widget, self.help_pages[i - 1].widget, self.help_pages[0].widget)
+                    self.side_navigation(self.help_pages[i].widget, self.help_pages[i - 1].widget,
+                                         self.help_pages[0].widget)
 
-    def change_value(self,calling_slider):
+    def change_value(self, calling_slider):
+
+        # change_value is called from the calling_slider every time the value changed
+        # it limits the slider value and updated the amount label
 
         if self.slider[calling_slider].value() > (100 - len(self.slider) + 1):
             self.slider[calling_slider].setSliderPosition(100 - len(self.slider) + 1)
 
-        if self.slider[calling_slider].value() < 1:
-            self.slider[calling_slider].setSliderPosition(1)
         self.amount[calling_slider].setText(str(self.slider[calling_slider].value()))
 
-    def new_maximum(self,calling_slider):
-        ingred_sum = 0
-        start_slider = calling_slider
+    def new_maximum(self, calling_slider):
 
-        for loop_iteration in range(len(self.slider)):
+        # new_maximum is called when a slider from the drink_tune_container is released
+        # calculates the sum of all new values and separates the difference to all remaining sliders
+
+        ingred_sum = 0  # variable where the slider sum is saved
+        start_slider = calling_slider  # the slider, witch is calling (released)
+
+        for loop_iteration in range(len(self.slider)):  # calculate the slider sum
             ingred_sum = ingred_sum + self.slider[loop_iteration].value()
 
-        ingred_sum = ingred_sum - 100
+        ingred_sum = ingred_sum - 100  # The amount of set ingredients that is to much
 
-        if ingred_sum > 0:
+        if ingred_sum > 0:  # If the set amount is more than 100%
             while True:
                 if (start_slider != calling_slider) and (self.slider[start_slider].value() != 1):
                     self.slider[start_slider].setSliderPosition(self.slider[start_slider].value() - 1)
@@ -152,9 +159,9 @@ class drink_tune_class(my_widget):
 
                 if start_slider > (len(self.slider) - 1): start_slider = 0
 
-                if ingred_sum == 0: break
+                if ingred_sum == 0: break  # nothing left
 
-        if ingred_sum < 0:
+        if ingred_sum < 0:  # If the set amount is less than 100%
             while True:
                 if start_slider != calling_slider:
                     self.slider[start_slider].setSliderPosition(self.slider[start_slider].value() + 1)
@@ -165,19 +172,26 @@ class drink_tune_class(my_widget):
 
                 if start_slider > (len(self.slider) - 1): start_slider = 0
 
-                if ingred_sum == 0: break
-
-    def updateWidget(self):
-        self.help_pages.clear()
-        self.updateGUI.connect(lambda: updateWidget())
-        self.show_widget(self.help_pages[0], 1)
+                if ingred_sum == 0: break  # nothing left
 
     def apply_drink_tune(self, slider, name):
 
-        new_ingredients = []
+        # appy_drink_tune is called from the tune button and applies the current slider setting to the current
+        # shown drink. After that is shows the included_drinks_contrainer with the new applied settings.
 
-        for i in range(len(slider)):
+        new_ingredients = []  # A empty list, where all the slider and names are saved
+
+        for i in range(len(slider)):  # build the new_ingredients list
             new_ingredients.extend([[name[i].text(), str(slider[i].value())]])
 
         self.bar.DrinkList[self.drink_nr].setNewIngredients(new_ingredients)
-        self.show_widget(self.ui_gui.included_drinks_container.widget, 1)
+
+        # update the current text box in the included_drink_container that the applied changes are shown
+
+        live_drink_dummy = self.ui_gui.included_drinks_container.live_drink
+        txt_box = self.ui_gui.included_drinks_container.widget.findChild(QtWidgets.QWidget, "Middle_Txt_Box")
+        txt_box.setText(self.bar.DrinkList[live_drink_dummy].getIngredientString())
+
+        self.stacked_widget.setCurrentIndex(self.stacked_widget.indexOf(self.ui_gui.included_drinks_container.widget))
+
+# finished 30.11.2018

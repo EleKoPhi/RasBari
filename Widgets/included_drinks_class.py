@@ -84,8 +84,7 @@ class included_drinks_class(my_widget):
 
     def updateWidget(self):
 
-        if(self.flag==1):self.live_drink = 0
-        #self.flag = 1
+        self.live_drink = 0
 
         try:
             self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].getIngredientString())
@@ -118,7 +117,11 @@ class included_drinks_class(my_widget):
 
         tuneWidget = drink_tune_class(self.stacked_widget, self.ui_gui, self.layout, self.bar, self.live_drink)
 
-        self.show_widget(tuneWidget.help_pages[0].widget,1)
+        self.stacked_widget.setCurrentIndex(self.stacked_widget.indexOf(tuneWidget.help_pages[0].widget))
+
+
+
+
 
 
 
