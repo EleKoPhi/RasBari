@@ -21,6 +21,8 @@ class eMailGuard(QObject):
 
     CheckMail = pyqtSignal()
 
+    check_now_flag = 0
+
     def __init__(self,main_bar,main_wig):
         QObject.__init__(self)
         self.bar = main_bar
@@ -45,7 +47,7 @@ class eMailGuard(QObject):
 
                 self.MailTimer = QTimer()
                 self.MailTimer.setSingleShot(False)
-                self.MailTimer.start(3000)
+                self.MailTimer.start(500)
                 self.MailTimer.timeout.connect(lambda: self.check_order())
 
                 self.CheckMail.connect(self.exeOrder)
@@ -61,10 +63,16 @@ class eMailGuard(QObject):
             self.status = False
 
     def gotNewOrder(self):
+
+        self.check_now_flag = 1
+
         if self.last_message_id != self.getLastMessagelID():
             self.last_message_id = self.getLastMessagelID()
             self.last_sender_address = self.getlastsenderadress()
             self.CheckMail.emit()
+        else:
+            self.check_now_flag = 0
+
 
     def getLastMessagelID(self):
         for mail_id in self.imapper.listids(limit=1):
@@ -94,6 +102,8 @@ class eMailGuard(QObject):
 
         text = self.msg.as_string()
         self.server.sendmail(self.login, to, text)
+
+        self.check_now_flag = 0
 
     def exeOrder(self):
 
@@ -134,7 +144,12 @@ class eMailGuard(QObject):
             print(self.lastSenderAdress)
             print("Mail sent")
 
+
+
     def check_order(self):
 
-        co_thread = myThread(lambda: self.gotNewOrder())
-        self.threadpool.start(co_thread)
+        if self.check_now_flag==0:
+
+            co_thread = myThread(lambda: self.gotNewOrder())
+            self.threadpool.start(co_thread)
+
