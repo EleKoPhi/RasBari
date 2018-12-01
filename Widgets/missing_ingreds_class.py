@@ -34,3 +34,5 @@ class missing_ingeds_class(my_widget):
         self.stdLabelSetUp(self.Message)
         self.Message.setGeometry(QtCore.QRect(Message_x, Message_y, std_width, Message_hight))
         self.Message.setText(Message_content)
+
+# finished 01.12.2018

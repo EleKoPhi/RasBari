@@ -12,7 +12,6 @@ class UiGui(QWidget, QObject):
         QObject.__init__(self)
 
         self.RasBari = Bar()
-        self.EmailOrder = eMailGuard()
         self.threadpool = QThreadPool()
 
         self.globWig = global_widget
@@ -34,12 +33,10 @@ class UiGui(QWidget, QObject):
 
         QtCore.QMetaObject.connectSlotsByName(self.globWig)
 
-        self.MailTimer.setSingleShot(False)
-        if getFlag("Mailorder") & self.EmailOrder.status: self.MailTimer.start(3000)
-        self.MailTimer.timeout.connect(lambda: self.check4order())
-
         self.globWig.setCurrentIndex(self.globWig.indexOf(self.main_container.widget))
         QtCore.QMetaObject.connectSlotsByName(self.globWig)
+
+        self.EmailOrder = eMailGuard(self.RasBari, self.main_container)
 
         self.connect_system_signals()
 
@@ -48,4 +45,3 @@ class UiGui(QWidget, QObject):
         self.RasBari.missingIngred.connect\
             (lambda:self.globWig.setCurrentIndex(self.globWig.indexOf(self.missing_ingreds_container.widget)))
 
-        #self.EmailOrder.CheckMail.connect(self.EmailOrder.exeOrder())
