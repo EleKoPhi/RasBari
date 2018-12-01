@@ -1,14 +1,10 @@
 import easyimap
-from PyQt5.QtCore import QObject, pyqtSignal
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from TxTMethoden import *
 from classes.class_myThread import *
-import sys
 
-
-# noinspection PyBroadException
 class eMailGuard(QObject):
     last_message_id = 0
     last_sender_address = 0
