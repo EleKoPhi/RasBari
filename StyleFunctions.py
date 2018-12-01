@@ -32,6 +32,10 @@ QSlider::sub-page:horizontal {
     background: grey;
 }
 
+QMainWindow{
+    background-color: ff9900;
+    }
+
 """
 
 def ApplyStyleSheets(App):
