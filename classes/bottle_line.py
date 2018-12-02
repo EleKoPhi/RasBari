@@ -4,7 +4,7 @@ from functools import partial
 from classes.class_myThread import *
 
 class BottleLine(QWidget, QObject):
-    def __init__(self, ui_gui, widget, Bottle, total_x, total_y,layout):
+    def __init__(self, ui_gui, widget, Bottle, total_x, total_y,layout,main_bar):
         super().__init__()
         self.wg = widget
         self.Bottle_in = Bottle
@@ -12,6 +12,7 @@ class BottleLine(QWidget, QObject):
         self.rev_y = total_y
         self.ui_gui = ui_gui
         self.layout = layout
+        self.bar = main_bar
 
         self.build_line()
 
@@ -74,14 +75,14 @@ class BottleLine(QWidget, QObject):
 
     def updateStatusBar(self):
 
-        """for i in range(len(self.main_gui.Rasbari.Bottles)):
-            if self.Bottle_in.getname() == self.main_gui.Rasbari.RasBari.Bottles[i].getname():
+        for i in range(len(self.bar.Bottles)):
+            if self.Bottle_in.getname() == self.bar.Bottles[i].getname():
 
-                self.Bottle_in = self.main_gui.Rasbari.Bottles[i]
-                value = int((int(self.main_gui.Rasbari.Bottles[i].getlevel()) / int(self.Bottle_in.getbottlesize())) * 100)
+                self.Bottle_in = self.bar.Bottles[i]
+                value = int((int(self.bar.Bottles[i].getlevel()) / int(self.Bottle_in.getbottlesize())) * 100)
                 if value < 0: value = 0
                 self.level.setProperty("value", value)
-                break"""
+                break
 
     def stdLabelSetUp(self, Label):
         Label.setAlignment(Qt.AlignCenter)

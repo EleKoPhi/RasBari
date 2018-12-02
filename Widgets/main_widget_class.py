@@ -1,5 +1,6 @@
 from Widgets.my_widget_class import *
 
+
 class main_widget_class(my_widget):
 
     def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar):
@@ -144,7 +145,6 @@ class main_widget_class(my_widget):
         self.Drinks.clicked.connect(lambda: self.show_widget(self.ui_gui.drink_menue_container.widget, 1))
 
         self.ui_gui.updateGUI_global.connect(lambda: self.updateWidget())
-
 
     def updateWidget(self):
 

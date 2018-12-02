@@ -94,3 +94,5 @@ class my_widget(QWidget, QObject):
         self.Next_right.setObjectName("change_right")
         self.Next_right.setText("->")
         self.Next_right.clicked.connect(lambda: self.show_widget(destination_right, 0))
+
+# finished 02.12.2018

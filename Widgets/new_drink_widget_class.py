@@ -4,7 +4,6 @@ from classes.class_Drink import *
 
 class new_drink_widget_class(my_widget):
 
-
     def __init__(self, stacked_widget, ui_gui, ui_layout, master_bar):
         super().__init__(stacked_widget, ui_gui, ui_layout, master_bar)
 
