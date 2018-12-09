@@ -43,17 +43,17 @@ class stepper:
 
         self.position_is = 0
 
-    def move_slider(self, percentage_position):
+    def move_slider(self, percentage_position,speed):
 
         position_should = int(self.range * (percentage_position / 100))
 
         while position_should != self.position_is:
 
             if position_should > self.position_is:
-                self.one_step(forwards)
+                self.one_step(forwards,speed)
 
             if position_should < self.position_is:
-                self.one_step(backwards)
+                self.one_step(backwards,speed)
 
 
 a = stepper()
