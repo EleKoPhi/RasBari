@@ -1,7 +1,7 @@
 [Fluessigkeit1]
 id = 1
 name = Gin
-menge = 520
+menge = 430
 position = 0
 bottlesize = 700
 
@@ -36,7 +36,7 @@ bottlesize = 700
 [Fluessigkeit6]
 id = 6
 name = Tonic
-menge = 580
+menge = 370
 position = 50
 bottlesize = 1000
 
@@ -74,4 +74,11 @@ gesamtlänge = 1000
 [Flags]
 fullscreen = 0
 mailorder = 0
+
+[stepper_1]
+pull_pin = 0
+direction_pin = 0
+enable_pin = 0
+microstepsize = 32
+
 

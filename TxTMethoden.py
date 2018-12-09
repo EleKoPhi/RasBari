@@ -70,3 +70,10 @@ def changeAmount(BottleNr,newamount):
     BarIni.set("Fluessigkeit"+str(BottleNr),"menge",str(newamount))
     with open(BarHard, 'w') as configfile:
         BarIni.write(configfile)
+
+def getStepper_ini(Stepper_ID):
+    if (BarIni.has_section(Stepper_ID)):
+        return dict(BarIni.items(Stepper_ID))
+    else:
+        print ("can't read -> " + Stepper_ID + " <-")
+        return None
