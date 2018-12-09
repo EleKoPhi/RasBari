@@ -131,7 +131,7 @@ class Bar(QObject):
 
     def mix_drink(self, drink_nr):  # Main function for mixing Drinks - Runns in extra thread
 
-        self.changeProductionFlag(True)  # If your do that, show the world you work
+        self.change_ProductionFlag(True)  # If your do that, show the world you work
 
         if self.DrinkList[drink_nr].get_drink_status() == True:  # If Drinklist has that drink + its alive
 
@@ -165,16 +165,16 @@ class Bar(QObject):
 
                         print("\n" + self.Bottles[i].get_name() + " menge geaendert")
 
-                self.changeErrorFlag(False)
-                self.changeProductionFlag(False)
+                self.change_ErrorFlag(False)
+                self.change_ProductionFlag(False)
 
             else:
                 self.emit_signal("MI")
-                self.changeProductionFlag(False)
+                self.change_ProductionFlag(False)
 
         else:
             self.emit_signal("DUK")
-            self.changeProductionFlag(False)
+            self.change_ProductionFlag(False)
 
     def emit_signal(self, signal_id):
 
@@ -184,19 +184,23 @@ class Bar(QObject):
         if signal_id == "MI": self.missingIngred.emit()  # Not all ingredients available
         if signal_id == "DUK": self.drinkunknown.emit()  # Don't know that drink
 
-    def changeErrorFlag(self, stat):
-        if stat:
-            self.errorFlag = True
+    def change_ErrorFlag(self, error_status):
+        if error_status:
+            self.errorFlag = Error
         else:
-            self.errorFlag = False
+            self.errorFlag = noError
         self.emit_signal("CS")
 
-    def changeProductionFlag(self, stat):
-        if stat:
-            self.productionFlag = True
+    def change_ProductionFlag(self, production_status):
+        if production_status:
+            self.productionFlag = Production
         else:
-            self.productionFlag = False
+            self.productionFlag = noProduction
         self.emit_signal("CS")
+
+    def errorFunction(self):
+        self.change_ErrorFlag(1)
+        self.change_ProductionFlag(0)
 
     def change_volume(self, amount):
         if (self.productionFlag == False) & (self.cup_size + amount >= 20) & (self.cup_size + amount <= 999):
@@ -206,10 +210,6 @@ class Bar(QObject):
     def change_progress(self, new_progress):
         self.progress = new_progress
         self.emit_signal("CVS")
-
-    def errorFunction(self):
-        self.changeErrorFlag(1)
-        self.changeProductionFlag(0)
 
 
 

@@ -229,7 +229,7 @@ class main_widget_class(my_widget):
 
     def production_thread_handler(self, drink_nr):
 
-        self.bar.changeErrorFlag(False)
+        self.bar.change_ErrorFlag(False)
 
         if not self.bar.get_production_flag():
 
@@ -242,7 +242,7 @@ class main_widget_class(my_widget):
             else:
 
                 print("Drink unknown")
-                self.bar.changeProductionFlag(False)
+                self.bar.change_ProductionFlag(False)
 
         else:
             print("Production already running")
