@@ -74,7 +74,7 @@ class new_drink_widget_class(my_widget):
 
             self.help_name = QtWidgets.QLabel(self.NewDrink_pages[self.page].widget)
             self.name.extend([self.help_name])
-            self.name[i].setText(self.bar.Bottles[i].getname())
+            self.name[i].setText(self.bar.Bottles[i].get_name())
             self.name[i].setGeometry(QtCore.QRect(name_x, line_y, name_width, std_Hight))
             self.stdLabelSetUp(self.name[i])
 
@@ -151,7 +151,7 @@ class new_drink_widget_class(my_widget):
 
             for i in range(len(self.slider)):  # TODO find a way to give your new drink a nice name
                 if self.slider[i].value() != 0:
-                    name = self.bar.Bottles[i].getname()
+                    name = self.bar.Bottles[i].get_name()
                     name = name + str(self.slider[i].value())
                     new_drink_name = new_drink_name + name + " "
                     if i % 3 == 0: new_drink_name = new_drink_name + "\n"
@@ -159,7 +159,7 @@ class new_drink_widget_class(my_widget):
             Ingredients.extend([("name", new_drink_name)])
 
             for i in range(len(self.slider)):
-                Ingred = [self.bar.Bottles[i].getname(), str(self.slider[i].value())]
+                Ingred = [self.bar.Bottles[i].get_name(), str(self.slider[i].value())]
                 Ingredients.extend([Ingred])
 
             self.bar.DrinkList.extend([Drink(Ingredients)])

@@ -39,7 +39,7 @@ class Bar(QObject):
 
         print("\nBottles included:\n")
         for i in range(0, len(self.Bottles)):
-            self.Bottles[i].whatsIn()
+            self.Bottles[i].print_whats_in()
             print()
 
         print("\nDrinks inncluded:\n")
@@ -146,14 +146,14 @@ class Bar(QObject):
                     else:
 
                         for i in range(len(self.Bottles)):
-                            if (liquid_to_get.upper() == self.Bottles[i].getname().upper()):
-                                self.Bottles[i].degreaseAmount((int(
+                            if (liquid_to_get.upper() == self.Bottles[i].get_name().upper()):
+                                self.Bottles[i].degrease_amount((int(
                                     amount_of_liquid) * self.amount * 0.01))  # uncomment this line for amount monitoring
                                 break
 
                         self.getLiquid(liquid_to_get, amount_of_liquid)  # That function getts the liquid
 
-                        print("\n" + self.Bottles[i].getname() + " menge geaendert")
+                        print("\n" + self.Bottles[i].get_name() + " menge geaendert")
 
                 self.changeErrorFlag(False)
                 self.changeProductionFlag(False)
@@ -187,8 +187,8 @@ class Bar(QObject):
 
     def getPosition(self, liquid):
         for i in range(len(self.Bottles)):
-            if self.Bottles[i].getname().upper() == liquid.upper():
-                return self.Bottles[i].getPos()
+            if self.Bottles[i].get_name().upper() == liquid.upper():
+                return self.Bottles[i].get_position()
 
         return False
 
@@ -204,9 +204,9 @@ class Bar(QObject):
         for i in range(1, len(drink.Ingredients)):  # Loop all Ingredients
             if drink.Ingredients[i][1] != "0":  # Look only at ingredients != 0
                 for j in range(0, len(self.Bottles)):  # Check all bottles
-                    if self.Bottles[j].getname().upper() == drink.Ingredients[i][0].upper():  # if bottle name == ingredient
+                    if self.Bottles[j].get_name().upper() == drink.Ingredients[i][0].upper():  # if bottle name == ingredient
                         if int(drink.Ingredients[i][1]) * self.amount * 0.01 <= int(
-                                self.Bottles[j].getlevel()):  # check if there is enough liquid reaming
+                                self.Bottles[j].get_level()):  # check if there is enough liquid reaming
                             having_flags = having_flags + 1  # if we have enough of that, increment having_flags
 
         if needed_flags == having_flags:

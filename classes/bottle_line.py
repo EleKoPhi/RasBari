@@ -22,7 +22,7 @@ class BottleLine(QWidget, QObject):
         self.BottleNameDsp.setGeometry(
             QtCore.QRect(self.rev_x, self.rev_y, self.layout.GUI_Width * 0.145, self.layout.button_height))
         self.BottleNameDsp.setObjectName("Bottle Name")
-        self.BottleNameDsp.setText(self.Bottle_in.getname())
+        self.BottleNameDsp.setText(self.Bottle_in.get_name())
         self.stdLabelSetUp(self.BottleNameDsp)
 
         xLevel = self.rev_x + self.layout.GUI_Width * 0.145 + self.layout.top_space
@@ -31,7 +31,7 @@ class BottleLine(QWidget, QObject):
         self.level.setGeometry(
             QtCore.QRect(xLevel, self.rev_y, self.layout.GUI_Width * 0.3, self.layout.button_height))
         self.level.setProperty("value",
-                               (int(self.Bottle_in.getRest()) / (int(self.Bottle_in.getbottlesize()))) * 100)
+                               (int(self.Bottle_in.get_remaining_content()) / (int(self.Bottle_in.get_bottle_size()))) * 100)
 
         xClear = xLevel + self.layout.top_space + self.layout.GUI_Width * 0.3
 
@@ -56,30 +56,30 @@ class BottleLine(QWidget, QObject):
 
         for i in range(len(self.ui_gui.bar.Bottles)):
 
-            if self.Bottle_in.getname() == self.ui_gui.bar.Bottles[i].getname():
-                self.ui_gui.bar.Bottles[i].putAmount(self.ui_gui.bar.Bottles[i].getbottlesize())
-                print(self.ui_gui.bar.Bottles[i].getlevel())
+            if self.Bottle_in.get_name() == self.ui_gui.bar.Bottles[i].get_name():
+                self.ui_gui.bar.Bottles[i].put_amount(self.ui_gui.bar.Bottles[i].get_bottle_size())
+                print(self.ui_gui.bar.Bottles[i].get_level())
                 self.Bottle_in = self.ui_gui.bar.Bottles[i]
                 break
 
         self.level.setProperty("value",
-                               (int(self.Bottle_in.getlevel()) / (int(self.Bottle_in.getbottlesize()))) * 100)
+                               (int(self.Bottle_in.get_level()) / (int(self.Bottle_in.get_bottle_size()))) * 100)
 
     def emptyBottle(self):
 
         print("empty Bottle")
 
-        self.Bottle_in.getliqout()
+        self.Bottle_in.put_level_zero()
         self.level.setProperty("value",
-                               (int(self.Bottle_in.getlevel()) / (int(self.Bottle_in.getbottlesize()))) * 100)
+                               (int(self.Bottle_in.get_level()) / (int(self.Bottle_in.get_bottle_size()))) * 100)
 
     def updateStatusBar(self):
 
         for i in range(len(self.bar.Bottles)):
-            if self.Bottle_in.getname() == self.bar.Bottles[i].getname():
+            if self.Bottle_in.get_name() == self.bar.Bottles[i].get_name():
 
                 self.Bottle_in = self.bar.Bottles[i]
-                value = int((int(self.bar.Bottles[i].getlevel()) / int(self.Bottle_in.getbottlesize())) * 100)
+                value = int((int(self.bar.Bottles[i].get_level()) / int(self.Bottle_in.get_bottle_size())) * 100)
                 if value < 0: value = 0
                 self.level.setProperty("value", value)
                 break

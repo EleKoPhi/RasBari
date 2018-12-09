@@ -1,61 +1,53 @@
 from TxTMethoden import *
 
+
 class Bottle(object):
 
-    Bottlestats = []
+    def __init__(self, number):
+        self.bottle_property = getallBottleStats("Fluessigkeit" + str(number))  # all properties of that bottle
+        self.level = int(self.bottle_property[2][1])  # the current amount of liquid in that bottle
 
-    def __init__(self, Nummer):
-        self.Bottlestats = getallBottleStats("Fluessigkeit" + str(Nummer))
-        self.level = int(self.Bottlestats[2][1])
+    def get_ID(self):
+        return self.bottle_property[0][1]
 
-    def getname(self):
-        return self.Bottlestats[1][1]
+    def get_name(self):
+        return self.bottle_property[1][1]
 
-    def getPos(self):
-        return self.Bottlestats[3][1]
+    def get_remaining_content(self):
+        return self.bottle_property[2][1]
 
-    def getID(self):
-        return self.Bottlestats[0][1]
+    def get_position(self):
+        return self.bottle_property[3][1]
 
-    def whatsIn(self):
-        for i in range(len(self.Bottlestats)):
-            print(self.Bottlestats[i])
+    def get_bottle_size(self):
+        return self.bottle_property[4][1]
 
-    def getRest(self):
-        return self.Bottlestats[2][1]
-
-    def outputliquid(self,amount):
-        print("Open valve")
-        print(str(amount) + " "+ self.getname() + "dispenses")
-        print("Close valve")
-
-    def openval(self):
-        print("open valve")
-
-    def closeval(self):
-        print("close valve")
-
-    def degreaseAmount(self,amount):
-        newamount = int(self.level)-int(amount)
-        self.level=newamount
-        changeAmount(int(self.getID()),newamount)
-
-    def resetBottle(self):
-        print("-> NEW BOTTLE IN SYSTEM <-")
-
-    def getbottlesize(self):
-        return self.Bottlestats[4][1]
-
-    def getRestAmount(self):
-        return self.Bottlestats[2][1]
-
-    def putAmount(self,newamount):
-        self.level=newamount
-        changeAmount(int(self.getID()), newamount)
-
-    def getlevel(self):
+    def get_level(self):
         return self.level
 
-    def getliqout(self):
-        self.level=0
+    def put_level_zero(self):
+        self.level = 0
 
+    def put_amount(self, newamount):
+        self.level = newamount
+        changeAmount(int(self.get_ID()), newamount)
+
+    def degrease_amount(self, amount):
+        new_amount = int(self.level) - int(amount)
+        self.level = new_amount
+        changeAmount(int(self.get_ID()), new_amount)
+
+    def open_valve(self):  # TODO include the GPIO function here
+        print("open valve")
+
+    def close_valve(self):  # TODO include the GPIO function here
+        print("close valve")
+
+    def dispens_liquid(self, amount):  # TODO include the real application here
+        self.open_valve()
+        print(str(amount) + " " + self.get_name() + "dispenses")
+        self.close_valve()
+
+    def print_whats_in(self):
+        for i in range(len(self.bottle_property)):
+            print(self.bottle_property[i])
