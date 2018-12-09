@@ -1,42 +1,42 @@
 [Fluessigkeit1]
 id = 1
 name = Gin
-menge = 430
+menge = 220
 position = 0
 bottlesize = 700
 
 [Fluessigkeit2]
 id = 2
 name = Whisky
-menge = 700
+menge = 670
 position = 10
 bottlesize = 700
 
 [Fluessigkeit3]
 id = 3
 name = Rum
-menge = 700
+menge = 670
 position = 20
 bottlesize = 700
 
 [Fluessigkeit4]
 id = 4
 name = Wodka
-menge = 700
+menge = 670
 position = 30
 bottlesize = 700
 
 [Fluessigkeit5]
 id = 5
 name = Cointreau
-menge = 700
+menge = 670
 position = 40
 bottlesize = 700
 
 [Fluessigkeit6]
 id = 6
 name = Tonic
-menge = 370
+menge = 790
 position = 50
 bottlesize = 1000
 
@@ -68,9 +68,6 @@ menge = 500
 position = 100
 bottlesize = 500
 
-[Linearführung]
-gesamtlänge = 1000
-
 [Flags]
 fullscreen = 0
 mailorder = 0
@@ -80,5 +77,4 @@ pull_pin = 0
 direction_pin = 0
 enable_pin = 0
 microstepsize = 32
-
 

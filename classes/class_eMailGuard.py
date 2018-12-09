@@ -6,8 +6,8 @@ from TxTMethoden import *
 from classes.class_myThread import *
 
 
+# noinspection PyBroadException
 class eMailGuard(QObject):
-
     header = "Automatic reply from RasBari"
     unknow_order_msg = "Sorry we could not handle your order\nPlease add one of the following to your mail titel\n\n" + \
                        getAllNamesInList()
@@ -112,7 +112,7 @@ class eMailGuard(QObject):
 
         print("Whats ordered: " + order)
 
-        if (order != None) & (self.bar.getProductionFlag() == False):
+        if (order is not None) & (self.bar.getProductionFlag() == False):
 
             for i in range(len(self.bar.DrinkList)):
                 if self.bar.DrinkList[i]:

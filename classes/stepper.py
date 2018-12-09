@@ -20,6 +20,8 @@ class stepper:
 
         self.initialize_steprange()
 
+        del self.Initial_data
+
     def one_step(self, direction, speed):
 
         if direction == forwards:
