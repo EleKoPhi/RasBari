@@ -9,7 +9,6 @@
 #
 
 from PyQt5 import QtWidgets
-
 from StyleFunctions import ApplyStyleSheets
 from TxTMethoden import getFlag
 from classes.class_GUI import UiGui

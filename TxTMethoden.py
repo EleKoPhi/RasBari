@@ -42,7 +42,7 @@ def getAllIngredients(number_of_drink):
     return False
 
 
-def objectCanBeBuild(number_of_drink):
+def drink_mixture_available(number_of_drink):
     return Mischungen.has_section(number_of_drink)
 
 

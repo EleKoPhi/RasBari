@@ -1,3 +1,16 @@
+[Drink0]
+Name=Gin Tonic
+Gin=30
+Whisky=0
+Rum=0
+Wodka=0
+Cointreau=0
+Tonic=70
+Cola=0
+Zitronensaft=0
+Genadinesirup=0
+Zuckersirup=0
+
 [Drink1]
 Name=Gin Tonic
 Gin=30
@@ -89,18 +102,7 @@ Zitronensaft=0
 Genadinesirup=0
 Zuckersirup=0
 
-[Drink8]
-Name=Zombi
-Gin=30
-Whisky=0
-Rum=0
-Wodka=0
-Cointreau=0
-Tonic=70
-Cola=0
-Zitronensaft=0
-Genadinesirup=0
-Zuckersirup=0
+
 
 
 

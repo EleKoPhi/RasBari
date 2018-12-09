@@ -112,7 +112,7 @@ class eMailGuard(QObject):
 
         print("Whats ordered: " + order)
 
-        if (order is not None) & (self.bar.getProductionFlag() == False):
+        if (order is not None) & (self.bar.get_production_flag() == False):
 
             for i in range(len(self.bar.DrinkList)):
                 if self.bar.DrinkList[i]:
@@ -138,7 +138,7 @@ class eMailGuard(QObject):
         else:
             print("order received but cant offer - Sorry")
 
-            if self.bar.getProductionFlag():
+            if self.bar.get_production_flag():
                 thread_mail = myThread(
                     lambda: self.send_mail_to(self.lastSenderAdress, self.order_not_possible_msg, self.header))
                 self.threadpool.start(thread_mail)

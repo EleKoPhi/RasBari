@@ -68,7 +68,7 @@ class main_widget_class(my_widget):
         self.amount_LCD.setSmallDecimalPoint(True)
         self.amount_LCD.setDigitCount(3)
         self.amount_LCD.setSegmentStyle(QtWidgets.QLCDNumber.Filled)
-        self.amount_LCD.setProperty("intValue", self.bar.getAmount())
+        self.amount_LCD.setProperty("intValue", self.bar.get_cup_size())
         self.amount_LCD.setObjectName("amount_LCD")
 
         # Exit - Pushbutton to stop the production thread
@@ -99,7 +99,7 @@ class main_widget_class(my_widget):
         self.DigitText.setObjectName("Glasvolume")
         self.stdLabelSetUp(self.DigitText)
 
-        GlasString = "Glass volume: " + str(self.bar.getAmount()) + " ml"
+        GlasString = "Glass volume: " + str(self.bar.get_cup_size()) + " ml"
 
         self.DigitText.setText(GlasString)
 
@@ -166,11 +166,11 @@ class main_widget_class(my_widget):
             self.button_grid()
 
     def update_progressbar(self):
-        self.Progress.setValue(self.bar.getProgress())
+        self.Progress.setValue(self.bar.get_progress())
 
     def update_status_txt(self):
 
-        if not self.bar.getProductionFlag():
+        if not self.bar.get_production_flag():
             self.StatTxt.setText("Status: Wait for input...")
         else:
             self.StatTxt.setText("Status: Busy")
@@ -222,8 +222,8 @@ class main_widget_class(my_widget):
     def change_drink_value(self,amount):
 
         self.bar.change_volume(amount)
-        self.amount_LCD.setProperty("intValue", self.bar.getAmount())
-        GlasString = "Glass volume: " + str(self.bar.getAmount()) + " ml"
+        self.amount_LCD.setProperty("intValue", self.bar.get_cup_size())
+        GlasString = "Glass volume: " + str(self.bar.get_cup_size()) + " ml"
 
         self.DigitText.setText(GlasString)
 
@@ -231,11 +231,11 @@ class main_widget_class(my_widget):
 
         self.bar.changeErrorFlag(False)
 
-        if not self.bar.getProductionFlag():
+        if not self.bar.get_production_flag():
 
             if self.bar.DrinkList[drink_nr]:
 
-                thread = myThread(lambda: self.bar.mixIt(drink_nr))
+                thread = myThread(lambda: self.bar.mix_drink(drink_nr))
                 progressbar = myThread(self.update_progressbar)
                 self.ui_gui.threadpool.start(thread)
                 self.ui_gui.threadpool.start(progressbar)

@@ -1,7 +1,14 @@
+[Fluessigkeit0]
+id = 0
+name = Zuckersirup
+menge = 500
+position = 100
+bottlesize = 500
+
 [Fluessigkeit1]
 id = 1
 name = Gin
-menge = 580
+menge = 610
 position = 0
 bottlesize = 700
 
@@ -36,7 +43,7 @@ bottlesize = 700
 [Fluessigkeit6]
 id = 6
 name = Tonic
-menge = 760
+menge = 167
 position = 50
 bottlesize = 1000
 
