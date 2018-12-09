@@ -16,6 +16,7 @@ class stepper:
         self.StepSize = int(self.Initial_data["microstepsize"])
         self.range = 0
         self.position_is = 0
+        self.errorFlag = noError
 
         self.initialize_steprange()
 
@@ -23,25 +24,34 @@ class stepper:
 
         if direction == forwards:
             print("one step forwards")
-            self.position_is += 1
+            self.position_is -= 1
 
         if direction == backwards:
             print("one step backwards")
-            self.position_is -= 1
+            self.position_is += 1
 
         time.sleep(speed)
 
     def initialize_steprange(self):
 
+        self.range = 0
+
         while self.range != 10:  # TODO check right roll switch here
             self.one_step(backwards, 0.2)
-            self.range += 1
+
+
 
         while self.range != 0:  # TODO check left roll switch here
             self.one_step(forwards, 0.2)
-            self.range -= 1
+            self.range += 1
 
         self.position_is = 0
+        print(self.range)
+
+        #for i in range(5):
+        #    self.one_step(backwards,0.2)
+
+        print(self.position_is)
 
     def move_slider(self, percentage_position,speed):
 
@@ -49,12 +59,20 @@ class stepper:
 
         while position_should != self.position_is:
 
-            if position_should > self.position_is:
+            if self.errorFlag == Error:
+                break
+
+            elif position_should > self.position_is:
                 self.one_step(forwards,speed)
 
-            if position_should < self.position_is:
+            elif position_should < self.position_is:
                 self.one_step(backwards,speed)
+
+            else: print("error during slider movement - wrong input")
+
+
 
 
 a = stepper()
+a.move_slider(20,1)
 
