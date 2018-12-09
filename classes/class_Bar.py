@@ -46,8 +46,8 @@ class Bar(QObject):
         for i in range(0, len(self.DrinkList)):
 
             if self.DrinkList[i] != False:
-                print(self.DrinkList[i].getName())
-                self.DrinkList[i].WhatsIn()
+                print(self.DrinkList[i].get_name())
+                self.DrinkList[i].print_whats_in()
                 print()
 
     def moveSlider(self, direction, speed, position):
@@ -123,12 +123,12 @@ class Bar(QObject):
 
         self.changeProductionFlag(True)  # If your do that, show the world you work
 
-        if self.DrinkList[Auswahl].getStat() == True:  # If Drinklist has that drink + its alive
+        if self.DrinkList[Auswahl].get_drink_status() == True:  # If Drinklist has that drink + its alive
 
             if self.can_be_mixed(self.DrinkList[Auswahl]):  # check if all ingredients are available
 
                 print("\nStart mixing " + str(self.amount) + " ml " \
-                      + self.DrinkList[Auswahl].getName() + " plase wait\n")  # initialize output
+                      + self.DrinkList[Auswahl].get_name() + " plase wait\n")  # initialize output
 
                 self.change_progress(0)  # reset progress bar
                 self.fuellstand = 0  # reset "fuellstand

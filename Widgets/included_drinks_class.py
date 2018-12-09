@@ -23,7 +23,7 @@ class included_drinks_class(my_widget):
         self.drink_txt_label = QtWidgets.QLabel(self.widget)
         self.drink_txt_label.setGeometry(QtCore.QRect(drink_txt_x, drink_txt_y, drink_txt_width, drink_txt_height))
         self.drink_txt_label.setObjectName("Middle_Txt_Box")
-        self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].getIngredientString())
+        self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].get_ingredient_string())
         self.stdLabelSetUp(self.drink_txt_label)
 
         exit_button_x = (self.layout.GUI_Width / 2 - self.layout.button_width / 2)
@@ -87,7 +87,7 @@ class included_drinks_class(my_widget):
         self.live_drink = 0
 
         try:
-            self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].getIngredientString())
+            self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].get_ingredient_string())
         except:
             self.drink_txt_label.setText("No more drinks in the system...")
 
@@ -96,7 +96,7 @@ class included_drinks_class(my_widget):
             self.bar.DrinkList.pop(drink)
             self.live_drink = self.live_drink - 1
             if self.live_drink < 0: self.live_drink = len(self.bar.DrinkList) - 1
-            self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].getIngredientString())
+            self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].get_ingredient_string())
         except:
             self.drink_txt_label.setText("No more drinks in the system...")
 
@@ -109,7 +109,7 @@ class included_drinks_class(my_widget):
             if self.live_drink < 0: self.live_drink = len(self.bar.DrinkList) - 1
 
         try:
-            self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].getIngredientString())
+            self.drink_txt_label.setText(self.bar.DrinkList[self.live_drink].get_ingredient_string())
         except:
             self.drink_txt_label.setText("No more drinks in the system...")
 

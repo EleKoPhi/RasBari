@@ -184,13 +184,13 @@ class drink_tune_class(my_widget):
         for i in range(len(slider)):  # build the new_ingredients list
             new_ingredients.extend([[name[i].text(), str(slider[i].value())]])
 
-        self.bar.DrinkList[self.drink_nr].setNewIngredients(new_ingredients)
+        self.bar.DrinkList[self.drink_nr].put_new_ingredients(new_ingredients)
 
         # update the current text box in the included_drink_container that the applied changes are shown
 
         live_drink_dummy = self.ui_gui.included_drinks_container.live_drink
         txt_box = self.ui_gui.included_drinks_container.widget.findChild(QtWidgets.QWidget, "Middle_Txt_Box")
-        txt_box.setText(self.bar.DrinkList[live_drink_dummy].getIngredientString())
+        txt_box.setText(self.bar.DrinkList[live_drink_dummy].get_ingredient_string())
 
         self.stacked_widget.setCurrentIndex(self.stacked_widget.indexOf(self.ui_gui.included_drinks_container.widget))
 

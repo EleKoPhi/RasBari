@@ -116,7 +116,7 @@ class eMailGuard(QObject):
 
             for i in range(len(self.bar.DrinkList)):
                 if self.bar.DrinkList[i]:
-                    if self.bar.DrinkList[i].getName().upper() in order.upper():
+                    if self.bar.DrinkList[i].get_name().upper() in order.upper():
                         find = i
                         break
 
@@ -124,7 +124,7 @@ class eMailGuard(QObject):
 
             if self.bar.can_be_mixed(self.bar.DrinkList[find]):
 
-                reply = self.order_exe_msg + "\n\nYour order: " + self.bar.DrinkList[find].getName()
+                reply = self.order_exe_msg + "\n\nYour order: " + self.bar.DrinkList[find].get_name()
                 thread_mail = myThread(lambda: self.send_mail_to(self.last_sender_address, reply, self.header))
                 self.threadpool.start(thread_mail)
                 self.main_wig.production_thread_handler(find)

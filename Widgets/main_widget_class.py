@@ -209,7 +209,7 @@ class main_widget_class(my_widget):
                 self.grid_button_list.extend([QtWidgets.QPushButton(self.grid_layout_widget)])
                 self.grid_button_list[i].setMinimumSize(QtCore.QSize(grid_button_width, grid_button_height))
                 self.grid_button_list[i].setObjectName("Button_" + str(i))
-                self.grid_button_list[i].setText(self.bar.DrinkList[i].getName())
+                self.grid_button_list[i].setText(self.bar.DrinkList[i].get_name())
                 self.grid_button_list[i].clicked.connect(partial(self.production_thread_handler, i))
                 self.ButtonGrid.addWidget(self.grid_button_list[i], line, column)
 
