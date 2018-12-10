@@ -22,6 +22,7 @@ class main_widget_class(my_widget):
         # button_grid builds the layout for all drink buttons
 
         self.button_grid()
+        self.color_buttons()
 
         # Progressbar that shows the progress of the mixture
 
@@ -165,8 +166,11 @@ class main_widget_class(my_widget):
         except:
             self.button_grid()
 
+        self.color_buttons()
+
     def update_progressbar(self):
         self.Progress.setValue(self.bar.get_progress())
+        if self.bar.get_progress() == 100: self.color_buttons()
 
     def update_status_txt(self):
 
@@ -224,7 +228,7 @@ class main_widget_class(my_widget):
         self.bar.change_volume(amount)
         self.amount_LCD.setProperty("intValue", self.bar.get_cup_size())
         GlasString = "Glass volume: " + str(self.bar.get_cup_size()) + " ml"
-
+        self.color_buttons()
         self.DigitText.setText(GlasString)
 
     def production_thread_handler(self, drink_nr):
@@ -250,6 +254,13 @@ class main_widget_class(my_widget):
     def exit_thread_handler(self):
         exit_thread = myThread(self.bar.errorFunction)
         self.threadpool.start(exit_thread)
+
+    def color_buttons(self):
+        for i in range(len(self.grid_button_list)):
+            if self.bar.can_be_mixed(self.bar.DrinkList[i]):
+                self.grid_button_list[i].setStyleSheet("background-color: green")
+            else:
+                self.grid_button_list[i].setStyleSheet("background-color: red")
 
 
 
