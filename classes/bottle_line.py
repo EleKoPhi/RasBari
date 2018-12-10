@@ -1,58 +1,61 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
-from functools import partial
 from classes.class_myThread import *
 
-class BottleLine(QWidget, QObject):
-    def __init__(self, ui_gui, widget, Bottle, total_x, total_y,layout,main_bar):
+
+def stdLabelSetUp(label):
+    label.setAlignment(Qt.AlignCenter)
+    label.setFrameShape(6)
+    label.setStyleSheet("background-color: white")
+
+
+class bottle_line(QObject):
+    def __init__(self, ui_gui, widget, bottle, total_x, total_y, layout, main_bar):
+
         super().__init__()
-        self.wg = widget
-        self.Bottle_in = Bottle
+        self.live_widget = widget
+        self.Bottle_in = bottle
         self.rev_x = total_x + 10
         self.rev_y = total_y
         self.ui_gui = ui_gui
         self.layout = layout
         self.bar = main_bar
 
-        self.build_line()
+        self.reset_button = QtWidgets.QPushButton(self.live_widget)
+        self.clear_button = QtWidgets.QPushButton(self.live_widget)
+        self.amount_progressbar = QtWidgets.QProgressBar(self.live_widget)
+        self.bottle_name_label = QtWidgets.QLabel(self.live_widget)
 
-    def build_line(self):
+        self.format_line()
 
-        self.BottleNameDsp = QtWidgets.QLabel(self.wg)
-        self.BottleNameDsp.setGeometry(
-            QtCore.QRect(self.rev_x, self.rev_y, self.layout.GUI_Width * 0.145, self.layout.button_height))
-        self.BottleNameDsp.setObjectName("Bottle Name")
-        self.BottleNameDsp.setText(self.Bottle_in.get_name())
-        self.stdLabelSetUp(self.BottleNameDsp)
+    def format_line(self):
 
-        xLevel = self.rev_x + self.layout.GUI_Width * 0.145 + self.layout.top_space
+        label_width = self.layout.GUI_Width * 0.145
+        self.bottle_name_label.setObjectName("Bottle Name")
+        self.bottle_name_label.setGeometry(self.rev_x, self.rev_y, label_width, self.layout.button_height)
+        self.bottle_name_label.setText(self.Bottle_in.get_name())
+        stdLabelSetUp(self.bottle_name_label)
 
-        self.level = QtWidgets.QProgressBar(self.wg)
-        self.level.setGeometry(
-            QtCore.QRect(xLevel, self.rev_y, self.layout.GUI_Width * 0.3, self.layout.button_height))
-        self.level.setProperty("value",
-                               (int(self.Bottle_in.get_remaining_content()) / (int(self.Bottle_in.get_bottle_size()))) * 100)
+        progressbar_x = self.rev_x + self.layout.GUI_Width * 0.145 + self.layout.top_space
+        progressbar_width = self.layout.GUI_Width * 0.3
+        progressbar_value = (int(self.Bottle_in.get_remaining_content()) / (
+            int(self.Bottle_in.get_bottle_size()))) * 100
+        self.amount_progressbar.setGeometry(progressbar_x, self.rev_y, progressbar_width, self.layout.button_height)
+        self.amount_progressbar.setProperty("value", progressbar_value)
 
-        xClear = xLevel + self.layout.top_space + self.layout.GUI_Width * 0.3
+        clear_button_x = progressbar_x + self.layout.top_space + self.layout.GUI_Width * 0.3
+        self.clear_button.setGeometry(clear_button_x, self.rev_y, self.layout.button_width, self.layout.button_height)
+        self.clear_button.setText("Output")
+        self.clear_button.clicked.connect(lambda: self.emptyBottle())
 
-        self.ClearButton = QtWidgets.QPushButton(self.wg)
-        self.ClearButton.setGeometry(
-            QtCore.QRect(xClear, self.rev_y, self.layout.button_width, self.layout.button_height))
-        self.ClearButton.setText("Output")
-
-        xResetbutton = xClear + self.layout.top_space + self.layout.button_width
-
-        self.Resetbutton = QtWidgets.QPushButton(self.wg)
-        self.Resetbutton.setGeometry(
-            QtCore.QRect(xResetbutton, self.rev_y, self.layout.button_width, self.layout.button_height))
-        self.Resetbutton.setText("RESET")
-
-        self.Resetbutton.clicked.connect(lambda: self.placeNewBottle())
-        self.ClearButton.clicked.connect(lambda: self.emptyBottle())
+        reset_button_x = clear_button_x + self.layout.top_space + self.layout.button_width
+        self.reset_button.setGeometry(reset_button_x, self.rev_y, self.layout.button_width, self.layout.button_height)
+        self.reset_button.setText("RESET")
+        self.reset_button.clicked.connect(lambda: self.placeNewBottle())
 
     def placeNewBottle(self):
 
-        print("Reset Bottle")
+        print("reset bottle")
 
         for i in range(len(self.ui_gui.bar.Bottles)):
 
@@ -62,16 +65,13 @@ class BottleLine(QWidget, QObject):
                 self.Bottle_in = self.ui_gui.bar.Bottles[i]
                 break
 
-        self.level.setProperty("value",
-                               (int(self.Bottle_in.get_level()) / (int(self.Bottle_in.get_bottle_size()))) * 100)
+        self.amount_progressbar.setProperty("value", 100)
 
     def emptyBottle(self):
 
-        print("empty Bottle")
-
+        print("empty bottle")
         self.Bottle_in.put_level_zero()
-        self.level.setProperty("value",
-                               (int(self.Bottle_in.get_level()) / (int(self.Bottle_in.get_bottle_size()))) * 100)
+        self.amount_progressbar.setProperty("value", 0)
 
     def updateStatusBar(self):
 
@@ -81,10 +81,5 @@ class BottleLine(QWidget, QObject):
                 self.Bottle_in = self.bar.Bottles[i]
                 value = int((int(self.bar.Bottles[i].get_level()) / int(self.Bottle_in.get_bottle_size())) * 100)
                 if value < 0: value = 0
-                self.level.setProperty("value", value)
+                self.amount_progressbar.setProperty("value", value)
                 break
-
-    def stdLabelSetUp(self, Label):
-        Label.setAlignment(Qt.AlignCenter)
-        Label.setFrameShape(6)
-        Label.setStyleSheet("background-color: white")

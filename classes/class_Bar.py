@@ -33,9 +33,10 @@ class Bar(QObject):
             choose_drink = "Drink" + str(i)
 
             if drink_mixture_available(choose_drink):
-                self.DrinkList.extend([Drink(choose_drink)])
+                if proof_ingredients(choose_drink):
+                    self.DrinkList.extend([Drink(choose_drink)])
             else:
-                print("can't include drink: " + choose_drink)
+                print(choose_drink + " not found in initial file")
 
         print("\nBar has been initialized")
 
@@ -78,7 +79,7 @@ class Bar(QObject):
     def nr_initial_drinks(self):
         nr_initial_drinks = 0
         while True:
-            if not Mischungen.has_section("Drink" + str(nr_initial_drinks)): break
+            if not mixtures.has_section("Drink" + str(nr_initial_drinks)): break
             nr_initial_drinks += 1
         return nr_initial_drinks
 
@@ -133,7 +134,7 @@ class Bar(QObject):
 
         self.change_ProductionFlag(True)  # If your do that, show the world you work
 
-        if self.DrinkList[drink_nr].get_drink_status() == True:  # If Drinklist has that drink + its alive
+        if True:  # If Drinklist has that drink + its alive #TODO rework that function, alive flag no longer included
 
             if self.can_be_mixed(self.DrinkList[drink_nr]):  # check if all ingredients are available
 
@@ -210,6 +211,15 @@ class Bar(QObject):
     def change_progress(self, new_progress):
         self.progress = new_progress
         self.emit_signal("CVS")
+
+    def get_all_drinks_string(self):
+        drinks_string = ""
+
+        for i in range(len(self.DrinkList)):
+            line = "Drink " + str(i) + ": " + self.DrinkList[i].get_name() + "\n"
+            drinks_string = drinks_string + line
+
+        return drinks_string
 
 
 

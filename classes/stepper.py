@@ -9,7 +9,7 @@ class stepper:
     def __init__(self):
         stepper.nr_of_stepper += 1
         self.ID = "stepper_" + str(self.nr_of_stepper)
-        self.Initial_data = getStepper_ini(self.ID)
+        self.Initial_data = get_stepper_ini(self.ID)
         self.DIR = int(self.Initial_data["direction_pin"])
         self.ENA = int(self.Initial_data["enable_pin"])
         self.PUL = int(self.Initial_data["pull_pin"])

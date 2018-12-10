@@ -4,8 +4,8 @@ from classes.Layout_class import *
 from widget_imports import *
 
 
+# noinspection PyArgumentList
 class UiGui(QWidget, QObject):
-
     updateGUI_global = pyqtSignal()
 
     def __init__(self, width, height, global_widget):
@@ -41,7 +41,5 @@ class UiGui(QWidget, QObject):
         self.connect_system_signals()
 
     def connect_system_signals(self):
-
-        self.RasBari.missingIngred.connect\
-            (lambda:self.globWig.setCurrentIndex(self.globWig.indexOf(self.missing_ingreds_container.widget)))
-
+        self.RasBari.missingIngred.connect \
+            (lambda: self.globWig.setCurrentIndex(self.globWig.indexOf(self.missing_ingreds_container.widget)))

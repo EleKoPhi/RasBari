@@ -35,5 +35,5 @@ QSlider::sub-page:horizontal {
 
 """
 
-def ApplyStyleSheets(App):
-    App.setStyleSheet(StyleSheet)
+def ApplyStyleSheets(app):
+    app.setStyleSheet(StyleSheet)

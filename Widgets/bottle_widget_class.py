@@ -58,7 +58,7 @@ class bottle_widget_class(my_widget):
 
             line_y = top_space + j * (self.layout.button_height + self.layout.top_space * 1.7)
 
-            self.lines.extend([BottleLine(self, self.Bottle_pages[page].widget, self.bar.Bottles[i], 0, line_y,self.layout,self.bar)])
+            self.lines.extend([bottle_line(self, self.Bottle_pages[page].widget, self.bar.Bottles[i], 0, line_y, self.layout, self.bar)])
 
             j += 1
 

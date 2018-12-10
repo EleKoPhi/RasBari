@@ -10,7 +10,7 @@
 
 from PyQt5 import QtWidgets
 from StyleFunctions import ApplyStyleSheets
-from TxTMethoden import getFlag
+from TxTMethoden import get_flag
 from classes.class_GUI import UiGui
 
 if __name__ == "__main__":
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     ui = UiGui(rect.width(), rect.height(), StackedWidget)
 
-    if getFlag("Fullscreen"):
+    if get_flag("Fullscreen"):
         StackedWidget.showFullScreen()
     else:
         StackedWidget.show()

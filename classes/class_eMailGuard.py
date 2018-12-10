@@ -9,15 +9,14 @@ from classes.class_myThread import *
 # noinspection PyBroadException
 class eMailGuard(QObject):
     header = "Automatic reply from RasBari"
-    unknow_order_msg = "Sorry we could not handle your order\nPlease add one of the following to your mail titel\n\n" + \
-                       getAllNamesInList()
+    unknow_order_msg = "Sorry we could not handle your order\nPlease add one of the following to your mail titel\n\n"
     order_exe_msg = "Your order is executed - pleas collect in a few seconds"
     order_not_possible_msg = "Sorry at the moment, we are busy.\nPlease try in a few moments"
 
     missing_ingred_msg = "Sorry we can't mix your drink.\nSome ingredients are missing\n\nPlease check bottles"
 
-    login = getMailAdress()
-    password = getMailPassword()
+    login = get_mail()
+    password = get_password()
 
     CheckMail = pyqtSignal()
 
@@ -28,7 +27,7 @@ class eMailGuard(QObject):
         self.bar = main_bar
         self.main_wig = main_wig
 
-        if getFlag("mailorder"):
+        if get_flag("mailorder"):
 
             print("e-mail guard initialization ...")
 
@@ -112,7 +111,7 @@ class eMailGuard(QObject):
 
         print("Whats ordered: " + order)
 
-        if (order is not None) & (self.bar.get_production_flag() == False):
+        if (order is not None) & (not self.bar.get_production_flag()):
 
             for i in range(len(self.bar.DrinkList)):
                 if self.bar.DrinkList[i]:
@@ -144,8 +143,9 @@ class eMailGuard(QObject):
                 self.threadpool.start(thread_mail)
 
             else:
+                msg = self.unknow_order_msg + self.bar.get_all_drinks_string()
                 thread_mail = myThread(
-                    lambda: self.send_mail_to(self.EmailOrder.lastSenderAdress, self.unknow_order_msg, self.header))
+                    lambda: self.send_mail_to(self.EmailOrder.lastSenderAdress, msg, self.header))
                 self.threadpool.start(thread_mail)
 
             print(self.lastSenderAdress)

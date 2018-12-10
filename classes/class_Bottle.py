@@ -4,7 +4,7 @@ from TxTMethoden import *
 class Bottle(object):
 
     def __init__(self, number):
-        self.bottle_property = getallBottleStats("Fluessigkeit" + str(number))  # all properties of that bottle
+        self.bottle_property = get_bottle_properties("Fluessigkeit" + str(number))  # all properties of that bottle
         self.level = int(self.bottle_property[2][1])  # the current amount of liquid in that bottle
 
     def get_ID(self):
@@ -28,14 +28,14 @@ class Bottle(object):
     def put_level_zero(self):
         self.level = 0
 
-    def put_amount(self, newamount):
-        self.level = newamount
-        changeAmount(int(self.get_ID()), newamount)
+    def put_amount(self, new_amount):
+        self.level = new_amount
+        put_new_level(int(self.get_ID()), new_amount)
 
     def degrease_amount(self, amount):
         new_amount = int(self.level) - int(amount)
         self.level = new_amount
-        changeAmount(int(self.get_ID()), new_amount)
+        put_new_level(int(self.get_ID()), new_amount)
 
     def open_valve(self):  # TODO include the GPIO function here
         print("open valve")
@@ -43,7 +43,7 @@ class Bottle(object):
     def close_valve(self):  # TODO include the GPIO function here
         print("close valve")
 
-    def dispens_liquid(self, amount):  # TODO include the real application here
+    def dispense_liquid(self, amount):  # TODO include the real application here
         self.open_valve()
         print(str(amount) + " " + self.get_name() + "dispenses")
         self.close_valve()
