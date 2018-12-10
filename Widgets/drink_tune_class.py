@@ -36,6 +36,13 @@ class drink_tune_class(my_widget):
         self.name_list = []
         self.helpWig = []
         self.help_pages = []
+        self.help_pages.extend([self])
+
+        self.Name = QtWidgets.QLabel(self.widget)
+        self.Name.setGeometry(QtCore.QRect(space_x, topspace, space_width, std_height))
+        self.Name.setObjectName("Drink_Name")
+        self.Name.setText(self.bar.DrinkList[drink_nr].Ingredients[0][1])
+        self.stdLabelSetUp(self.Name)
 
         self.j = 1
         self.page = 0
@@ -45,10 +52,7 @@ class drink_tune_class(my_widget):
             if self.bar.DrinkList[drink_nr].Ingredients[i][1] != "0":
                 self.nr_ingredients = self.nr_ingredients + 1
 
-        nr_widgets = int(len(self.bar.DrinkList) / 4)
-
-        if self.nr_ingredients < 4: nr_widgets = nr_widgets - 1
-        if self.nr_ingredients > 4: nr_widgets = nr_widgets + 1
+        nr_widgets = int(self.nr_ingredients/4)
 
         for i in range(nr_widgets):
             self.helpWig = my_widget(stacked_widget, ui_gui, ui_layout, master_bar)
@@ -74,6 +78,8 @@ class drink_tune_class(my_widget):
                 self.j = 1
 
             line_y = topspace + self.j * (std_height + self.layout.top_space * 1.7)
+
+            print(len(self.help_pages))
 
             self.help_slider = QtWidgets.QSlider(Qt.Horizontal, self.help_pages[self.page].widget)
             self.slider.extend([self.help_slider])
