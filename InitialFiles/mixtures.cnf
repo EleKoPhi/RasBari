@@ -32,10 +32,10 @@ Rum=10
 Wodka=10
 Cointreau=10
 Tonic=10
-Cola=10
-Zitronensaft=10
-Grenadine=10
-Zuckersirup=10
+Cola=40
+Zitronensaft=0
+Grenadine=0
+Zuckersirup=0
 
 [Drink3]
 Name=Wodka Bull

@@ -23,6 +23,7 @@ class my_widget(QWidget, QObject):
         self.title = QtWidgets.QLabel(self.widget)
         self.header()
 
+
     def header(self):
         title_font = QtGui.QFont()
         title_font.setPointSize(26)

@@ -8,7 +8,7 @@ bottlesize = 500
 [Fluessigkeit1]
 id = 1
 name = Gin
-menge = 274
+menge = 610
 position = 0
 bottlesize = 700
 
@@ -43,7 +43,7 @@ bottlesize = 700
 [Fluessigkeit6]
 id = 6
 name = Tonic
-menge = 6
+menge = 790
 position = 50
 bottlesize = 1000
 
@@ -76,7 +76,7 @@ position = 100
 bottlesize = 500
 
 [Flags]
-fullscreen = 0
+fullscreen = 1
 mailorder = 0
 
 [stepper_1]

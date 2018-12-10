@@ -1,7 +1,7 @@
 class lo:
 
     def __init__(self, width, height):
-        self.GUI_Width = width * 1.048 * 0.58  # TODO CHANGE THIS !!!
+        self.GUI_Width = width* 1.048 * 0.58  # TODO CHANGE THIS !!!
         self.GUI_Height = height * 0.5479
 
         self.button_space = self.GUI_Height / 100

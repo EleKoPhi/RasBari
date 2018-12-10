@@ -24,12 +24,14 @@ class UiGui(QWidget, QObject):
         self.globWig.setMaximumSize(QtCore.QSize(self.GUI_layout.GUI_Width, self.GUI_layout.GUI_Height))
         self.globWig.setMinimumSize(QtCore.QSize(self.GUI_layout.GUI_Width, self.GUI_layout.GUI_Height))
 
+
         self.main_container = main_widget_class(self.globWig, self, self.GUI_layout, self.RasBari)
         self.bottle_container = bottle_widget_class(self.globWig, self, self.GUI_layout, self.RasBari)
         self.drink_menue_container = drink_menue_class(self.globWig, self, self.GUI_layout, self.RasBari)
         self.included_drinks_container = included_drinks_class(self.globWig, self, self.GUI_layout, self.RasBari)
         self.new_drink_container = new_drink_widget_class(self.globWig, self, self.GUI_layout, self.RasBari)
         self.missing_ingreds_container = missing_ingeds_class(self.globWig, self, self.GUI_layout, self.RasBari)
+
 
         QtCore.QMetaObject.connectSlotsByName(self.globWig)
 
