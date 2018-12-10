@@ -258,9 +258,9 @@ class main_widget_class(my_widget):
     def color_buttons(self):
         for i in range(len(self.grid_button_list)):
             if self.bar.can_be_mixed(self.bar.DrinkList[i]):
-                self.grid_button_list[i].setStyleSheet("background-color: green")
+                self.grid_button_list[i].setStyleSheet("background-color: #7fff66")
             else:
-                self.grid_button_list[i].setStyleSheet("background-color: red")
+                self.grid_button_list[i].setStyleSheet("background-color: #ff6666")
 
 
 
