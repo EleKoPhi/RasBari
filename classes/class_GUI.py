@@ -38,7 +38,7 @@ class UiGui(QWidget, QObject):
         self.globWig.setCurrentIndex(self.globWig.indexOf(self.main_container.widget))
         QtCore.QMetaObject.connectSlotsByName(self.globWig)
 
-        self.EmailOrder = eMailGuard(self.RasBari, self.main_container)
+        #self.EmailOrder = eMailGuard(self.RasBari, self.main_container)
 
         self.connect_system_signals()
 

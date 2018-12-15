@@ -80,8 +80,10 @@ fullscreen = 1
 mailorder = 0
 
 [stepper_1]
-pull_pin = 0
-direction_pin = 0
+pull_pin = 22
+direction_pin = 27
 enable_pin = 0
 microstepsize = 32
+taster_links_pin = 17
+taster_rechts_pin =26
 

@@ -1,14 +1,14 @@
-import easyimap
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+#import easyimap
+#import smtplib
+#from email.mime.multipart import MIMEMultipart
+#from email.mime.text import MIMEText
 from TxTMethoden import *
 from classes.class_myThread import *
 
 
 # noinspection PyBroadException
 class eMailGuard(QObject):
-    header = "Automatic reply from RasBari"
+    """header = "Automatic reply from RasBari"
     unknow_order_msg = "Sorry we could not handle your order\nPlease add one of the following to your mail titel\n\n"
     order_exe_msg = "Your order is executed - pleas collect in a few seconds"
     order_not_possible_msg = "Sorry at the moment, we are busy.\nPlease try in a few moments"
@@ -157,4 +157,4 @@ class eMailGuard(QObject):
             co_thread = myThread(lambda: self.check_new_order())
             self.threadpool.start(co_thread)
 
-# finished 02.12.2018
+# finished 02.12.2018"""
