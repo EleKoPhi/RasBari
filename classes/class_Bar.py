@@ -1,8 +1,14 @@
+import sys
+sys.path.insert(0,"/home/pi/RasBari")
 import time
 from classes.class_Bottle import *
 from classes.class_Drink import *
 from classes.class_myThread import *
 from gobal_variables import *
+from classes.stepper import *
+from classes.hx711 import HX711
+import RPi.GPIO as GPIO
+
 
 
 class Bar(QObject):
@@ -14,6 +20,7 @@ class Bar(QObject):
     drinkunknown = pyqtSignal()
 
     def __init__(self):
+        
         QObject.__init__(self)
 
         self.errorFlag = noError
@@ -25,6 +32,16 @@ class Bar(QObject):
 
         self.Bottles = []
         self.DrinkList = []
+        
+        GPIO.setmode(GPIO.BOARD)
+	
+        self.slider = stepper()
+        
+        self.scale = HX711(dout_pin=35, pd_sck_pin=33)
+        self.scale.set_gain_A(gain=64)		
+        self.scale.select_channel(channel='A')
+        self.scale.set_scale_ratio(scale_ratio=448.126)
+        self.scale.zero(times=2)
 
         for i in range(self.nr_initial_bottles()):
             self.Bottles.extend([Bottle(i)])
@@ -64,7 +81,7 @@ class Bar(QObject):
 
     def get_liquid_position(self, liquid):
         for i in range(len(self.Bottles)):
-            if self.Bottles[i].get_name().upper() == liquid.upper():
+            if self.Bottles[i].get_name().upper() == liquid.get_name().upper():
                 return self.Bottles[i].get_position()
 
         return False
@@ -92,20 +109,26 @@ class Bar(QObject):
     def output_liquid(self, liquid, amount):  # TODO code that function for real output
 
         amount = int(int(amount) / 100 * self.cup_size)
+        weight = liquid.get_density() * amount
+        
+        self.slider.move_slider(int(self.get_liquid_position(liquid)),1)
+        time.sleep(0.5)
+        
+        print("Gebe " + str(amount) + "ml " + liquid.get_name() + " aus")
 
-        self.move_slider("normal", self.get_liquid_position(liquid))
+        self.scale.zero(times=2)
 
-        print("Gebe " + str(int(amount)) + "ml " + str(liquid) + " aus")
+        liquid.open_valve()
 
-        for i in range(amount):
-            if self.errorFlag == False:
-                if i % 20 == 0: print("Ausgegebene Menge: " + str(i + 10) + " ml")
-                self.filling_level = self.filling_level + 1
-                self.change_progress(self.filling_level / self.cup_size * 100)
-                time.sleep(0.01)
-            else:
-                print("Error flage alive - Ausgabe abgebrochen")
-                return
+        while self.scale.get_weight_mean(1) < weight:
+            print(self.scale.get_weight_mean(1))
+
+        liquid.close_valve()
+
+        time.sleep(0.5)
+
+
+        
 
     def can_be_mixed(self, drink):
 
@@ -158,6 +181,7 @@ class Bar(QObject):
 
                         for i in range(len(self.Bottles)):
                             if (liquid_to_get.upper() == self.Bottles[i].get_name().upper()):
+                                liquid_to_get = self.Bottles[i]
                                 self.Bottles[i].degrease_amount((int(
                                     amount_of_liquid) * self.cup_size * 0.01))  # uncomment this line for amount monitoring
                                 break
@@ -165,6 +189,11 @@ class Bar(QObject):
                         self.output_liquid(liquid_to_get, amount_of_liquid)  # That function getts the liquid
 
                         print("\n" + self.Bottles[i].get_name() + " menge geaendert")
+                        
+                self.slider.move_slider(100,1)
+                print("wait 5sek before going back to home")
+                time.sleep(5)
+                self.slider.move_slider(0,1)
 
                 self.change_ErrorFlag(False)
                 self.change_ProductionFlag(False)

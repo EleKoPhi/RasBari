@@ -1,4 +1,5 @@
 from TxTMethoden import *
+import RPi.GPIO as GPIO
 
 
 class Bottle(object):
@@ -6,7 +7,9 @@ class Bottle(object):
     def __init__(self, number):
         self.bottle_property = get_bottle_properties("Fluessigkeit" + str(number))  # all properties of that bottle
         self.level = int(self.bottle_property[2][1])  # the current amount of liquid in that bottle
-
+        
+        GPIO.setup(self.get_pin(),GPIO.OUT)
+        
     def get_ID(self):
         return self.bottle_property[0][1]
 
@@ -22,6 +25,12 @@ class Bottle(object):
     def get_bottle_size(self):
         return self.bottle_property[4][1]
 
+    def get_pin(self):
+        return int(self.bottle_property[5][1])
+
+    def get_density(self):
+        return int(self.bottle_property[6][1])
+        
     def get_level(self):
         return self.level
 
@@ -38,10 +47,12 @@ class Bottle(object):
         put_new_level(int(self.get_ID()), new_amount)
 
     def open_valve(self):  # TODO include the GPIO function here
-        print("open valve")
+        print("open valve controled by -> GPIO_PIN: " + str(self.get_pin())) 
+        GPIO.output(self.get_pin(),GPIO.HIGH)
 
     def close_valve(self):  # TODO include the GPIO function here
         print("close valve")
+        GPIO.output(self.get_pin(),GPIO.LOW)
 
     def dispense_liquid(self, amount):  # TODO include the real application here
         self.open_valve()

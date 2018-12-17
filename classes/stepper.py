@@ -5,14 +5,12 @@ from gobal_variables import *
 import time
 import RPi.GPIO as GPIO
 
-
 class stepper:
     
     nr_of_stepper = 0
 
     def __init__(self):
         self.taster_flag = no_taster_on
-        GPIO.setmode(GPIO.BCM)
         stepper.nr_of_stepper += 1
         self.ID = "stepper_" + str(self.nr_of_stepper)
         self.Initial_data = get_stepper_ini(self.ID)
@@ -99,10 +97,21 @@ class stepper:
             if position_should<self.position_is:
                 self.set_direction(left)
 
-                while(positon_should!=position_is):
+                while(position_should!=self.position_is):
                     self.one_step(speed)
                     self.position_is-=1
+  
+# stepper test
+
+"""a = stepper()
+time.sleep(1)
+a.move_slider(30,1)
+time.sleep(1)
+a.move_slider(40,1)
+time.sleep(1)
+a.move_slider(0,1)
+time.sleep(1)
+print("done")"""
 
 
-a = stepper()
 
